@@ -7,6 +7,7 @@ const Home: NextPage = () => {
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
         <title>Pinky Swears</title>
+        <meta name='theme-color' content='#FFBCD1' />
       </Head>
       <div>
         <h2 className="text-center font-[segoepr] font-extrabold text-3xl">Welcome</h2>
