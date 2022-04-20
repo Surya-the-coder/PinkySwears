@@ -1,5 +1,6 @@
 {
   "private": true,
+  "proxy" : "https://dream-pg-backend.herokuapp.com/api",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
