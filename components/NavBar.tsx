@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 const NavBar = () => {
   return (
-    <div className="fixed bottom-0 my-3 w-full rounded-2xl bg-white py-6">
+    <div className="fixed bottom-0 my-3 w-full rounded-2xl bg-white py-6 shadow-navbar">
       <nav>
         <ul className="flex justify-around">
           <li className="">
