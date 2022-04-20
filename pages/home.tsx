@@ -1,5 +1,7 @@
 import TopBar from "../components/TopBar";
 import {useState} from 'react'
+import NavBar from "../components/NavBar";
+import Card from "../components/Card";
 
 const home = () => {
 
@@ -42,12 +44,21 @@ const home = () => {
     return (
         <div className="bg-pink-200 min-h-screen bg-[mybg]">
             <TopBar/>
-            <div className="flex justify-around">
+            <div className="flex justify-around mx-10 top-24 w-96">
                 <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button>
                 <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Recent")}>Recent</button>
                 <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Most")}>Most</button>
                 <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Top")}>Top</button>
             </div>
+            <p className="mx-8 my-8">Today</p>
+            <div className="overflow-y-auto">
+                <Card/>
+                <Card/>
+                <Card/>
+                <Card/>
+            </div>
+
+            <NavBar/>
         </div>
     );
 }
