@@ -43,6 +43,7 @@ const home = () => {
 
     return (
         <div className="bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
+            <meta name='theme-color' content='#FFBCD1' />
             <TopBar/>
             <div className="flex justify-around mx-10 top-24">
                 <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button>
