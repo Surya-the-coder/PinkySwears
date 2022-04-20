@@ -7,3 +7,23 @@
     font-family: 'segoepr';
     src: url('../assets/fonts/segoepr.ttf');
 }
+@font-face {
+	font-family: 'Sarabun-Bold';
+	src: url('../assets/fonts/Sarabun-Bold.ttf');
+}
+@font-face {
+	font-family: 'Sarabun-Medium';
+	src:url('../assets/fonts/Sarabun-Medium.ttf');
+}
+@font-face {
+	font-family: 'Sarabun-ExtraBold';
+	src:url('../assets/fonts/Sarabun-ExtraBold.ttf');
+}
+@font-face {
+	font-family: 'Sarabun-SemiBold';
+	src:url('../assets/fonts/Sarabun-SemiBold.ttf');
+}
+@font-face {
+	font-family: 'Sarabun-Regular';
+	src:url('../assets/fonts/Sarabun-Regular.ttf');
+}
