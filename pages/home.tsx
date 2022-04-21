@@ -10,6 +10,7 @@ const home = () => {
     let [Recent, setRecent] = useState(false)
     let [Most, setMost] = useState(false)
     let [Top, setTop] = useState(false)
+    const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
@@ -21,6 +22,7 @@ const home = () => {
         let response = await fetch(postUrl);
         let data = await response.json();
         setPosts(data);
+        setIsDataFetched(true);
     }
 
     let setAllFalse = () =>{
@@ -66,12 +68,13 @@ const home = () => {
                     <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Top")}>Top</button>
                 </div>
                 <p className="mx-8 my-8">Today</p>
-                <div className="">
-                <Card username = "Emma Sophia" createdData = "01 January 2022"/>
+                
+                {isDataFetched?<div className="">
                     {posts.map((post) =>
-                        <Card username = {post.user.username} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")}/>
+                        <Card username = {post.user.username} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} />
                     )}
-                </div>
+                </div>:<h1 className="flex justify-center self-center" >Loading...</h1>}
+
             </div>
             <NavBar/>
         </div>
