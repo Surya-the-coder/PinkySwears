@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Vector from '../assets/images/Vector 4.svg'
 import FooterVector from '../assets/images/Vector 1.svg'
+import Link from 'next/link'
 
 const Home: NextPage = () => {
   return (
@@ -29,7 +30,9 @@ const Home: NextPage = () => {
           </div>
           
           <div className="mx-10">
-            <p className="font-[Sarabun-ExtraBold] text-xs font-extrabold "> Forgot password? </p>
+            <Link href="/forgotpassword">
+              <a className="font-[Sarabun-ExtraBold] text-xs font-extrabold "> Forgot password? </a>
+            </Link>
           </div>          
         </div>
         <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
