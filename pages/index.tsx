@@ -5,7 +5,7 @@ import FooterVector from '../assets/images/Vector 1.svg'
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center min-w-full md:bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
+    <div className="flex min-h-screen max-h-screen flex-col items-center min-w-full md:bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
       <Head>
         <title>Pinky Swears</title>
         <meta name='theme-color' content='#FFBCD1' />
@@ -32,14 +32,13 @@ const Home: NextPage = () => {
             <p className="font-[Sarabun-ExtraBold] text-xs font-extrabold "> Forgot password? </p>
           </div>          
         </div>
-        <button className=' mt-24 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>
-      
-        <div className='w-full flex items-center justify-center md:hidden'>
+        <button className=' mt-20 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
+      </div>
+      <div className='w-full flex items-center justify-center md:hidden bottom-0'>
           <FooterVector className="w-full">
-            <p>Don’t have an account? Sign Up</p>
+            {/* <p>Don’t have an account? Sign Up</p> */}
           </FooterVector>
         </div>
-      </div>
     </div>
   )
 }
