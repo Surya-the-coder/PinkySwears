@@ -10,7 +10,7 @@ const TopBar = () => {
       <div className="flex mx-2 justify-center items-center">
         <BackButton className="mx-2"></BackButton>
         <Profile className="mx-2"/>
-        <h4 className='mx-2 text-[#A268AC] font-semibold'>User_name</h4>
+        <h4 className='mx-2 text-[#A268AC] font-Sarabun-SemiBold'>User_name</h4>
       </div>
       <div className="flex">
           <BellIcon className="mx-2"/>

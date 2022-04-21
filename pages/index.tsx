@@ -8,6 +8,7 @@ const Home: NextPage = () => {
     <div className="flex min-h-screen flex-col items-center min-w-full md:bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
       <Head>
         <title>Pinky Swears</title>
+        <meta name='theme-color' content='#FFBCD1' />
       </Head>
       <div className='w-full flex items-center justify-center md:hidden'>
         <Vector className="w-full"></Vector>
