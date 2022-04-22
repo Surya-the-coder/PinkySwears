@@ -10,10 +10,10 @@ const signin = () => {
         <title>Pinky Swears</title>
         <meta name='theme-color' content='#FFBCD1' />
       </Head>
-      <div className='w-full flex items-center justify-center md:hidden'>
+      <div className='w-full flex items-center justify-center md:hidden z-0'>
         <Vector className="w-full"></Vector>
       </div>
-      <div className="mt-0">
+      <div className="z-50 -mt-5">
         <h2 className="text-center font-[segoepr] text-3xl font-bold">Welcome!</h2>
         <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">Create a new account</p>
       </div>
@@ -38,8 +38,8 @@ const signin = () => {
           <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
         </Link>
       </div>
-      <div className='flex w-full text-center mt-4 mx-auto h-max'>
-          <FooterVector className="w-full -z-50 fixed "/>
+      <div className='flex w-full text-center mt-1 mx-auto h-max'>
+          <FooterVector className="w-full -z-50 fixed md:hidden"/>
           <p className=' flex text-center justify-center w-full z-50 pt-20 fixed'>Dont have an account? &nbsp;
             <Link href={'/'}> 
               <p className=' text-pink-400'> Sign Up </p>
