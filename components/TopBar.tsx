@@ -9,7 +9,7 @@ const TopBar = () => {
   return (
     <div className="flex py-10 justify-between items-center">
       <div className="flex mx-2 justify-center items-center">
-        <Link href={'/'}>
+        <Link href={'/signin'}>
           <BackButton className="mx-2"></BackButton>
         </Link> 
         <Profile className="mx-2"/>

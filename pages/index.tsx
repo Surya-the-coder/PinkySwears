@@ -10,7 +10,7 @@ const Home: NextPage = () => {
       Sign Up Page
       <p className="flex mt-10">
           Already have account?&nbsp;
-          <Link href='/' > 
+          <Link href='/signin' > 
               <p className='text-pink-400'> Sign In </p> 
           </Link>
       </p>
