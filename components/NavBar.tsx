@@ -11,7 +11,7 @@ const NavBar = () => {
       <nav>
         <ul className="flex justify-around">
           <li className="">
-            <Link href="#">
+            <Link href="/home">
               <Home/>
             </Link>
           </li>
