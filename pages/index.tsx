@@ -35,7 +35,9 @@ const Home: NextPage = () => {
             </Link>
           </div>          
         </div>
-        <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
+        <Link href={'/home'}>
+          <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
+        </Link>
       </div>
       <div className='flex w-full text-center mt-4 mx-auto h-max'>
           <FooterVector className="w-full -z-50 fixed "/>
