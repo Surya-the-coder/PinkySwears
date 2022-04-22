@@ -37,11 +37,10 @@ const Home: NextPage = () => {
         </div>
         <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
       </div>
-      <div className='w-full flex items-center justify-center md:hidden bottom-0'>
-          <FooterVector className="w-full">
-            {/* <p>Don’t have an account? Sign Up</p> */}
-          </FooterVector>
-        </div>
+      <div className='flex w-full text-center mt-4 mx-auto h-max'>
+          <FooterVector className="w-full -z-50 fixed mt-24"/>
+          <p className='w-full z-50 pt-40'>Dont have an account? Sign Up</p>
+      </div> {/* className='w-full flex items-center justify-center md:hidden bottom-0'> */}
     </div>
   )
 }
