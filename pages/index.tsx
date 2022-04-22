@@ -38,9 +38,9 @@ const Home: NextPage = () => {
         <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
       </div>
       <div className='w-full flex items-center justify-center md:hidden bottom-0'>
-          <FooterVector className="w-full">
-            {/* <p>Don’t have an account? Sign Up</p> */}
+          <FooterVector className=" z-0 w-full">
           </FooterVector>
+          <p className=' z-50'>Dont have an account? Sign Up</p>
         </div>
     </div>
   )
