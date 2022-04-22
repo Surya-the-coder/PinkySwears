@@ -18,12 +18,12 @@ const Home: NextPage = () => {
         <h2 className="text-center font-[segoepr] text-3xl font-bold">Welcome!</h2>
         <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">Create a new account</p>
       </div>
-      <div className="mt-5 flex flex-col items-center w-full">
+      <div className="mt-4 flex flex-col items-center w-full">
         
         <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username"/>
         <input className=" focus-welcome-field-shadowfocus mt-4 h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="password" name="Password" id="password" placeholder="Password"/>
         
-        <div className=" px-2 mt-3 flex w-full max-w-md items-center justify-between">
+        <div className=" px-2 mt-2 flex w-full max-w-md items-center justify-between">
           <div className="mx-10 flex items-center justify-center">
             <input className=" accent-pink-500 outline-hidden h-4 w-4 " type="radio" id="radiobutton" name="radiobutton"/>
             <label className="pl-2 font-[Sarabun-ExtraBold] text-xs font-extrabold"> Remember Me </label>
@@ -36,7 +36,7 @@ const Home: NextPage = () => {
           </div>          
         </div>
         <Link href={'/home'}>
-          <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
+          <button className=' mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
         </Link>
       </div>
       <div className='flex w-full text-center mt-4 mx-auto h-max'>
