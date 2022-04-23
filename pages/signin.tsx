@@ -13,7 +13,7 @@ const signin = () => {
       <div className='w-full flex items-center justify-center md:hidden z-0'>
         <Vector className="w-full"></Vector>
       </div>
-      <div className="z-50 -mt-5">
+      <div className="z-50 -mt-5 md:mt-5">
         <h2 className="text-center font-[segoepr] text-3xl font-bold">Welcome!</h2>
         <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">Create a new account</p>
       </div>
@@ -38,11 +38,11 @@ const signin = () => {
           <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
         </Link>
       </div>
-      <div className='flex w-full text-center mt-1 mx-auto h-max'>
+      <div className='flex w-full text-center mt-2 mx-auto h-max'>
           <FooterVector className="w-full -z-50 fixed md:hidden"/>
-          <p className=' flex text-center justify-center w-full z-50 pt-20 fixed'>Dont have an account? &nbsp;
-            <Link href={'/'}> 
-              <p className=' text-pink-400 cursor-pointer'> Sign Up </p>
+          <p className=' text-[#FFFFFF] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-24 fixed md:text-gray-400'>Don't have an account? &nbsp;
+            <Link href={'/signup'}> 
+              <p className=' text-xs font-[Sarabun-SemiBold] font-semibold text-[#FF848E]'> Sign Up </p>
             </Link>
           </p>
       </div> {/* className='w-full flex items-center justify-center md:hidden bottom-0'> */}

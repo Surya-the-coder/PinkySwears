@@ -21,8 +21,9 @@ module.exports = {
         height:{
           'adaptive-screen' : ''
         },
-        text:{
-          'xxs' : '0.25rem',
+        fa:
+        {
+          'width': '50px',
         }
     },
   },
