@@ -30,7 +30,7 @@ const signin = () => {
           
           <div className="mx-10">
             <Link href="/forgotpassword">
-              <a className="font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold "> Forgot password? </a>
+              <p className="font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold "> Forgot password? </p>
             </Link>
           </div>          
         </div>
@@ -42,7 +42,7 @@ const signin = () => {
           <FooterVector className="w-full -z-50 fixed md:hidden"/>
           <p className=' flex text-center justify-center w-full z-50 pt-20 fixed'>Dont have an account? &nbsp;
             <Link href={'/'}> 
-              <p className=' text-pink-400'> Sign Up </p>
+              <p className=' text-pink-400 cursor-pointer'> Sign Up </p>
             </Link>
           </p>
       </div> {/* className='w-full flex items-center justify-center md:hidden bottom-0'> */}
