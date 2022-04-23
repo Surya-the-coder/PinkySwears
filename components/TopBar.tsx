@@ -4,14 +4,16 @@ import Search from '../assets/images/Search.svg';
 import Profile from '../assets/images/Profile.svg';
 import BackButton from '../assets/images/Shape.svg';
 import Link from 'next/link';
+import { useSession, signIn, signOut, SessionProvider } from "next-auth/react"
+import { redirect } from 'next/dist/server/api-utils';
 
 const TopBar = () => {
   return (
     <div className="flex py-10 justify-between items-center">
       <div className="flex mx-2 justify-center items-center">
-        <Link href={'/signin'}>
-          <BackButton className="mx-2"></BackButton>
-        </Link> 
+        {/* <Link href={'/signin'}> */}
+          <BackButton className="mx-2" onClick={() => {signOut()}}></BackButton>
+        {/* </Link>  */}
         <Profile className="mx-2"/>
         <h4 className='mx-2 text-[#A268AC] font-Sarabun-SemiBold'>User_name</h4>
       </div>

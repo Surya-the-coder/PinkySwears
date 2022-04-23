@@ -30,7 +30,7 @@ const signin = () => {
           
           <div className="mx-10">
             <Link href="/forgotpassword">
-              <a className="font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold "> Forgot password? </a>
+              <p className="font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold "> Forgot password? </p>
             </Link>
           </div>          
         </div>

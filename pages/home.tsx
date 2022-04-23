@@ -2,9 +2,16 @@ import TopBar from "../components/TopBar";
 import { useState, useEffect } from 'react';
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
-import dateFormat from 'dateformat'
+import dateFormat from 'dateformat';
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import SignInError from "../components/SignInError";
+
 
 const home = () => {
+
+    const{ data:session, status } = useSession();
+    const router = useRouter();
 
     let [All, setAll] = useState(false)
     let [Recent, setRecent] = useState(false)
@@ -14,9 +21,9 @@ const home = () => {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-      getAllPosts();
-    }, [])
-    
+        getAllPosts();
+    }, []);
+
     let getAllPosts = async () => {
         let postUrl = 'https://dream-pg-backend.herokuapp.com/api/post/';
         let response = await fetch(postUrl);
@@ -56,29 +63,46 @@ const home = () => {
         }
     }
 
-    return (
-        <div className="bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
-            <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh]">
-                <meta name='theme-color' content='#FFBCD1' />
-                <TopBar/>
-                <div className="flex justify-around mx-10 top-24">
-                    <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button>
-                    <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Recent")}>Recent</button>
-                    <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Most")}>Most</button>
-                    <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Top")}>Top</button>
-                </div>
-                <p className="mx-8 my-8">Today</p>
-                
-                {isDataFetched?<div className="">
-                    {posts.map((post) =>
-                        <Card username = {post.user.username} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} />
-                    )}
-                </div>:<h1 className="flex justify-center self-center" >Loading...</h1>}
-
+    if (status === "loading") {
+        console.log("*****************loading********************")
+        return(
+            <div>
+                <h1 className="flex justify-center self-center" >Loading...</h1>
             </div>
-            <NavBar/>
-        </div>
-    );
+        );
+    }
+
+    if (session) {
+        return (
+            <div className="bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
+                <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh]">
+                    <meta name='theme-color' content='#FFBCD1' />
+                    <TopBar/>
+                    <div className="flex justify-around mx-10 top-24">
+                        <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button>
+                        <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Recent")}>Recent</button>
+                        <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Most")}>Most</button>
+                        <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Top")}>Top</button>
+                    </div>
+                    <p className="mx-8 my-8">Today</p>
+
+                    {isDataFetched?
+                        <div className="">
+                            {posts.map( (post) => <Card username = {post.user.username} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
+                        </div>
+                    :
+                        <h1 className="flex justify-center self-center" >Loading...</h1>
+                    }
+                </div>
+                <NavBar/>
+            </div>
+        );
+    }
+    else{
+        return(
+            <SignInError/>
+        );
+    }
 }
 
 export default home;

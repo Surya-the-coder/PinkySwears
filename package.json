@@ -1,6 +1,5 @@
 {
   "private": true,
-  "proxy": "https://dream-pg-backend.herokuapp.com/api",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,7 +9,8 @@
     "@svgr/webpack": "^6.2.1",
     "dateformat": "^5.0.3",
     "next": "^12.1.5",
-    "next-share": "^0.13.0",
+    "next-auth": "^4.3.3",
+    "next-share": "^0.12.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
