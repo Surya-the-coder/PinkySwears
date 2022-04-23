@@ -25,12 +25,12 @@ const signin = () => {
         <div className=" px-2 mt-3 flex w-full max-w-md items-center justify-between">
           <div className="mx-10 flex items-center justify-center">
             <input className=" accent-pink-500 outline-hidden h-2 w-2 " type="radio" id="radiobutton" name="radiobutton"/>
-            <label className="pl-2 font-[Sarabun-ExtraBold] text-[0.75rem] font-extrabold"> Remember Me </label>
+            <label className="pl-2 font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold"> Remember Me </label>
           </div>
           
           <div className="mx-10">
             <Link href="/forgotpassword">
-              <a className="font-[Sarabun-ExtraBold] text-[0.75rem] font-extrabold "> Forgot password? </a>
+              <a className="font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold "> Forgot password? </a>
             </Link>
           </div>          
         </div>
