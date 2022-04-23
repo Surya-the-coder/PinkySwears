@@ -62,10 +62,10 @@ const SignUp = () => {
         </div> 
             <p className=' mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]'>Continue with</p>
             <div className=" max-w-[450px] w-full mt-3 justify-center items-center flex">            
-                <a href='' className=" rounded-xl text-center w-6 text-sm bg-[#4267B2]  text-white fa fa-facebook"/>
-                <a href='' className='rounded-xl text-center w-6 text-sm bg-[#00ACEE]  text-white fa fa-twitter'/>
+                <a href='' className="  rounded-xl text-center w-6 text-sm bg-[#4267B2]  text-white fa fa-facebook"/>
+                <a href='' className='ml-1 rounded-xl text-center w-6 text-sm bg-[#00ACEE]  text-white fa fa-twitter'/>
                 {/* <a href='' className=' rounded-xl text-center text-sm w-6 bg-gray-400 text-black fa fa-google'/> */}
-                <img src="https://img.icons8.com/color/20/000000/google-logo.png"/>
+                <img className='ml-1' src="https://img.icons8.com/color/20/000000/google-logo.png"/>
             </div>
             <div className='flex h-3 w-full text-center mt-1 mx-auto'>
             <FooterVector className="w-full -z-50 fixed md:hidden"/>
