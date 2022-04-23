@@ -25,11 +25,13 @@ const home = () => {
     }, []);
 
     let getAllPosts = async () => {
+        console.log("==================getting posts========================")
         let postUrl = 'https://dream-pg-backend.herokuapp.com/api/post/';
         let response = await fetch(postUrl);
         let data = await response.json();
         setPosts(data);
         setIsDataFetched(true);
+        console.log("==================posts fetched========================")
     }
 
     let setAllFalse = () =>{
@@ -73,6 +75,7 @@ const home = () => {
     }
 
     if (session) {
+        console.log('=========================Rendering PAGE================================')
         return (
             <div className="bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
                 <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh]">

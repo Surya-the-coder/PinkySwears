@@ -30,6 +30,9 @@ const Home: NextPage = () => {
           <button onClick={() => signIn('google', { callbackUrl: 'https://pinky-swears.vercel.app/home' }) } className="mt-8 rounded-2xl border-2 border-pink-500 bg-white text-pink-400 hover:bg-pink-300 hover:text-white active:bg-pink-400 active:text-white">
             <p className="px-5 py-3">Continue with Google</p>
           </button>
+          <button onClick={() => signIn('github', { callbackUrl: 'https://pinky-swears.vercel.app/home' }) } className="mt-8 rounded-2xl border-2 border-pink-500 bg-white text-pink-400 hover:bg-pink-300 hover:text-white active:bg-pink-400 active:text-white">
+            <p className="px-5 py-3">Continue with GitHub</p>
+          </button>
         </div>
       </>
     )
