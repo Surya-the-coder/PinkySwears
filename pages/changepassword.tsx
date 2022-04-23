@@ -4,6 +4,7 @@ const changepassword = () => {
 			<p>Enter</p>
 		</div>
 	);
+
 }
 
 export default changepassword;
