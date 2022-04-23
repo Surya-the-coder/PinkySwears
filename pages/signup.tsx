@@ -4,6 +4,7 @@ import { useState } from 'react'
 import FooterVector from '../assets/images/Vector 1.svg'
 import Link from 'next/link'
 
+
 const SignUp = () => {
     const [gender, setGender] = useState("Male");
     return (
@@ -12,6 +13,16 @@ const SignUp = () => {
           <title>Pinky Swears</title>
           <meta name='theme-color' content='#FFBCD1' />
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+          <link type="image/png" sizes="16x16" rel="icon" href=".../icons8-google-16.png"/>
+          <link type="image/png" sizes="32x32" rel="icon" href=".../icons8-google-32.png"/>
+          <link type="image/png" sizes="96x96" rel="icon" href=".../icons8-google-96.png"/>
+          <link type="image/png" sizes="120x120" rel="icon" href=".../icons8-google-120.png"/>
+          <link rel="apple-touch-icon" type="image/png" sizes="57x57" href=".../icons8-google-57.png"/>
+          <link rel="apple-touch-icon" type="image/png" sizes="60x60" href=".../icons8-google-60.png"/>
+          <link rel="apple-touch-icon" type="image/png" sizes="114x114" href=".../icons8-google-114.png"/>
+          <link rel="apple-touch-icon" type="image/png" sizes="120x120" href=".../icons8-google-120.png"/>
+          <link rel="apple-touch-icon" type="image/png" sizes="180x180" href=".../icons8-google-180.png"/>
+
         </Head>
         <div className='w-full h-16 flex items-center justify-center md:hidden z-0'>
           <Vector className="w-full"></Vector>
@@ -25,9 +36,9 @@ const SignUp = () => {
           <div className=' px-16 max-w-[450px] w-full mt-3 justify-around items-center flex'>
               <label className=' text-[#020202] font-[Sarabun-SemiBold] font-semibold text-xs '>Gender</label>
               <input className="accent-pink-500 outline-hidden h-4 w-4 " type="radio" id="radiobutton" name="radiobutton"/>
-              <label className= "text-[#CDCCCD] text-xs">Male</label>
+              <label className= "text-[#CDCCCD] text-xs md:text-gray-600">Male</label>
               <input className=" accent-pink-500 outline-hidden h-4 w-4 " type="radio" id="radiobutton" name="radiobutton"/>
-              <label className='text-[#CDCCCD] text-xs'>Female</label>
+              <label className='text-[#CDCCCD] text-xs md:text-gray-600'>Female</label>
           </div>
           <select className=" text-[#CDCCCD] select-text:[text-#020202] mt-4 focus-welcome-field-shadowfocus h-12 w-80 pl-6 rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold]" name="culture" id="culture" placeholder='Culture'>
               <option value="" disabled selected hidden>Culture</option>
@@ -51,8 +62,10 @@ const SignUp = () => {
         </div> 
             <p className=' mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]'>Continue with</p>
             <div className=" max-w-[450px] w-full mt-3 justify-center items-center flex">            
-                <a href='' className=" rounded-xl border-2 text-center w-6 text-sm bg-[#4267B2]  text-white fa fa-facebook"/>
-                <a href='' className='rounded-xl border-2 text-center w-6 text-sm bg-[#00ACEE]  text-white fa fa-twitter'/>
+                <a href='' className=" rounded-xl text-center w-6 text-sm bg-[#4267B2]  text-white fa fa-facebook"/>
+                <a href='' className='rounded-xl text-center w-6 text-sm bg-[#00ACEE]  text-white fa fa-twitter'/>
+                {/* <a href='' className=' rounded-xl text-center text-sm w-6 bg-gray-400 text-black fa fa-google'/> */}
+                <img src="https://img.icons8.com/color/20/000000/google-logo.png"/>
             </div>
             <div className='flex h-3 w-full text-center mt-1 mx-auto'>
             <FooterVector className="w-full -z-50 fixed md:hidden"/>
