@@ -21,14 +21,10 @@ module.exports = {
         height:{
           'adaptive-screen' : ''
         },
-        text:{
-          'xxs' : '0.25rem',
-        },
-        borderRadius:
+        fa:
         {
-          'checkbox-radius':' 50%',
-        },
-      
+          'width': '50px',
+        }
     },
   },
   plugins: [],

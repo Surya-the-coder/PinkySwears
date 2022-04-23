@@ -13,7 +13,7 @@ const signin = () => {
       <div className='w-full flex items-center justify-center md:hidden z-0'>
         <Vector className="w-full"></Vector>
       </div>
-      <div className="z-50 -mt-5">
+      <div className="z-50 -mt-5 md:mt-5">
         <h2 className="text-center font-[segoepr] text-3xl font-bold">Welcome!</h2>
         <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">Create a new account</p>
       </div>
@@ -40,7 +40,7 @@ const signin = () => {
       </div>
       <div className='flex w-full text-center mt-2 mx-auto h-max'>
           <FooterVector className="w-full -z-50 fixed md:hidden"/>
-          <p className=' text-[#FFFFFF] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-24 fixed'>Don't have an account? &nbsp;
+          <p className=' text-[#FFFFFF] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-24 fixed md:text-gray-400'>Don't have an account? &nbsp;
             <Link href={'/signup'}> 
               <p className=' text-xs font-[Sarabun-SemiBold] font-semibold text-[#FF848E]'> Sign Up </p>
             </Link>
