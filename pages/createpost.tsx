@@ -9,7 +9,7 @@ const createpost = () => {
 			<div className='flex mx-6'>
 				<p className='font-[Sarabun-SemiBold] text-semibold text-[#2F2F2F] text-xl'>Create Post</p>			
 			</div>
-			<div className=' h-[55vh] max-h-[60vh] mx-6 mt-5 justify-center'>
+			<div className=' h-[35vh] max-h-[40vh] mx-6 mt-5 justify-center'>
 				<textarea className='  shadow-welcome-field-shadowfocus pl-5 pt-8 rounded-xl min-h-full min-w-full ' id="caption" placeholder='write a caption..'/>	
 			</div>
 			<div className='flex mx-7 items-center justify-center'>
