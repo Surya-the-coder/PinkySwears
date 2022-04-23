@@ -13,7 +13,7 @@ const signin = () => {
       <div className='w-full flex items-center justify-center md:hidden z-0'>
         <Vector className="w-full"></Vector>
       </div>
-      <div className="z-50 -mt-5">
+      <div className="z-50 mt-5">
         <h2 className="text-center font-[segoepr] text-3xl font-bold">Welcome!</h2>
         <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">Create a new account</p>
       </div>
