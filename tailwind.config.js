@@ -26,7 +26,7 @@ module.exports = {
         },
         borderRadius:
         {
-          'checkbox radius':' 50%',
+          'checkbox-radius':' 50%',
         },
       
     },

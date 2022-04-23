@@ -1,13 +1,15 @@
 import Head from 'next/head'
 import Vector from '../assets/images/Vector 4.svg'
 import { useState } from 'react'
+import {FacebookIcon,FacebookShareButton, TwitterIcon,TwitterShareButton } from 'next-share'
+import Google from '../assets/images/Google.svg'
 import FooterVector from '../assets/images/Vector 1.svg'
 import Link from 'next/link'
 
 const SignUp = () => {
     const [gender, setGender] = useState("Male");
     return (
-        <div className="flex min-h-screen max-h-screen flex-col items-center min-w-full md:bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
+    <div className="flex min-h-screen max-h-screen flex-col items-center min-w-full md:bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
         <Head>
           <title>Pinky Swears</title>
           <meta name='theme-color' content='#FFBCD1' />
@@ -21,7 +23,7 @@ const SignUp = () => {
                 
           <input className=" focus-welcome-field-shadowfocus mt-5 h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username"/>
           <input className=" focus-welcome-field-shadowfocus mt-4 h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="password" name="Password" id="password" placeholder="Password"/>
-          <div className=' px-16 w-full mt-3 justify-around items-center flex'>
+          <div className=' px-16 max-w-[450px] w-full mt-3 justify-around items-center flex'>
               <label className=' text-[#020202] font-[Sarabun-SemiBold] font-semibold text-xs '>Gender</label>
               <input className="accent-pink-500 outline-hidden h-4 w-4 " type="radio" id="radiobutton" name="radiobutton"/>
               <label className= "text-[#CDCCCD] text-xs">Male</label>
@@ -44,12 +46,31 @@ const SignUp = () => {
           </select>
         </div> 
         <div className=' accent-[#FFBCD1] px-16 w-full mt-3 justify-center items-center flex'>
-            <input className='' type="checkbox" checked id='checkbox'/>
+            <input className=' border-4 rounded-lg' type="checkbox" checked id='checkbox'/>
             <label className=' pl-2 text-[#262626] font-[Sarabun-SemiBold] font-semibold text-xs'>Agree with Terms & Conditions</label>
         </div>
-        <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign Up</button>  
-
+            <button className=' mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign Up</button>  
+            <p className=' mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]'>Continue with</p>
+        <div className=" max-w-[450px] w-full mt-3 justify-center items-center flex">
+            <FacebookShareButton url={'https://www.facebook.com/'} >
+                <FacebookIcon size={32} round/>
+            </FacebookShareButton>
+            <TwitterShareButton url={'https://www.twitter.com/'}>
+                <TwitterIcon size={32} round/>
+            </TwitterShareButton>
+            <Link href={'https://accounts.google.com/servicelogin'}>
+                <Google/>
+            </Link>
         </div>
+        <div className='flex w-full text-center mt-1 mx-auto'>
+          <FooterVector className="w-full -z-50 fixed md:hidden"/>
+          <p className=' text-[#FFFFFF] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-24 fixed'>Already have an account? &nbsp;
+            <Link href={'/signin'}> 
+              <p className=' text-xs font-[Sarabun-SemiBold] font-semibold text-[#FF848E]'> Sign In </p>
+            </Link>
+          </p>
+      </div>
+    </div>
     );
 }
 
