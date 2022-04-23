@@ -25,12 +25,12 @@ const signin = () => {
         <div className=" px-2 mt-3 flex w-full max-w-md items-center justify-between">
           <div className="mx-10 flex items-center justify-center">
             <input className=" accent-pink-500 outline-hidden h-2 w-2 " type="radio" id="radiobutton" name="radiobutton"/>
-            <label className="pl-2 font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold"> Remember Me </label>
+            <label className="pl-2 font-[Sarabun-ExtraBold] text-[0.75rem] font-extrabold"> Remember Me </label>
           </div>
           
           <div className="mx-10">
             <Link href="/forgotpassword">
-              <a className="font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold "> Forgot password? </a>
+              <a className="font-[Sarabun-ExtraBold] text-[0.75rem] font-extrabold "> Forgot password? </a>
             </Link>
           </div>          
         </div>
@@ -38,11 +38,11 @@ const signin = () => {
           <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
         </Link>
       </div>
-      <div className='flex w-full text-center mt-1 mx-auto h-max'>
+      <div className='flex w-full text-center mt-2 mx-auto h-max'>
           <FooterVector className="w-full -z-50 fixed md:hidden"/>
-          <p className=' flex text-center justify-center w-full z-50 pt-20 fixed'>Dont have an account? &nbsp;
+          <p className=' text-[#FFFFFF] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-20 fixed'>Don't have an account? &nbsp;
             <Link href={'/'}> 
-              <p className=' text-pink-400'> Sign Up </p>
+              <p className=' text-xs font-[Sarabun-SemiBold] font-semibold text-[#FF848E]'> Sign Up </p>
             </Link>
           </p>
       </div> {/* className='w-full flex items-center justify-center md:hidden bottom-0'> */}
