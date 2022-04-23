@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import Vector from '../assets/images/Vector 4.svg'
 import { useState } from 'react'
-import {FacebookIcon,FacebookShareButton, TwitterIcon,TwitterShareButton } from 'next-share'
-import Google from '../assets/images/Google.svg'
 import FooterVector from '../assets/images/Vector 1.svg'
 import Link from 'next/link'
 
@@ -55,17 +53,6 @@ const SignUp = () => {
             <div className=" max-w-[450px] w-full mt-3 justify-center items-center flex">            
                 <a href='' className=" rounded-xl border-2 text-center w-6 text-sm bg-[#4267B2]  text-white fa fa-facebook"/>
                 <a href='' className='rounded-xl border-2 text-center w-6 text-sm bg-[#00ACEE]  text-white fa fa-twitter'/>
-                <a href='' className=' rounded-xl border-2 text-center text-sm w-6 bg-blue-300 text-white fa fa-google'/>
-                {/* <FacebookShareButton url={'https://www.facebook.com/'} >
-                    <FacebookIcon size={32} round/>
-                </FacebookShareButton>
-                <TwitterShareButton url={'https://www.twitter.com/'}>
-                    <TwitterIcon size={32} round/>
-                </TwitterShareButton>
-                <Link href={'https://accounts.google.com/servicelogin'}>
-                    <Google/>
-                </Link>
-             */}
             </div>
             <div className='flex h-3 w-full text-center mt-1 mx-auto'>
             <FooterVector className="w-full -z-50 fixed md:hidden"/>

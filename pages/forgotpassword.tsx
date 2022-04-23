@@ -1,7 +1,12 @@
 import Link from 'next/link'
+import Head from 'next/head'
 const forgotpassword = () => {
 	return (
 		<div className=" bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] mix-blend-normal flex min-h-screen flex-col items-center py-2"> 
+			<Head>
+        		<title>Pinky Swears</title>
+        		<meta name='theme-color' content='#FFBCD1' />
+      		</Head>
 			<h1 className="  text-black text-2xl font-bold py-20 font-[Sarabun-Bold]">Forgot Password?</h1>			
 			<div className="bg-white mx-4 rounded-3xl text-center h-auto shadow-forgot-div-password-shadow">
 				<h3 className=" pt-16 pb-5 text-black text-xl font-bold font-[Sarabun-Bold]">Reset Password</h3>
