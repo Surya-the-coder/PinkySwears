@@ -1,9 +1,11 @@
 import Head from 'next/head'
 import Vector from '../assets/images/Vector 4.svg'
+import { useState } from 'react'
 import FooterVector from '../assets/images/Vector 1.svg'
 import Link from 'next/link'
 
 const SignUp = () => {
+    const [gender, setGender] = useState("Male");
     return (
         <div className="flex min-h-screen max-h-screen flex-col items-center min-w-full md:bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
         <Head>
@@ -19,12 +21,12 @@ const SignUp = () => {
                 
           <input className=" focus-welcome-field-shadowfocus mt-5 h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username"/>
           <input className=" focus-welcome-field-shadowfocus mt-4 h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="password" name="Password" id="password" placeholder="Password"/>
-          <div className=' mt-3 justify-between items-center flex'>
-              <label className=''>Gender</label>
+          <div className=' px-16 w-full mt-3 justify-around items-center flex'>
+              <label className=' text-[#020202] font-[Sarabun-SemiBold] font-semibold text-xs '>Gender</label>
               <input className="accent-pink-500 outline-hidden h-4 w-4 " type="radio" id="radiobutton" name="radiobutton"/>
-              <label>Male</label>
+              <label className= "text-[#CDCCCD] text-xs">Male</label>
               <input className=" accent-pink-500 outline-hidden h-4 w-4 " type="radio" id="radiobutton" name="radiobutton"/>
-              <label>Female</label>
+              <label className='text-[#CDCCCD] text-xs'>Female</label>
           </div>
           <select className=" text-[#CDCCCD] select-text:[text-#020202] mt-4 focus-welcome-field-shadowfocus h-14 w-80 pl-6 rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold]" name="culture" id="culture" placeholder='Culture'>
               <option value="" disabled selected hidden>Culture</option>
@@ -41,9 +43,16 @@ const SignUp = () => {
               <option value="4">4</option>
           </select>
         </div> 
+        <div className=' accent-[#FFBCD1] px-16 w-full mt-3 justify-center items-center flex'>
+            <input className='' type="checkbox" checked id='checkbox'/>
+            <label className=' pl-2 text-[#262626] font-[Sarabun-SemiBold] font-semibold text-xs'>Agree with Terms & Conditions</label>
+        </div>
+        <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign Up</button>  
 
         </div>
     );
 }
 
 export default SignUp;
+
+// {gender==="Male"?"text-pink-500":"text-[#CDCCCD]"}

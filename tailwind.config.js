@@ -23,7 +23,12 @@ module.exports = {
         },
         text:{
           'xxs' : '0.25rem',
-        }
+        },
+        borderRadius:
+        {
+          'checkbox radius':' 50%',
+        },
+      
     },
   },
   plugins: [],
