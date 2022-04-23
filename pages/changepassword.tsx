@@ -1,9 +1,10 @@
 const changepassword = () => {
-    return (
-        <div>
-            Enter
-        </div>
-    );
+	return (
+		<div>
+			<p>Enter</p>
+		</div>
+	);
+
 }
 
 export default changepassword;
