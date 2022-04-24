@@ -7,16 +7,21 @@ import { useSession, signIn, signOut, SessionProvider } from 'next-auth/react'
 
 import { useRouter } from 'next/router'
 
-const Home: NextPage = () => {
+let redirectToHomePage = () => {
+  console.log('========================INSIDE REDIRECT================================')
+  const router = useRouter();
+  return router.push('/home')
+}
+
+
+const Home = (pageProps) => {
   const { data: session, status } = useSession()
   
   const router = useRouter()
 
-  if (session && status === "authenticated") {
-    console.log("==============AUTHENTICATED=================")
-    router.push('/home')
+  if (session){
+    redirectToHomePage();
   }
-  else {
     return (
       <>
         <div className="flex min-h-screen flex-col items-center justify-center">
@@ -27,13 +32,15 @@ const Home: NextPage = () => {
               <p className="text-pink-400 cursor-pointer"> Sign In </p>
             </Link>
           </p>
-          <button onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/home' }) } className="mt-8 rounded-2xl border-2 border-pink-500 bg-white text-pink-400 hover:bg-pink-300 hover:text-white active:bg-pink-400 active:text-white">
+          <button onClick={() => signIn('google') } className="mt-8 rounded-2xl border-2 border-pink-500 bg-white text-pink-400 hover:bg-pink-300 hover:text-white active:bg-pink-400 active:text-white">
             <p className="px-5 py-3">Continue with Google</p>
+          </button>
+          <button onClick={() => signIn('github') } className="mt-8 rounded-2xl border-2 border-pink-500 bg-white text-pink-400 hover:bg-pink-300 hover:text-white active:bg-pink-400 active:text-white">
+            <p className="px-5 py-3">Continue with GitHub</p>
           </button>
         </div>
       </>
     )
-  }
 }
 
 export default Home

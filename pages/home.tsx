@@ -3,25 +3,27 @@ import { useState, useEffect } from 'react';
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import dateFormat from 'dateformat';
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import SignInError from "../components/SignInError";
+// import SignInError from "../components/SignInError";
 
 
-const home = () => {
-
-    const{ data:session, status } = useSession();
-    const router = useRouter();
-
+const home = ({session}) => {
+    
     let [All, setAll] = useState(false)
     let [Recent, setRecent] = useState(false)
     let [Most, setMost] = useState(false)
     let [Top, setTop] = useState(false)
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
+    
+    let router = useRouter();
+    
+    const user = session?.user;
+    console.log(session?.user)
 
     useEffect(() => {
-        getAllPosts();
+            getAllPosts();
     }, []);
 
     let getAllPosts = async () => {
@@ -63,15 +65,6 @@ const home = () => {
         }
     }
 
-    if (status === "loading") {
-        console.log("*****************loading********************")
-        return(
-            <div>
-                <h1 className="flex justify-center self-center" >Loading...</h1>
-            </div>
-        );
-    }
-
     if (session) {
         return (
             <div className="bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
@@ -88,7 +81,7 @@ const home = () => {
 
                     {isDataFetched?
                         <div className="">
-                            {posts.map( (post) => <Card username = {post.user.username} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
+                            {posts.map( (post) => <Card username = {post.user.username} profileImage = {session.user.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
                         </div>
                     :
                         <h1 className="flex justify-center self-center" >Loading...</h1>
@@ -98,11 +91,14 @@ const home = () => {
             </div>
         );
     }
-    else{
-        return(
-            <SignInError/>
-        );
-    }
 }
 
 export default home;
+
+export async function getServerSideProps (context) {
+    const session = await getSession(context);
+    if (!session) {
+        return{redirect :{destination: '/', permanent : false}}
+    }
+    return {props : {session}}
+  }
