@@ -8,8 +8,8 @@ const Card = (props) => {
       <div className='flex mx-5 my-5 bg-white py-2 px-5 rounded-3xl shadow-card'>
         <div>
           <Link href={'#'}>
-            <div className='w-12 h-12 pt-5'>
-                <img src='../assets/images/photo.png'></img>
+            <div className='w-12 h-12 mt-5 mr-3'>
+                <img src={props.profileImage} className="rounded-full"></img>
             </div>
           </Link>
         </div>

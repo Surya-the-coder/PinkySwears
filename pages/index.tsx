@@ -7,16 +7,21 @@ import { useSession, signIn, signOut, SessionProvider } from 'next-auth/react'
 
 import { useRouter } from 'next/router'
 
-const Home: NextPage = () => {
+let redirectToHomePage = () => {
+  console.log('========================INSIDE REDIRECT================================')
+  const router = useRouter();
+  return router.push('/home')
+}
+
+
+const Home = (pageProps) => {
   const { data: session, status } = useSession()
   
   const router = useRouter()
 
-  if (session && status === "authenticated") {
-    console.log("==============AUTHENTICATED=================")
-    router.push('/home')
+  if (session){
+    redirectToHomePage();
   }
-  else {
     return (
       <>
         <div className="flex min-h-screen flex-col items-center justify-center">
@@ -36,7 +41,6 @@ const Home: NextPage = () => {
         </div>
       </>
     )
-  }
 }
 
 export default Home
