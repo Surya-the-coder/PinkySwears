@@ -67,8 +67,8 @@ const home = ({session}) => {
 
     if (session) {
         return (
-            <div className="bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
-                <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh]">
+            <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
+                <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh] max-w-md">
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar/>
                     <div className="flex justify-around mx-10 top-24">
