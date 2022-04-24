@@ -24,7 +24,7 @@ const createpost = ({session}) => {
 							<button className=' ml-8 h-16 w-40 mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl'>Post</button> 
 						</div>
 					</div>
-				<	NavBar/>
+				<NavBar/>
 				</div>
 			</div>
 		);
