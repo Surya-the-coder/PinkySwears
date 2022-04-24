@@ -30,7 +30,7 @@ const accountdetails = () => {
               		<option value="3">3</option>
               		<option value="4">4</option>
           		</select>
-				<div className='flex mt-[146px] mb-2 mx-3 justify-between'>
+				<div className='flex mt-[146px] mb-6 mx-3 justify-between'>
 					<button className=' h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl'>Save</button>  
 					<button className=' ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl'>Back</button> 
 				</div>			
