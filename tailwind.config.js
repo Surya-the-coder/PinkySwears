@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage:{
-        'mybg': "url('../assets/images/Ellipse.svg')"
+        'mybg': "url('../assets/images/Ellipse.svg')",
+        'google-bg-image': "url('https://img.icons8.com/color/32/000000/google-logo.png')",
         },
         boxShadow:{
           'forgot-div-password-shadow': '0px 4px 40px #A268AC',

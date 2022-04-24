@@ -31,7 +31,7 @@ const NavBar = () => {
             </Link>
           </li>
           <li>
-            <Link href="#">
+            <Link href="/preference">
               <Preference />
             </Link>
           </li>

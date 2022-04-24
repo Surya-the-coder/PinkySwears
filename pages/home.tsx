@@ -2,6 +2,7 @@ import TopBar from "../components/TopBar";
 import { useState, useEffect } from 'react';
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
+import Ellipse from '../assets/images/Ellipse.svg'
 import dateFormat from 'dateformat';
 import { getSession, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -67,7 +68,8 @@ const home = ({session}) => {
 
     if (session) {
         return (
-            <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
+            <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] max-w-md w-full">
+                <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
                 <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh] max-w-md">
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar/>
@@ -101,4 +103,4 @@ export async function getServerSideProps (context) {
         return{redirect :{destination: '/', permanent : false}}
     }
     return {props : {session}}
-  }
+}

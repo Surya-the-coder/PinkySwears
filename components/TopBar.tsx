@@ -11,9 +11,7 @@ const TopBar = () => {
   return (
     <div className="flex py-10 justify-between items-center">
       <div className="flex mx-2 justify-center items-center">
-        {/* <Link href={'/signin'}> */}
           <BackButton className="mx-2" onClick={() => {signOut()}}></BackButton>
-        {/* </Link>  */}
         <Profile className="mx-2"/>
         <h4 className='mx-2 text-[#A268AC] font-Sarabun-SemiBold'>User_name</h4>
       </div>
