@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useSession, signIn, signOut, SessionProvider } from 'next-auth/react'
 
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 let redirectToHomePage = () => {
   console.log(
@@ -19,6 +20,11 @@ const Home = (pageProps) => {
   const { data: session, status } = useSession()
 
   const router = useRouter()
+
+  useEffect(() => {
+    // Prefetch the dashboard page
+    router.prefetch('/home')
+  }, [])
 
   if (session) {
     redirectToHomePage()

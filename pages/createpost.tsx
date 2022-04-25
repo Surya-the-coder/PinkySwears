@@ -12,14 +12,15 @@ const createpost = ({session}) => {
 				<Head>
 					<meta name='theme-color' content='#FFBCD1' />
 				</Head>
-				<div className="flex flex-col max-w-md z-50">
-					<TopBar/>
+				<div className="flex flex-col w-full max-w-md z-50">
+					<TopBar loggedInUserName = {session.user.name} loggedInUserProfilePic={session.user.image}/>
 					<div className='flex mx-6'>
 						<p className='font-[Sarabun-SemiBold] text-semibold text-[#2F2F2F] text-xl'>Create Post</p>			
 					</div>
-					<div className=' h-[35vh] max-h-[40vh] mx-6 mt-5 justify-center'>
-						<textarea className='  shadow-welcome-field-shadowfocus pl-5 pt-8 rounded-xl min-h-full min-w-full max-h-[40vh]' id="caption" placeholder='write a caption..'/>	
-						<div className='flex'>
+					<div className='mx-6 mt-5 justify-center'>
+						<textarea className='shadow-welcome-field-shadowfocus pl-5 pt-8 rounded-xl w-full h-[45vh] max-h-[55vh] ' id="caption" placeholder='write a caption..'/>
+						{/* <textarea className='shadow-welcome-field-shadowfocus pl-5 pt-8 rounded-xl w-full sm:h-[45vh] sm:max-h-[55vh] md:h-[50vh] md:max-h[60vh] lg:h-[62vh] lg:max-h-[63vh]' id="caption" placeholder='write a caption..'/> */}
+						<div className='flex w-full justify-center'>
 							<button className=' h-16 w-40 mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl'>Back</button>  
 							<button className=' ml-8 h-16 w-40 mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl'>Post</button> 
 						</div>

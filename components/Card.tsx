@@ -9,7 +9,7 @@ const Card = (props) => {
         <div>
           <Link href={'#'}>
             <div className='w-12 h-12 mt-5 mr-3'>
-                <img src={props.profileImage} className="rounded-full"></img>
+              <img src="https://picsum.photos/200" className='w-full h-full rounded-full'/>
             </div>
           </Link>
         </div>

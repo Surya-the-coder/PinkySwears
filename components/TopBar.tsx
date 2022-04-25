@@ -7,13 +7,17 @@ import Link from 'next/link';
 import { useSession, signIn, signOut, SessionProvider } from "next-auth/react"
 import { redirect } from 'next/dist/server/api-utils';
 
-const TopBar = () => {
+const TopBar = (props) => {
   return (
-    <div className="flex py-10 justify-between items-center">
-      <div className="flex mx-2 justify-center items-center">
-          <BackButton className="mx-2" onClick={() => {signOut()}}></BackButton>
-        <Profile className="mx-2"/>
-        <h4 className='mx-2 text-[#A268AC] font-Sarabun-SemiBold'>User_name</h4>
+    <div className="flex py-10 justify-between items-center z-[100] px-5">
+      <div className="flex justify-center items-center">
+          {props.backButton?<Link href='/home'><BackButton className="mx-2"></BackButton></Link>:null}
+          <Link href={'/profile'}>
+            <img src={props.loggedInUserProfilePic} className="w-12 h-12 rounded-full" alt="UserImage" />
+          </Link>
+          <Link href={'/profile'}>
+            <h4 className='mx-2 text-[#A268AC] font-Sarabun-SemiBold'>{props.loggedInUserName}</h4>
+          </Link>
       </div>
       <div className="flex">
           <BellIcon className="mx-2"/>

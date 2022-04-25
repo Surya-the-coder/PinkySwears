@@ -13,12 +13,12 @@ const preference = ({session}) => {
 					<meta name='theme-color' content='#FFBCD1' />
 				</Head>
 				<div className="flex flex-col w-full max-w-md z-50">
-					<TopBar/>
+                    <TopBar loggedInUserName = {session.user.name} loggedInUserProfilePic={session.user.image}/>
 					<div className="flex justify-center">
                         <button className="border-none bg-pink-400 rounded-full w-28 h-12 text-xl text-white" onClick={() => signOut()}> Sign Out </button>
                     </div>
+				    <NavBar/>
 				</div>
-				<NavBar/>
 			</div>
         );
     }
