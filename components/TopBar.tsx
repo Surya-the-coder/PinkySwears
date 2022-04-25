@@ -11,7 +11,7 @@ const TopBar = (props) => {
   return (
     <div className="flex py-10 justify-between items-center z-[100] px-5">
       <div className="flex justify-center items-center">
-          {props.backButton?<Link href='/home'><BackButton className="mx-2"></BackButton></Link>:null}
+          {props.backButton?<Link href='/home'><BackButton className="mx-3"></BackButton></Link>:null}
           <Link href={'/profile'}>
             <img src={props.loggedInUserProfilePic} className="w-12 h-12 rounded-full" alt="UserImage" />
           </Link>

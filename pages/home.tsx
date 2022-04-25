@@ -6,6 +6,7 @@ import Ellipse from '../assets/images/Ellipse.svg'
 import dateFormat from 'dateformat';
 import { getSession, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import LoadingCard from "../components/LoadingCard";
 // import SignInError from "../components/SignInError";
 
 
@@ -86,7 +87,12 @@ const home = ({session}) => {
                             {posts.map( (post) => <Card username = {post.user.username} profileImage = {session.user.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
                         </div>
                     :
-                        <h1 className="flex justify-center self-center" >Loading...</h1>
+                    <div className="">
+                        <LoadingCard></LoadingCard>
+                        <LoadingCard></LoadingCard>
+                        <LoadingCard></LoadingCard>
+                        <LoadingCard></LoadingCard>
+                    </div>
                     }
                 </div>
                 <NavBar/>
