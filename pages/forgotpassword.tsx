@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import Head from 'next/head'
+import Ellipse from '../assets/images/Ellipse.svg'
 const forgotpassword = () => {
 	return (
 		<div className=" bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] mix-blend-normal flex min-h-screen flex-col items-center py-2"> 
+			<Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
 			<Head>
         		<title>Pinky Swears</title>
         		<meta name='theme-color' content='#FFBCD1' />

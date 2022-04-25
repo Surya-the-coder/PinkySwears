@@ -1,8 +1,11 @@
 import Head from 'next/head';
 import AccountDetailsTopBar from '../components/AccountDetailsTopBar'
+import Ellipse from '../assets/images/Ellipse.svg'
+
 const changepassword = () => {
 	return (
-		<div className=" flex flex-col items-center min-h-screen w-full bg-pink-300">
+		<div className=" flex flex-col items-center min-h-screen w-full bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
+			<Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
 			<Head>
 				<meta name='theme-color' content='#FFBCD1' />
 				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
