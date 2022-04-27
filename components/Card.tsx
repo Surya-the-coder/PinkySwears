@@ -4,8 +4,8 @@ import '../assets/images/photo.png'
 
 const Card = (props) => {
   return (
-    <Link href={'#'}>
-      <div className='flex mx-5 my-5 bg-white py-2 px-5 rounded-3xl shadow-card'>
+    <Link href={`/post/${props.postid}`}>
+      <div className='flex mx-5 my-5 bg-white py-2 px-5 rounded-3xl shadow-card cursor-pointer'>
         <div>
           <Link href={'#'}>
             <div className='w-12 h-12 mt-5 mr-3'>

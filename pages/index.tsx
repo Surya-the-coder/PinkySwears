@@ -1,20 +1,18 @@
-import type { NextPage } from 'next'
+import Link from 'next/link'
 import Head from 'next/head'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Vector from '../assets/images/Vector 4.svg'
 import FooterVector from '../assets/images/Vector 1.svg'
-import Link from 'next/link'
-import { useSession, signIn, signOut, SessionProvider } from 'next-auth/react'
+import GoogleIcon32 from '../assets/images/Google-32.svg'
+import GoogleIcon48 from '../assets/images/Google-48.svg'
+import { useSession, signIn, signOut, SessionProvider, getSession } from 'next-auth/react'
 
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 
 let redirectToHomePage = () => {
-  console.log(
-    '========================INSIDE REDIRECT================================'
-  )
   const router = useRouter()
   return router.push('/home')
-}
+};
 
 const Home = (pageProps) => {
   const { data: session, status } = useSession()
@@ -35,65 +33,9 @@ const Home = (pageProps) => {
         <Head>
           <title>Pinky Swears</title>
           <meta name="theme-color" content="#FFBCD1" />
-          <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-          ></link>
-          <link
-            type="image/png"
-            sizes="16x16"
-            rel="icon"
-            href=".../icons8-google-16.png"
-          />
-          <link
-            type="image/png"
-            sizes="32x32"
-            rel="icon"
-            href=".../icons8-google-32.png"
-          />
-          <link
-            type="image/png"
-            sizes="96x96"
-            rel="icon"
-            href=".../icons8-google-96.png"
-          />
-          <link
-            type="image/png"
-            sizes="120x120"
-            rel="icon"
-            href=".../icons8-google-120.png"
-          />
-          <link
-            rel="apple-touch-icon"
-            type="image/png"
-            sizes="57x57"
-            href=".../icons8-google-57.png"
-          />
-          <link
-            rel="apple-touch-icon"
-            type="image/png"
-            sizes="60x60"
-            href=".../icons8-google-60.png"
-          />
-          <link
-            rel="apple-touch-icon"
-            type="image/png"
-            sizes="114x114"
-            href=".../icons8-google-114.png"
-          />
-          <link
-            rel="apple-touch-icon"
-            type="image/png"
-            sizes="120x120"
-            href=".../icons8-google-120.png"
-          />
-          <link
-            rel="apple-touch-icon"
-            type="image/png"
-            sizes="180x180"
-            href=".../icons8-google-180.png"
-          />
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
         </Head>
+
         <div className="z-0 flex h-16 w-full items-center justify-center md:hidden">
           <Vector className="w-full"></Vector>
         </div>
@@ -150,7 +92,7 @@ const Home = (pageProps) => {
         <div className=" mt-3 px-32 flex w-full max-w-md items-center justify-around">
           <button onClick={() => signIn()} className="flex fa fa-facebook w-8 h-8 rounded-full bg-[#4267B2] items-center justify-center text-center text-sm text-white"/>
           <button onClick={() => signIn()} className="flex fa fa-twitter w-8 h-8 rounded-full bg-[#00ACEE] items-center justify-center text-center text-sm text-white"/>
-          <button onClick={() => signIn('google')} className=""> <img src='https://img.icons8.com/color/32/000000/google-logo.png'/></button>
+          <button onClick={() => signIn('google')} className=""> <GoogleIcon32/> </button>
         </div>
         <div className="mx-auto mt-1 flex h-3 w-full text-center">
           <FooterVector className="fixed -z-50 w-full md:hidden" />
@@ -162,23 +104,16 @@ const Home = (pageProps) => {
           </p>
         </div>
       </div>
-      {/* <div className="flex min-h-screen flex-col items-center justify-center">
-          Sign Up Page
-          <p className="mt-10 flex">
-            Already have account?&nbsp;
-            <Link href="/signin">
-              <p className="text-pink-400 cursor-pointer"> Sign In </p>
-            </Link>
-          </p>
-          <button onClick={() => signIn('google') } className="mt-8 rounded-2xl border-2 border-pink-500 bg-white text-pink-400 hover:bg-pink-300 hover:text-white active:bg-pink-400 active:text-white">
-            <p className="px-5 py-3">Continue with Google</p>
-          </button>
-          <button onClick={() => signIn('github') } className="mt-8 rounded-2xl border-2 border-pink-500 bg-white text-pink-400 hover:bg-pink-300 hover:text-white active:bg-pink-400 active:text-white">
-            <p className="px-5 py-3">Continue with GitHub</p>
-          </button>
-        </div> */}
     </>
   )
 }
 
-export default Home
+export default Home;
+
+// export async function getServerSideProps (context) {
+//   const session = await getSession(context);
+//   if (!session) {
+//       return{redirect :{destination: '/', permanent : false}}
+//   }
+//   return {props : {session}}
+// }

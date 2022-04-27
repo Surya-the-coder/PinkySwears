@@ -15,7 +15,7 @@ const createpost = ({session}) => {
 				<div className="flex flex-col w-full max-w-md z-50">
 					<TopBar loggedInUserName = {session.user.name} loggedInUserProfilePic={session.user.image}/>
 					<div className='flex mx-6'>
-						<p className='font-[Sarabun-SemiBold] text-semibold text-[#2F2F2F] text-xl'>Create Post</p>			
+						<p className='font-[Sarabun-SemiBold] font-semibold text-[#2F2F2F] text-xl'>Create Post</p>			
 					</div>
 					<div className='mx-6 mt-5 justify-center'>
 						<textarea className='shadow-welcome-field-shadowfocus pl-5 pt-8 rounded-xl w-full h-[45vh] max-h-[55vh] ' id="caption" placeholder='write a caption..'/>
@@ -25,7 +25,7 @@ const createpost = ({session}) => {
 							<button className=' ml-8 h-16 w-40 mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl'>Post</button> 
 						</div>
 					</div>
-				<NavBar/>
+					<NavBar/>
 				</div>
 			</div>
 		);

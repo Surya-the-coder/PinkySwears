@@ -13,10 +13,10 @@ const TopBar = (props) => {
       <div className="flex justify-center items-center">
           {props.backButton?<Link href='/home'><BackButton className="mx-3"></BackButton></Link>:null}
           <Link href={'/profile'}>
-            <img src={props.loggedInUserProfilePic} className="w-12 h-12 rounded-full" alt="UserImage" />
+            <img src={props.loggedInUserProfilePic} className="w-12 h-12 rounded-full cursor-pointer" alt="" />
           </Link>
           <Link href={'/profile'}>
-            <h4 className='mx-2 text-[#A268AC] font-Sarabun-SemiBold'>{props.loggedInUserName}</h4>
+            <h4 className='mx-2 text-[#A268AC] font-Sarabun-SemiBold cursor-pointer'>{props.loggedInUserName}</h4>
           </Link>
       </div>
       <div className="flex">

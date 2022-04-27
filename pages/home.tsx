@@ -84,7 +84,7 @@ const home = ({session}) => {
 
                     {isDataFetched?
                         <div className="">
-                            {posts.map( (post) => <Card username = {post.user.username} profileImage = {session.user.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
+                            {posts.map( (post) => <Card postid = {post.id} username = {post.user.username} profileImage = {session.user.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
                         </div>
                     :
                     <div className="">
