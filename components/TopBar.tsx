@@ -9,7 +9,7 @@ import { redirect } from 'next/dist/server/api-utils';
 
 const TopBar = (props) => {
   return (
-    <div className="flex py-10 justify-between items-center z-[100] px-5">
+    <div className="flex py-5 justify-between items-center z-[100] px-5">
       <div className="flex justify-center items-center">
           {props.backButton?<Link href='/home'><BackButton className="mx-3"></BackButton></Link>:null}
           <Link href={'/profile'}>
