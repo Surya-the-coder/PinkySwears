@@ -13,8 +13,8 @@ import CommentCard from '../../components/CommentCard';
 
 const SinglePost = ({session}) => {
     
-    const [singlePostData, setSinglePostData] = useState([]);
-    const [PostUserInfo, setPostUserInfo] = useState([]);
+    const [singlePostData, setSinglePostData] = useState<any>([]);
+    const [PostUserInfo, setPostUserInfo] = useState<any>([]);
     const [isDataFetched, setIsDataFetched] = useState(false)
     
     const router = useRouter();
@@ -31,7 +31,6 @@ const SinglePost = ({session}) => {
         setPostUserInfo(postData.user)
         setIsDataFetched(true);
     }
-    console.log(singlePostData)
 
     if(session){
         return (
@@ -53,7 +52,7 @@ const SinglePost = ({session}) => {
 
                 {isDataFetched?
                     <div className="h-[50%]">
-                        <SinglePostCard postUserImage = {session.user.image} postUserName = { PostUserInfo.username } postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
+                        <SinglePostCard postUserImage = {session.user.image} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
                         {singlePostData.comments.map( (comment) =><CommentCard commentUsername = {comment.user.username} commentContent = {comment.content}/>)}
                     </div>
                 :
