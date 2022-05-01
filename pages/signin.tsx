@@ -1,9 +1,26 @@
 import Head from 'next/head'
 import Vector from '../assets/images/Vector 4.svg'
 import FooterVector from '../assets/images/Vector 1.svg'
+import PasswordEye from '../assets/images/password_eye.svg'
 import Link from 'next/link'
+import { useState } from 'react'
 
 const signin = () => {
+
+  const [AccessToken, setAccessToken] = useState<any>();
+  const [RefreshToken, setRefreshToken] = useState<any>();
+
+  let signInUserPassword = async () => {
+    let loginApiUrl = 'https://dream-pg-backend.herokuapp.com/api/user/login/';
+    let response = await( await fetch(loginApiUrl, {
+        method:'POST',
+        headers: {'Content-Type':'application/json'},
+        body : JSON.stringify({"username" : "sathrt", "password" : "heroku"}),
+      })).json()
+      setAccessToken(response.access)
+      setRefreshToken(response.refresh)
+  }
+
     return (
         <div className="flex min-h-screen max-h-screen flex-col items-center min-w-full md:bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
       <Head>
@@ -20,7 +37,10 @@ const signin = () => {
       <div className="mt-5 flex flex-col items-center w-full">
         
         <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username"/>
-        <input className=" focus-welcome-field-shadowfocus mt-4 h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="password" name="Password" id="password" placeholder="Password"/>
+        <div className='flex items-center justify-end mt-4 '>
+          <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1] z-0" type="password" name="Password" id="password" placeholder="Password"/>
+          <button className='z-50 fixed mr-3'><PasswordEye/></button>
+        </div>
         
         <div className=" px-2 mt-3 flex w-full max-w-md items-center justify-between">
           <div className="mx-10 flex items-center justify-center">
@@ -34,9 +54,7 @@ const signin = () => {
             </Link>
           </div>          
         </div>
-        <Link href={'/home'}>
-          <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16'>Sign In</button>  
-        </Link>
+          <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16' onClick={signInUserPassword}>Sign In</button>  
       </div>
       <div className='flex w-full text-center mt-2 mx-auto h-max'>
           <FooterVector className="w-full -z-50 fixed md:hidden"/>

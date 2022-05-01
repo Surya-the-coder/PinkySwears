@@ -38,7 +38,7 @@ const SinglePost = ({session}) => {
             <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
             <div className="overflow-y-auto overflow-hidden h-[89vh] z-50  w-full max-w-md">
                 <meta name='theme-color' content='#FFBCD1' />
-                <TopBar backButton = {true} loggedInUserProfilePic = {session.user.image}/>
+                <TopBar backButton = {true} loggedInUserProfilePic = {session.user.image} displayPic = {false} displayName = {false}/>
                 <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
                     <div className="pl-4 pr-2 py-1">
                         <SearchGray/>
@@ -52,7 +52,7 @@ const SinglePost = ({session}) => {
 
                 {isDataFetched?
                     <div className="h-[50%]">
-                        <SinglePostCard postUserImage = {session.user.image} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
+                        <SinglePostCard currentUserImage = {session.user.image} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
                         {singlePostData.comments.map( (comment) =><CommentCard commentUsername = {comment.user.username} commentContent = {comment.content}/>)}
                     </div>
                 :

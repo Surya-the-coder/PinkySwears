@@ -39,7 +39,7 @@ const SinglePostCard = (props) => {
                 </div>
             </div>
             <div className="flex mt-3 items-center">
-                <img src={props.postUserImage} className="rounded-full w-6 h-6" alt="UI"/>
+                <img src={props.currentUserImage} className="rounded-full w-6 h-6" alt="UI"/>
                 <div className="flex rounded-full bg-gray-100 mx-2 w-96">
                     <input type="text" name="Comment" id="comment" placeholder="Write a comment..." className=" font-thin text-xs px-2 bg-transparent w-full"/>
                     <Send className="w-10 h-10"/>
