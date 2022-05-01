@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import Reply from '../assets/images/Reply.svg'
-import Love from '../assets/images/Love.svg'
 import '../assets/images/photo.png'
+import Love from '../assets/images/Love.svg'
 
-const Card = (props) => {
+const AccountCard = (props) => {
   return (
     <Link href={`/post/${props.postid}`}>
       <div className='flex mx-5 my-5 bg-white py-2 px-5 rounded-3xl shadow-card cursor-pointer'>
@@ -21,11 +21,11 @@ const Card = (props) => {
           <div className='mt-3 flex items-center'>
             <Love></Love>
             <Link href={'#'}>
-              <p className='text-xs mx-1'>{props.numberOfLikes}</p>
+              <p className='text-xs mx-2'>{props.numberOfLikes}</p>
             </Link>
-            <Reply className="mx-4"></Reply>
+			<Reply className=" ml-6"></Reply>
             <Link href={'#'}>
-              <p className='text-xs mx-1'>{props.numberOfLikes} replies</p>
+              <p className=' text-xs mx-2'>{props.numberOfLikes} replies</p>
             </Link>
           </div>
         </div>
@@ -34,4 +34,4 @@ const Card = (props) => {
   )
 }
 
-export default Card
+export default AccountCard
