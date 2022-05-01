@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Reply from '../assets/images/Reply.svg'
-import love from '../assets/images/love.svg'
+import Love from '../assets/images/Love.svg'
 import '../assets/images/photo.png'
 
 const Card = (props) => {
@@ -19,9 +19,13 @@ const Card = (props) => {
           <p className='text-xs text-purple-500 font-Sarabun'>{props.createdData}</p>
           <p className='text-sm text-gray-500 mt-2'>{props.content}</p>
           <div className='mt-3 flex items-center'>
-            <love></love>
+            <Love></Love>
             <Link href={'#'}>
               <p className='text-xs mx-1'>{props.numberOfLikes}</p>
+            </Link>
+            <Reply className="mx-4"></Reply>
+            <Link href={'#'}>
+              <p className='text-xs mx-1'>{props.numberOfLikes} replies</p>
             </Link>
           </div>
         </div>
