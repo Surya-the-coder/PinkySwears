@@ -90,8 +90,8 @@ const Home = (pageProps) => {
         </div>
         <p className=" mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]"> Continue with </p>
         <div className=" mt-3 px-32 flex w-full max-w-md items-center justify-around">
-          <button onClick={() => signIn()} className="flex fa fa-facebook w-8 h-8 rounded-full bg-[#4267B2] items-center justify-center text-center text-sm text-white"/>
-          <button onClick={() => signIn()} className="flex fa fa-twitter w-8 h-8 rounded-full bg-[#00ACEE] items-center justify-center text-center text-sm text-white"/>
+          <button onClick={() => signIn('facebook')} className="flex fa fa-facebook w-8 h-8 rounded-full bg-[#4267B2] items-center justify-center text-center text-sm text-white"/>
+          <button onClick={() => signIn('twitter')} className="flex fa fa-twitter w-8 h-8 rounded-full bg-[#00ACEE] items-center justify-center text-center text-sm text-white"/>
           <button onClick={() => signIn('google')} className=""> <GoogleIcon32/> </button>
         </div>
         <div className="mx-auto mt-1 flex h-3 w-full text-center">
