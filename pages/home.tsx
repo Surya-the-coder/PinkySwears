@@ -73,7 +73,7 @@ const home = ({session}) => {
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
                 <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh] z-50  w-full max-w-md">
                     <meta name='theme-color' content='#FFBCD1' />
-                    <TopBar backButton = {false} loggedInUserName = {session.user.name} loggedInUserProfilePic = {session.user.image} />
+                    <TopBar backButton = {false} loggedInUserName = {session.user.name} loggedInUserProfilePic = {session.user.image} displayPic = {true} displayName = {true}/>
                     <div className="flex justify-around mx-10 top-24">
                         <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button>
                         <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Recent")}>Recent</button>
