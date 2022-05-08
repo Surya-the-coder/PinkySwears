@@ -76,7 +76,7 @@ const signin = () => {
       
       <div className='flex h-3 w-full text-center mt-1 mx-auto'>
           <FooterVector className="w-full -z-50 fixed md:hidden"/>
-          <p className=' text-[#FFFFFF] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-14 fixed md:text-gray-400'>Don't have an account? &nbsp;
+          <p className=' text-[#939090] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-14 fixed md:text-gray-400'>Don't have an account? &nbsp;
             <Link href={'/signup'}> 
               <p className=' text-xs font-[Sarabun-SemiBold] font-semibold text-[#FF848E]'> Sign Up </p>
             </Link>
