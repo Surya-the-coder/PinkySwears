@@ -15,8 +15,11 @@ let redirectToHomePage = () => {
 };
 
 const Home = (pageProps) => {
-  const { data: session, status } = useSession()
-
+  
+  const { data: session,status,data:token } = useSession()
+  // const { data: token, status } = useSession()
+  console.log("tokennnnn")
+  console.log(token)
   const router = useRouter()
 
   useEffect(() => {
@@ -94,6 +97,7 @@ const Home = (pageProps) => {
           <button onClick={() => signIn('twitter')} className="flex fa fa-twitter w-8 h-8 rounded-full bg-[#00ACEE] items-center justify-center text-center text-sm text-white"/>
           <button onClick={() => signIn('google')} className=""> <GoogleIcon32/> </button>
         </div>
+        
         <div className="mx-auto mt-1 flex h-3 w-full text-center">
           <FooterVector className="fixed -z-50 w-full md:hidden" />
           <p className=" fixed z-50 flex w-full justify-center pt-12 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-gray-400">
