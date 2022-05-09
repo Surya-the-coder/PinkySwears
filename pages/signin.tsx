@@ -44,8 +44,18 @@ const signin = (pageProps) => {
     return (
         <div className="flex min-h-screen max-h-screen flex-col items-center min-w-full md:bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
       <Head>
-        <title>Pinky Swears</title>
-        <meta name='theme-color' content='#FFBCD1' />
+         <title>Pinky Swears</title>
+          <meta name='theme-color' content='#FFBCD1' />
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+          <link type="image/png" sizes="16x16" rel="icon" href=".../icons8-google-16.png"/>
+          <link type="image/png" sizes="32x32" rel="icon" href=".../icons8-google-32.png"/>
+          <link type="image/png" sizes="96x96" rel="icon" href=".../icons8-google-96.png"/>
+          <link type="image/png" sizes="120x120" rel="icon" href=".../icons8-google-120.png"/>
+          <link rel="apple-touch-icon" type="image/png" sizes="57x57" href=".../icons8-google-57.png"/>
+          <link rel="apple-touch-icon" type="image/png" sizes="60x60" href=".../icons8-google-60.png"/>
+          <link rel="apple-touch-icon" type="image/png" sizes="114x114" href=".../icons8-google-114.png"/>
+          <link rel="apple-touch-icon" type="image/png" sizes="120x120" href=".../icons8-google-120.png"/>
+          <link rel="apple-touch-icon" type="image/png" sizes="180x180" href=".../icons8-google-180.png"/>
       </Head>
       <div className='w-full flex items-center justify-center md:hidden z-0'>
         <Vector className="w-full"></Vector>
@@ -76,14 +86,23 @@ const signin = (pageProps) => {
         </div>
           <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16' onClick={() => signInUserPassword(userInputUserName, userInputPassword, router)}>Sign In</button>  
       </div>
-      <div className='flex w-full text-center mt-2 mx-auto h-max'>
+      <div>
+        <p className=' mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]'>Continue with</p>
+            <div className=" max-w-[450px] w-full mt-3 justify-center items-center flex">            
+                <a href='' className="  rounded-xl text-center w-6 text-sm bg-[#4267B2]  text-white fa fa-facebook"/>
+                <a href='' className='ml-1 rounded-xl text-center w-6 text-sm bg-[#00ACEE]  text-white fa fa-twitter'/>
+                <img className='ml-1' src="https://img.icons8.com/color/20/000000/google-logo.png"/>
+      </div>
+      </div>
+      
+      <div className='flex h-3 w-full text-center mt-1 mx-auto'>
           <FooterVector className="w-full -z-50 fixed md:hidden"/>
           <p className=' text-[#FFFFFF] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-24 fixed md:text-gray-400'>Don't have an account? &nbsp;
             <Link href={'/'}>
               <p className=' text-xs font-[Sarabun-SemiBold] font-semibold text-[#FF848E] cursor-pointer'> Sign Up </p>
             </Link>
           </p>
-      </div> {/* className='w-full flex items-center justify-center md:hidden bottom-0'> */}
+      </div> 
     </div>
     );
 }

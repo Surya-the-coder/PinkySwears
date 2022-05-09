@@ -50,13 +50,13 @@ const SinglePost = () => {
         setPostUserInfo(postData.user)
         setIsDataFetched(true);
     }
-    
+
     return (
         <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
         <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
         <div className="overflow-y-auto overflow-hidden h-[89vh] z-50  w-full max-w-md">
             <meta name='theme-color' content='#FFBCD1' />
-            <TopBar backButton = {true} loggedInUserProfilePic = {user.profileImg} displayPic = {false} displayName = {false}/>
+            {/* <TopBar backButton = {true} loggedInUserProfilePic = {user.profileImg} displayPic = {false} displayName = {false}/> */}
             <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
                 <div className="pl-4 pr-2 py-1">
                     <SearchGray/>
@@ -69,7 +69,7 @@ const SinglePost = () => {
             </div>
             {isDataFetched?
                 <div className="h-[50%]">
-                    <SinglePostCard currentUserImage = {PostUserInfo.profileImage} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
+                    {/* <SinglePostCard currentUserImage = {PostUserInfo.username} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/> */}
                     {singlePostData.comments.map( (comment) =><CommentCard commentUsername = {comment.user.username} commentContent = {comment.content}/>)}
                 </div>
             :

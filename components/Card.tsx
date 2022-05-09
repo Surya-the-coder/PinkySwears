@@ -18,14 +18,10 @@ const Card = (props) => {
           <h3 className='font-Sarabun-Medium text-base tracking-[0.2px] font-medium'> {props.username} </h3>
           <p className='text-xs text-purple-500 font-Sarabun'>{props.createdData}</p>
           <p className='text-sm text-gray-500 mt-2'>{props.content}</p>
-          <div className='mt-3 flex items-center'>
-            <Love></Love>
+          <div className='mt-3 flex items-center'>       
+            <Reply></Reply>
             <Link href={'#'}>
               <p className='text-xs mx-1'>{props.numberOfLikes}</p>
-            </Link>
-            <Reply className="mx-4"></Reply>
-            <Link href={'#'}>
-              <p className='text-xs mx-1'>{props.numberOfLikes} replies</p>
             </Link>
           </div>
         </div>

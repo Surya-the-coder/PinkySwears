@@ -27,7 +27,7 @@ const SignUp = () => {
         <div className='w-full h-16 flex items-center justify-center md:hidden z-0'>
           <Vector className="w-full"></Vector>
         </div>
-        <div className="z-50 mt-5 flex flex-col items-center w-full">
+        <div className="z-50 mt-3 flex flex-col items-center w-full">
           <h2 className="text-center font-[segoepr] text-3xl font-bold">Welcome!</h2>
           <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">Create a new account</p>
                 
@@ -40,14 +40,16 @@ const SignUp = () => {
               <input className=" accent-pink-500 outline-hidden h-4 w-4 " type="radio" id="radiobutton" name="radiobutton"/>
               <label className='text-[#CDCCCD] text-xs md:text-gray-600'>Female</label>
           </div>
-          <select className=" text-[#CDCCCD] select-text:[text-#020202] mt-4 focus-welcome-field-shadowfocus h-12 w-80 pl-6 rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold]" name="culture" id="culture" placeholder='Culture'>
+          <input className=" focus-welcome-field-shadowfocus mt-2 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="password" name="password" id="password" placeholder="New Password"/>
+          <input className=" focus-welcome-field-shadowfocus mt-2 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="password" name="password" id="password" placeholder="Re-enter New Password"/>
+          <select className=" text-[#CDCCCD] select-text:[text-#020202] mt-2 focus-welcome-field-shadowfocus h-12 w-80 pl-6 rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold]" name="culture" id="culture" placeholder='Culture'>
               <option value="" disabled selected hidden>Culture</option>
               <option value="culture 1">Culture 1</option>
               <option value="culture 2">Culture 2</option>
               <option value="culture 3">Culture 3</option>
               <option value="culture 4">Culture 4</option>
           </select>
-          <select className="text-[#CDCCCD] mt-4 focus-welcome-field-shadowfocus h-12 w-80 pl-6 rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold]" name="rel" id="rel" placeholder='rel'>
+          <select className="text-[#CDCCCD] mt-2 focus-welcome-field-shadowfocus h-12 w-80 pl-6 rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold]" name="rel" id="rel" placeholder='rel'>
               <option className=' text-gray-500' value="" disabled selected hidden>Year's in relationship</option>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -58,15 +60,8 @@ const SignUp = () => {
                 <input className=' border-4 rounded-lg' type="checkbox" checked id='checkbox'/>
                 <label className=' pl-2 text-[#262626] font-[Sarabun-SemiBold] font-semibold text-xs'>Agree with Terms & Conditions</label>
             </div>
-            <button className=' mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-10'>Sign Up</button>  
-        </div> 
-            <p className=' mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]'>Continue with</p>
-            <div className=" max-w-[450px] w-full mt-3 justify-center items-center flex">            
-                <a href='' className="  rounded-xl text-center w-6 text-sm bg-[#4267B2]  text-white fa fa-facebook"/>
-                <a href='' className='ml-1 rounded-xl text-center w-6 text-sm bg-[#00ACEE]  text-white fa fa-twitter'/>
-                {/* <a href='' className=' rounded-xl text-center text-sm w-6 bg-gray-400 text-black fa fa-google'/> */}
-                <img className='ml-1' src="https://img.icons8.com/color/20/000000/google-logo.png"/>
-            </div>
+            <button className=' mt-3 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-10'>Sign Up</button>  
+        </div>             
             <div className='flex h-3 w-full text-center mt-1 mx-auto'>
             <FooterVector className="w-full -z-50 fixed md:hidden"/>
                 <p className=' text-gray-400 text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-12 fixed'>Already have an account? &nbsp;
