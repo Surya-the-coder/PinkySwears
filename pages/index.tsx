@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import Head from 'next/head'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Vector from '../assets/images/Vector 4.svg'
 import FooterVector from '../assets/images/Vector 1.svg'
 import GoogleIcon32 from '../assets/images/Google-32.svg'
 import GoogleIcon48 from '../assets/images/Google-48.svg'
-import { useSession, signIn, signOut, SessionProvider, getSession } from 'next-auth/react'
+import { useSession, signIn, signOut, getSession } from 'next-auth/react'
 
 
 let redirectToHomePage = () => {
@@ -15,18 +15,28 @@ let redirectToHomePage = () => {
 };
 
 const Home = (pageProps) => {
-  const { data: session, status } = useSession()
-
+  
   const router = useRouter()
 
-  useEffect(() => {
-    // Prefetch the dashboard page
-    router.prefetch('/home')
-  }, [])
+  const [AccessToken, setAccessToken] = useState<any>();
+  const [RefreshToken, setRefreshToken] = useState<any>();
 
-  if (session) {
+  useEffect(() => {
+    let accessTokenLS = localStorage.getItem('access_token')
+    let refreshTokenLS = localStorage.getItem('refresh_token')
+    if (accessTokenLS!=null) {
+      router.prefetch('/home')
+      console.log('========================TOKEN FOUND==========================')
+      setAccessToken(accessTokenLS)
+      setRefreshToken(refreshTokenLS)
+    }
+  }, [])
+  
+  if(AccessToken!=null)
+  {
     redirectToHomePage()
   }
+  
   return (
     <>
       <div className="flex max-h-screen min-h-screen min-w-full flex-col items-center from-[#FDEBF7] to-[#FFBCD1] md:bg-gradient-to-t">
@@ -99,7 +109,7 @@ const Home = (pageProps) => {
           <p className=" fixed z-50 flex w-full justify-center pt-12 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-gray-400">
             Already have an account? &nbsp;
             <Link href={'/signin'}>
-              <p className=" font-[Sarabun-SemiBold] text-xs font-semibold text-[#FF848E]"> Sign In </p>
+              <p className=" font-[Sarabun-SemiBold] text-xs font-semibold text-[#FF848E] cursor-pointer"> Sign In </p>
             </Link>
           </p>
         </div>

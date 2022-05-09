@@ -1,25 +1,45 @@
+import Link from 'next/link'
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Vector from '../assets/images/Vector 4.svg'
 import FooterVector from '../assets/images/Vector 1.svg'
 import PasswordEye from '../assets/images/password_eye.svg'
-import Link from 'next/link'
-import { useState } from 'react'
 
-const signin = () => {
 
-  const [AccessToken, setAccessToken] = useState<any>();
-  const [RefreshToken, setRefreshToken] = useState<any>();
+let signInUserPassword = async (userInputUserName, userInputPassword, router) => {
+  let loginApiUrl = 'https://dream-pg-backend.herokuapp.com/api/user/login/';
+  
+  let response = await( await fetch(loginApiUrl, {
+      method:'POST',
+      headers: {'Content-Type':'application/json'},
+      body : JSON.stringify({"username" : userInputUserName, "password" : userInputPassword}),
+    })).json()
+    console.log(response.user)
+    
+    if (response.access!=null) {
+      localStorage.setItem('access_token', response.access);
+      localStorage.setItem('refresh_token', response.refresh);
+      localStorage.setItem('UserDetails', JSON.stringify(response.user))
+      router.push('/home')
+    }
+};
 
-  let signInUserPassword = async () => {
-    let loginApiUrl = 'https://dream-pg-backend.herokuapp.com/api/user/login/';
-    let response = await( await fetch(loginApiUrl, {
-        method:'POST',
-        headers: {'Content-Type':'application/json'},
-        body : JSON.stringify({"username" : "sathrt", "password" : "heroku"}),
-      })).json()
-      setAccessToken(response.access)
-      setRefreshToken(response.refresh)
-  }
+const signin = (pageProps) => {
+
+  const router = useRouter()
+
+  const [userInputUserName, setUserInputUserName] = useState<any>();
+  const [userInputPassword, setuserInputPassword] = useState<any>();
+
+  useEffect(() => {
+    let accessTokenLS = localStorage.getItem('access_token')
+
+    if (accessTokenLS!=null) {
+      router.push('/home')
+    }
+
+  }, [])
 
     return (
         <div className="flex min-h-screen max-h-screen flex-col items-center min-w-full md:bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
@@ -36,9 +56,9 @@ const signin = () => {
       </div>
       <div className="mt-5 flex flex-col items-center w-full">
         
-        <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username"/>
+        <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username" onChange={ (e) => setUserInputUserName(e.target.value) }/>
         <div className='flex items-center justify-end mt-4 '>
-          <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1] z-0" type="password" name="Password" id="password" placeholder="Password"/>
+          <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1] z-0" type="password" name="Password" id="password" placeholder="Password" onChange={ (e) => setuserInputPassword(e.target.value) }/>
           <button className='z-50 fixed mr-3'><PasswordEye/></button>
         </div>
         
@@ -54,13 +74,13 @@ const signin = () => {
             </Link>
           </div>          
         </div>
-          <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16' onClick={signInUserPassword}>Sign In</button>  
+          <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16' onClick={() => signInUserPassword(userInputUserName, userInputPassword, router)}>Sign In</button>  
       </div>
       <div className='flex w-full text-center mt-2 mx-auto h-max'>
           <FooterVector className="w-full -z-50 fixed md:hidden"/>
           <p className=' text-[#FFFFFF] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-24 fixed md:text-gray-400'>Don't have an account? &nbsp;
-            <Link href={'/signup'}> 
-              <p className=' text-xs font-[Sarabun-SemiBold] font-semibold text-[#FF848E]'> Sign Up </p>
+            <Link href={'/'}>
+              <p className=' text-xs font-[Sarabun-SemiBold] font-semibold text-[#FF848E] cursor-pointer'> Sign Up </p>
             </Link>
           </p>
       </div> {/* className='w-full flex items-center justify-center md:hidden bottom-0'> */}

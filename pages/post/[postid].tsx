@@ -11,16 +11,35 @@ import SinglePostCard from "../../components/SinglePostCard";
 import CommentCard from '../../components/CommentCard';
 
 
-const SinglePost = ({session}) => {
+const SinglePost = () => {
     
     const [singlePostData, setSinglePostData] = useState<any>([]);
     const [PostUserInfo, setPostUserInfo] = useState<any>([]);
     const [isDataFetched, setIsDataFetched] = useState(false)
+
+    const [accessToken, setaccessToken] = useState<any>()
+    const [refreshToken, setRefreshToken] = useState<any>()
+    const [user, setUser] = useState<any>()
     
     const router = useRouter();
 
     useEffect(() => {
-      getSinglePostData()
+        let accessTokenLS = localStorage.getItem('access_token')
+        let refreshTokenLS = localStorage.getItem('refresh_token')
+        
+        if (accessTokenLS == null) {
+            console.log('No Access Token')
+            router.push('/')
+        }
+        else{
+            let userLS = JSON.parse(localStorage.getItem('UserDetails'))
+
+            setaccessToken(accessTokenLS)
+            setRefreshToken(refreshTokenLS)
+            setUser(userLS)
+
+            getSinglePostData()
+        }
     }, []);
 
     let getSinglePostData = async () => {
@@ -31,48 +50,37 @@ const SinglePost = ({session}) => {
         setPostUserInfo(postData.user)
         setIsDataFetched(true);
     }
-
-    if(session){
-        return (
-            <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
-            <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
-            <div className="overflow-y-auto overflow-hidden h-[89vh] z-50  w-full max-w-md">
-                <meta name='theme-color' content='#FFBCD1' />
-                <TopBar backButton = {true} loggedInUserProfilePic = {session.user.image} displayPic = {false} displayName = {false}/>
-                <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
-                    <div className="pl-4 pr-2 py-1">
-                        <SearchGray/>
-                    </div>
-                    <div>
-                        <input type="text" name="SearchBox" id="searchBox" placeholder="Search Here" className="bg-transparent text-xs text-gray-400 border-none focus:border-none"/>
-                    </div>
+    
+    return (
+        <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
+        <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
+        <div className="overflow-y-auto overflow-hidden h-[89vh] z-50  w-full max-w-md">
+            <meta name='theme-color' content='#FFBCD1' />
+            <TopBar backButton = {true} loggedInUserProfilePic = {user.profileImg} displayPic = {false} displayName = {false}/>
+            <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
+                <div className="pl-4 pr-2 py-1">
+                    <SearchGray/>
                 </div>
-                <div className="flex justify-around mx-10 top-24">
+                <div>
+                    <input type="text" name="SearchBox" id="searchBox" placeholder="Search Here" className="bg-transparent text-xs text-gray-400 border-none focus:border-none"/>
                 </div>
-
-                {isDataFetched?
-                    <div className="h-[50%]">
-                        <SinglePostCard currentUserImage = {session.user.image} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
-                        {singlePostData.comments.map( (comment) =><CommentCard commentUsername = {comment.user.username} commentContent = {comment.content}/>)}
-                    </div>
-                :
-                <div className="">
-                    <LoadingCard></LoadingCard>
-                </div>
-                }
             </div>
-            <NavBar/>
+            <div className="flex justify-around mx-10 top-24">
+            </div>
+            {isDataFetched?
+                <div className="h-[50%]">
+                    <SinglePostCard currentUserImage = {PostUserInfo.profileImage} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
+                    {singlePostData.comments.map( (comment) =><CommentCard commentUsername = {comment.user.username} commentContent = {comment.content}/>)}
+                </div>
+            :
+            <div className="">
+                <LoadingCard></LoadingCard>
+            </div>
+            }
         </div>
-        );
-    }
+        <NavBar/>
+    </div>
+    );
 }
 
 export default SinglePost;
-
-export async function getServerSideProps (context) {
-    const session = await getSession(context);
-    if (!session) {
-        return{redirect :{destination: '/', permanent : false}}
-    }
-    return {props : {session}}
-}
