@@ -6,8 +6,13 @@ import Ellipse from '../assets/images/Ellipse.svg'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
+
 const createpost = () => {
 	const router = useRouter()
+	let forcereload =()=>
+{
+	router.reload()
+}
 	const [accessToken, setaccessToken] = useState<any>()
 	const [refreshToken, setRefreshToken] = useState<any>()
 	const [user, setUser] = useState<any>()
@@ -42,6 +47,7 @@ const createpost = () => {
 			body: JSON.stringify(PostContent),
 		});
 		console.log(response)
+		forcereload()
 	}
 
 	if (accessToken != null) {

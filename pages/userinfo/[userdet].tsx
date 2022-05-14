@@ -6,23 +6,35 @@ import TopBar from "../../components/TopBar";
 import AccountCard  from "../../components/AccountCard";
 import dateFormat from 'dateformat';
 
-const userdet = ({session}) => {
-	if(session)
-	{		
+const userdet = () => {	
 	const [postsOfUser, setPostsOfUser] = useState<any>();
     const [PostsData, setPostsData] = useState<any>([]);
 	const [PostUserInfo, setPostUserInfo] = useState<any>([]);
 	const [FollowerCount, setFollowerCount] = useState<any>()
 	const [FollowingCount, setFollowingCount] = useState<any>()
     const router = useRouter();
+	const [accessToken, setaccessToken] = useState<any>()
+	const [refreshToken, setRefreshToken] = useState<any>()
 
     useEffect(() => {
-		getAllPostsOfUser();
-		getFollowers();
-		getFollowing();
+		
+		let accessTokenLS = localStorage.getItem('access_token')
+        let refreshTokenLS = localStorage.getItem('refresh_token')
+        
+        if (accessTokenLS == null) {
+			console.log('No Access Token')
+            router.push('/')
+        }
+        else{			
+            setaccessToken(accessTokenLS)
+            setRefreshToken(refreshTokenLS)
+			getAllPostsOfUser();
+			getFollowers();
+			getFollowing();
+        }
 		// console.log(postsOfUser+" "+FollowerCount+" "+FollowingCount)
     }, []);
-	// console.log(router.query.userdet)
+	console.log(router.query.userdet)
     let getAllPostsOfUser = async () => {
         let fetchAllPostApiUrl = `https://dream-pg-backend.herokuapp.com/api/post/user/${router.query.userdet}/`;
         let response = await fetch(fetchAllPostApiUrl);
@@ -43,7 +55,24 @@ const userdet = ({session}) => {
         let followinginfo = await response.json()        
 		setFollowingCount(Object.keys(followinginfo).length);
     }
-	
+	let followUser =async () => {
+		console.log("Follow Function")
+		let response= await fetch(`https://backend.pinkyswears.in/api/user/follow/${router.query.userdet}/`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					'Authorization': 'Bearer '+accessToken,
+				},
+			});
+			console.log(response)
+		if(response.status==202)
+			console.log("User Followed Successfully")
+		
+	}
+	if(accessToken==null)
+	{
+		console.log("No Access Token")
+	}
 	return (
 		<div className="flex flex-col bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">           
             <Head>
@@ -74,22 +103,15 @@ const userdet = ({session}) => {
 				<h6 className=" font-[Sarabun-Medium] font-semibold text-black text-xs mt-[7px]">Programmer, developer, designer...</h6>
 			</div>
 			<div className="mx-[40px] mt-[19px] flex items-center justify-center ">
-				<button className=" rounded-3xl w-[201px] h-[45px] font-[Sarabun-Medium] font-semibold text-sm text-[#ffffff] bg-[#F67A95] "> Follow </button>
+				<button className=" rounded-3xl w-[201px] h-[45px] font-[Sarabun-Medium] font-semibold text-sm text-[#ffffff] bg-[#F67A95]" onClick={followUser}> Follow </button>
 			</div>
 			<div className="">
-            	{PostsData.map( (post) => <AccountCard postid = {post.id} userid={post.user.id} username = {post.user.username} profileImage = {session.user.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
+            	{PostsData.map( (post) => <AccountCard postid = {post.id} userid={post.user.id} username = {post.user.username} profileImage = {PostUserInfo.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} accessToken={accessToken}/> )}
             </div>
 		</div>
 	);
 }
-}
+
 export default userdet;
 
-export async function getServerSideProps (context) {
-    const session = await getSession(context);
-    if (!session) {
-        return{redirect :{destination: '/', permanent : false}}
-    }
-    return {props : {session}}
-}
 
