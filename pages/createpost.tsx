@@ -5,6 +5,12 @@ import { getSession } from 'next-auth/react';
 import Ellipse from '../assets/images/Ellipse.svg'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { redirect } from 'next/dist/server/api-utils';
+
+
+let redirectToHomePage = (router) => {
+	return router.push('/home')
+  };
 
 const createpost = () => {
 	const router = useRouter()
@@ -33,15 +39,13 @@ const createpost = () => {
 	
 	let CreateNewPost = async () =>{
 		console.log(accessToken)
-		let response= await fetch(`https://dream-pg-backend.herokuapp.com/api/post/`, {
+		let response = await fetch(`https://backend.pinkyswears.in/api/post/`, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				'Authorization': 'Bearer '+accessToken,
-			},
-			body: JSON.stringify(PostContent),
+			headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
+			body: JSON.stringify({'content' : PostContent}),
 		});
 		console.log(response)
+		redirectToHomePage(router)
 	}
 
 	if (accessToken != null) {

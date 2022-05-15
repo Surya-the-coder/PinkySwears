@@ -14,12 +14,15 @@ import CommentCard from '../../components/CommentCard';
 const SinglePost = () => {
     
     const [singlePostData, setSinglePostData] = useState<any>([]);
-    const [PostUserInfo, setPostUserInfo] = useState<any>([]);
+    const [PostUserInfo, setPostUserInfo] = useState<any>();
     const [isDataFetched, setIsDataFetched] = useState(false)
 
     const [accessToken, setaccessToken] = useState<any>()
     const [refreshToken, setRefreshToken] = useState<any>()
-    const [user, setUser] = useState<any>()
+    
+    const [userData, setUserData] = useState<any>()
+
+    // let user = JSON.parse(localStorage.getItem('UserDetails'))
     
     const router = useRouter();
 
@@ -32,22 +35,31 @@ const SinglePost = () => {
             router.push('/')
         }
         else{
+            console.log()
+            getSinglePostData()
+
             let userLS = JSON.parse(localStorage.getItem('UserDetails'))
+
+            // console.log(userData.profileImg)
 
             setaccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
-            setUser(userLS)
+            console.log('Setting UserData')
+            setUserData(userLS)
 
-            getSinglePostData()
         }
     }, []);
 
     let getSinglePostData = async () => {
-        let fetchSinglePostApiUrl = `https://dream-pg-backend.herokuapp.com/api/post/${router.query.postid}/`;
+        console.log('========================= IN GET SINGLE POST DATA =========================')
+        let fetchSinglePostApiUrl = await `https://backend.pinkyswears.in/api/post/${router.query.postid}/`;
+        console.log(fetchSinglePostApiUrl)
         let response = await fetch(fetchSinglePostApiUrl);
+        console.log(response)
         let postData = await response.json()
         setSinglePostData(postData);
-        setPostUserInfo(postData.user)
+        setPostUserInfo(postData.user);
+        console.log('Setting is Data Fetched to true in getSinglePostData')
         setIsDataFetched(true);
     }
 
@@ -56,20 +68,20 @@ const SinglePost = () => {
         <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
         <div className="overflow-y-auto overflow-hidden h-[89vh] z-50  w-full max-w-md">
             <meta name='theme-color' content='#FFBCD1' />
-            {/* <TopBar backButton = {true} loggedInUserProfilePic = {user.profileImg} displayPic = {false} displayName = {false}/> */}
+            {/* <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic={userData.profileImage}/> */}
             <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
                 <div className="pl-4 pr-2 py-1">
                     <SearchGray/>
                 </div>
-                <div>
-                    <input type="text" name="SearchBox" id="searchBox" placeholder="Search Here" className="bg-transparent text-xs text-gray-400 border-none focus:border-none"/>
+                <div className='w-full'>
+                    <input type="text" name="SearchBox" id="searchBox" placeholder="Search Here" className="bg-transparent text-xs text-gray-400 border-none focus:outline-none w-full"/>
                 </div>
             </div>
             <div className="flex justify-around mx-10 top-24">
             </div>
             {isDataFetched?
                 <div className="h-[50%]">
-                    {/* <SinglePostCard currentUserImage = {PostUserInfo.username} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/> */}
+                    <SinglePostCard currentUserImage = {PostUserInfo.username} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
                     {singlePostData.comments.map( (comment) =><CommentCard commentUsername = {comment.user.username} commentContent = {comment.content}/>)}
                 </div>
             :

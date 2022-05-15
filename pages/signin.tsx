@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import Vector from '../assets/images/Vector 4.svg'
 import FooterVector from '../assets/images/Vector 1.svg'
+import GoogleIcon32 from '../assets/images/Google-32.svg'
 import PasswordEye from '../assets/images/password_eye.svg'
+import { useSession, signIn, signOut, getSession } from 'next-auth/react'
 
 
 let signInUserPassword = async (userInputUserName, userInputPassword, router) => {
@@ -86,14 +88,12 @@ const signin = (pageProps) => {
         </div>
           <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16' onClick={() => signInUserPassword(userInputUserName, userInputPassword, router)}>Sign In</button>  
       </div>
-      <div>
         <p className=' mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]'>Continue with</p>
-            <div className=" max-w-[450px] w-full mt-3 justify-center items-center flex">            
-                <a href='' className="  rounded-xl text-center w-6 text-sm bg-[#4267B2]  text-white fa fa-facebook"/>
-                <a href='' className='ml-1 rounded-xl text-center w-6 text-sm bg-[#00ACEE]  text-white fa fa-twitter'/>
-                <img className='ml-1' src="https://img.icons8.com/color/20/000000/google-logo.png"/>
-      </div>
-      </div>
+        <div className=" mt-3 px-32 flex w-full max-w-md items-center justify-around">
+          <button onClick={() => signIn('facebook')} className="flex fa fa-facebook w-8 h-8 rounded-full bg-[#4267B2] items-center justify-center text-center text-sm text-white"/>
+          <button onClick={() => signIn('twitter')} className="flex fa fa-twitter w-8 h-8 rounded-full bg-[#00ACEE] items-center justify-center text-center text-sm text-white"/>
+          <button onClick={() => signIn('google')} className=""> <GoogleIcon32/> </button>
+        </div>
       
       <div className='flex h-3 w-full text-center mt-1 mx-auto'>
           <FooterVector className="w-full -z-50 fixed md:hidden"/>
