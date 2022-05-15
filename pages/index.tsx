@@ -261,7 +261,7 @@ const Home = (pageProps) => {
 								setCulture(e.target.value)
 							}}
 						>
-							<option value="" disabled hidden>
+							<option value="" hidden>
 								Culture
 							</option>
 							<option value="South Indian">South Indian</option>
@@ -277,9 +277,8 @@ const Home = (pageProps) => {
 							}}
 						>
 							<option
-								className=" text-gray-500"
+								className=" text-[#CDCCCD]"
 								value=""
-								disabled
 								hidden
 							>
 								Year's in relationship
