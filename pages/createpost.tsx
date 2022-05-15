@@ -15,10 +15,6 @@ let redirectToHomePage = (router) => {
 
 const createpost = () => {
 	const router = useRouter()
-	let forcereload =()=>
-{
-	router.reload()
-}
 	const [accessToken, setaccessToken] = useState<any>()
 	const [refreshToken, setRefreshToken] = useState<any>()
 	const [user, setUser] = useState<any>()

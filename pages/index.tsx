@@ -126,19 +126,19 @@ const Home = (pageProps) => {
 	}
 
 	const handleLogin = async (googleData) => {
-		let googleLoginAPI = '/api/auth/google'
-		const res = await fetch(googleLoginAPI, {
-			method: 'POST',
-			body: JSON.stringify({
-				access_token: googleData.tokenId,
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-		const data = await res.json()
-		// store returned user somehow
-	}
+		let googleIdToken = googleData.tokenId;
+
+		let createUserApiUrl = 'https://backend.pinkyswears.in/api/user/social-signup/google-oauth2/'
+		// let response = await fetch(createUserApiUrl, {
+		// 	method: 'POST',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	body: JSON.stringify({
+		// 		access_token : googleIdToken,
+		// 	}),
+		// })
+
+		// console.log(response)
+	  }
 
 	if (AccessToken != null) {
 		if (AccessTokenValid) {
@@ -154,10 +154,7 @@ const Home = (pageProps) => {
 				<Head>
 					<title>Pinky Swears</title>
 					<meta name="theme-color" content="#FFBCD1" />
-					<link
-						rel="stylesheet"
-						href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-					/>
+					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 				</Head>
 
 				<div className="z-0 flex h-16 w-full items-center justify-center md:hidden">
@@ -264,7 +261,7 @@ const Home = (pageProps) => {
 								setCulture(e.target.value)
 							}}
 						>
-							<option value="" disabled selected hidden>
+							<option value="" hidden>
 								Culture
 							</option>
 							<option value="South Indian">South Indian</option>
@@ -280,10 +277,8 @@ const Home = (pageProps) => {
 							}}
 						>
 							<option
-								className=" text-gray-500"
+								className=" text-[#CDCCCD]"
 								value=""
-								disabled
-								selected
 								hidden
 							>
 								Year's in relationship
@@ -313,40 +308,45 @@ const Home = (pageProps) => {
 				</div>
 				<p className=" mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]">
 					{' '}
-					Continue with{' '}
+					or{' '}
 				</p>
-				<div className=" mt-3 flex w-full max-w-md items-center justify-around px-32">
-					<button
+				<div className=" mt-3 flex w-full max-w-md items-center justify-around px-3">
+					{/* <button
 						onClick={() => signIn('facebook')}
 						className="fa fa-facebook flex h-8 w-8 items-center justify-center rounded-full bg-[#4267B2] text-center text-sm text-white"
 					/>
 					<button
 						onClick={() => signIn('twitter')}
 						className="fa fa-twitter flex h-8 w-8 items-center justify-center rounded-full bg-[#00ACEE] text-center text-sm text-white"
-					/>
-					<button onClick={() => signIn('google')} className="">
+					/> */}
+					{/* <button onClick={() => signIn('google')} className="">
 						{' '}
 						<GoogleIcon32 />{' '}
-					</button>
+					</button> */}
 					<GoogleLogin
 						clientId={process.env.GOOGLE_ID}
-						onSuccess={handleLogin}
-						onFailure={handleLogin}
-						cookiePolicy={'single_host_origin'}
+						render = { renderProps => (
+						<button 
+							className="h-10 w-64 flex items-center justify-center rounded-full bg-white font-[Sarabun-Regular] text-lg font-normal -tracking-tighter text-[#F67A95] shadow-button-shadow"
+							onClick={renderProps.onClick} 
+							disabled = {renderProps.disabled}>
+								Continue with&nbsp;
+								<GoogleIcon32/>
+						</button>)}
+					    onSuccess={handleLogin}
+					    onFailure={handleLogin}
+					    cookiePolicy={'single_host_origin'}
 					/>
 				</div>
 
 				<div className="mx-auto mt-1 flex h-3 w-full text-center">
 					<FooterVector className="fixed -z-50 w-full md:hidden" />
-					<p className=" fixed z-50 flex w-full justify-center pt-12 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-gray-400">
+					<span className=" fixed z-50 flex w-full justify-center pt-12 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-gray-400">
 						Already have an account? &nbsp;
 						<Link href={'/signin'}>
-							<p className=" cursor-pointer font-[Sarabun-SemiBold] text-xs font-semibold text-[#FF848E]">
-								{' '}
-								Sign In{' '}
-							</p>
+							<p className=" cursor-pointer font-[Sarabun-SemiBold] text-xs font-semibold text-[#FF848E]">&nbsp;Sign In&nbsp;</p>
 						</Link>
-					</p>
+					</span>
 				</div>
 			</div>
 		</>
