@@ -51,7 +51,7 @@ const accountdetails = () => {
 		console.log(userinfo.first_name)
 		setDefFirstname(userinfo.first_name)
 		setDefLastname(userinfo.last_name)
-		setDefGender(userinfo.Gender)
+		setDefGender(userinfo.gender)
 		setDefCulture(userinfo.culture)
 		setDefYearsInRelationship(userinfo.years_in_relationShip)
 	}
@@ -87,18 +87,21 @@ const accountdetails = () => {
 				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-10  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={deffirstname} placeholder="First Name" onChange={(e) => {setFirstname(e.target.value)}}/>
 				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-3  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="lastname" id="lastname" defaultValue={deflastname} placeholder="Last Name" onChange={(e) => {setLastname(e.target.value)}}/>
 				<div className='mx-3  mt-4 flex justify-between'>
-					<select className=' pl-6 ml-3 text-[#FF848E] rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-[160px] h-[56px]' name="gender" id="gender" defaultValue={defgender} onChange={(e) => {setGender(e.target.value)}} >
+					<select className=' pl-6 ml-3 text-[#FF848E] rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-[160px] h-[56px]' name="gender" id="gender" onChange={(e) => {setGender(e.target.value)}} >
               			<option value="female">Female</option>
               			<option value="male">Male</option>
+              			<option value="" disabled selected hidden>{defgender}</option>
           			</select>
-					<select className=' pl-6 ml-2 mr-3 text-[#FF848E] rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-[160px] h-[56px]'  name="culture" id="culture" placeholder='Culture' defaultValue={defculture} onChange={(e) => {setCulture(e.target.value)}}>
+					<select className=' pl-6 ml-2 mr-3 text-[#FF848E] rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-[160px] h-[56px]'  name="culture" id="culture" placeholder='Culture' onChange={(e) => {setCulture(e.target.value)}}>
               			<option value="culture 1">Culture 1</option>
               			<option value="culture 2">Culture 2</option>
+              			<option value="" disabled selected hidden>{defculture}</option>
               			<option value="culture 3">Culture 3</option>
               			<option value="culture 4">Culture 4</option>
           			</select>
 				</div>
-				<select className='pl-6 mx-3 mt-4 text-[#FF848E] rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-[330px] h-[56px] '  name="rel" id="rel" placeholder='rel' defaultValue={defyearsInRelationship} onChange={(e) => {setYearsInRelationship(e.target.value)}}>
+				<select className='pl-6 mx-3 mt-4 text-[#FF848E] rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-[330px] h-[56px] '  name="rel" id="rel" placeholder='rel' onChange={(e) => {setYearsInRelationship(e.target.value)}}>
+					<option value="" disabled selected hidden>{defyearsInRelationship}</option>
               		<option value="1">1</option>
               		<option value="2">2</option>
               		<option value="3">3</option>
