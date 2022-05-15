@@ -65,8 +65,15 @@ const userdet = () => {
 				},
 			});
 			console.log(response)
+			let procesinfo = await response.json()  
+			console.log(procesinfo.processdone)
 		if(response.status==202)
-			console.log("User Followed Successfully")
+		{
+			if(procesinfo.processdone=="unfollowed")
+				console.log("User Unfollowed Successfully")
+				if(procesinfo.processdone=="followed")
+				console.log("User Followed Successfully")
+		}
 		
 	}
 	if(accessToken==null)

@@ -1,4 +1,3 @@
-import { forcereload } from "../pages/helper";
 import Reply from '../assets/images/Reply.svg'
 import '../assets/images/photo.png'
 import Love from '../assets/images/Love.svg'
