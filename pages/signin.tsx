@@ -88,12 +88,12 @@ const signin = (pageProps) => {
         </div>
           <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16' onClick={() => signInUserPassword(userInputUserName, userInputPassword, router)}>Sign In</button>  
       </div>
-        <p className=' mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]'>Continue with</p>
-        <div className=" mt-3 px-32 flex w-full max-w-md items-center justify-around">
+        {/* <p className=' mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]'>Continue with</p> */}
+        {/* <div className=" mt-3 px-32 flex w-full max-w-md items-center justify-around">
           <button onClick={() => signIn('facebook')} className="flex fa fa-facebook w-8 h-8 rounded-full bg-[#4267B2] items-center justify-center text-center text-sm text-white"/>
           <button onClick={() => signIn('twitter')} className="flex fa fa-twitter w-8 h-8 rounded-full bg-[#00ACEE] items-center justify-center text-center text-sm text-white"/>
           <button onClick={() => signIn('google')} className=""> <GoogleIcon32/> </button>
-        </div>
+        </div> */}
       
       <div className='flex h-3 w-full text-center mt-1 mx-auto'>
           <FooterVector className="w-full -z-50 fixed md:hidden"/>
