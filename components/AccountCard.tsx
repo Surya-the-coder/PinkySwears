@@ -34,10 +34,13 @@ const AccountCard = (props) => {
           <p className='text-xs text-purple-500 font-Sarabun'>{props.createdData}</p>
           <p className='text-sm text-gray-500 mt-2'>{props.content}</p>
           <div className='mt-3 flex items-center'>
-            <button onClick={likePost}>
-            <Love></Love>
-            </button>
-            <p className='text-xs mx-2'>{props.numberOfLikes}</p>
+          {props.numberOfLikesCheck? <div className='flex'>
+          <button onClick={likePost}>             
+              <Love></Love>
+              </button>             
+              <p className='text-xs mx-2'>{props.numberOfLikes}</p>             
+          </div>
+          :null}           
 			      <Reply className=" ml-6"></Reply>
               <p className=' text-xs mx-2'>{props.numberOfLikes} replies</p>
           </div>

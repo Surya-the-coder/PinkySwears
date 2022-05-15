@@ -113,7 +113,7 @@ const userdet = () => {
 				<button className=" rounded-3xl w-[201px] h-[45px] font-[Sarabun-Medium] font-semibold text-sm text-[#ffffff] bg-[#F67A95]" onClick={followUser}> Follow </button>
 			</div>
 			<div className="">
-            	{PostsData.map( (post) => <AccountCard postid = {post.id} userid={post.user.id} username = {post.user.username} profileImage = {PostUserInfo.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} accessToken={accessToken}/> )}
+            	{PostsData.map( (post) => <AccountCard numberOfLikesCheck={true} postid = {post.id} userid={post.user.id} username = {post.user.username} profileImage = {PostUserInfo.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} accessToken={accessToken}/> )}
             </div>
 		</div>
 	);
