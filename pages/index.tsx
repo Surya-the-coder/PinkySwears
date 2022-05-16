@@ -37,6 +37,7 @@ const Home = (pageProps) => {
 	const [RefreshToken, setRefreshToken] = useState<any>()
 	const [AccessTokenValid, setAccessTokenValid] = useState(false)
 	const [RefreshNotInitiated, setRefreshNotInitiated] = useState(true)
+	const [GoogleIDToken, setGoogleIDToken] = useState()
 
 	useEffect(() => {
 		let accessTokenLS = localStorage.getItem('access_token')
@@ -113,35 +114,67 @@ const Home = (pageProps) => {
 			if (response.status === 201) {
 				console.log('User Created')
 				setUserCreated(true)
-				redirectToLoginPage(router)
-			} else if (response.status === 409) {
+				redirectToHomePage(router)
+			}
+			else if (response.status === 409) {
 				console.log('User Already exist')
 				setUserAlreadyExist(true)
-			} else {
+			}
+			else {
 				console.log('User Creation Failed')
 				setUserCreated(false)
 			}
-		} else {
+		} 
+		else {
 			setPasswordMismatch(true)
 		}
 	}
 
-	const handleLogin = async (googleData) => {
-		let googleIdToken = await googleData.tokenId;
-		console.log(googleIdToken)
+	const handleLogin = (googleData) => {
+		console.log(googleData)
+		let googleIdToken = googleData.tokenId;
+		setGoogleIDToken(googleIdToken)
+		SignUpWithGoogle()
+	}
+	
+	let SignUpWithGoogle = async () => {
+		let googleIDTok = GoogleIDToken
+		console.log(googleIDTok)
+		console.log(GoogleIDToken)
+		// while ( GoogleIDToken==undefined ) {
+		// 	// console.log('======Waiting for googleIDToken State======')
+		// }
 		let createUserApiUrl = 'https://backend.pinkyswears.in/api/user/social-signup/google-oauth2/'
+		
 		let response = await fetch(createUserApiUrl, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
-				'access_token' : await googleIdToken
+				'access_token' : GoogleIDToken
 			}),
 		})
 		
 		let data = await response.json()
 		
 		console.log(data)
-	  }
+		
+		if (response.status === 201) {
+			console.log('User Created')
+			setUserCreated(true)
+			localStorage.setItem('access_token', data.tokens.access)
+			localStorage.setItem('refresh_token', data.tokens.refresh)
+			localStorage.setItem('UserDetails', JSON.stringify(data.user))
+			redirectToHomePage(router)
+		} 
+		else if (response.status === 409) {
+			console.log('User Already exist')
+			setUserAlreadyExist(true)
+		} 
+		else {
+			console.log('User Creation Failed')
+			setUserCreated(false)
+		}
+	}
 
 	if (AccessToken != null) {
 		if (AccessTokenValid) {
@@ -163,7 +196,7 @@ const Home = (pageProps) => {
 				<div className="z-0 flex h-16 w-full items-center justify-center md:hidden">
 					<Vector className="w-full"></Vector>
 				</div>
-				<div className="z-50 mt-5 flex w-full flex-col items-center">
+				<div className="z-50 mt-10 flex w-full flex-col items-center">
 					<h2 className="text-center font-[segoepr] text-3xl font-bold">
 						Welcome!
 					</h2>
@@ -261,12 +294,12 @@ const Home = (pageProps) => {
 						</div>
 
 						<select
-							className=" select-text:[text-#020202] focus-welcome-field-shadowfocus select-text:font-[Sarabun-SemiBold] mt-4 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold text-[#CDCCCD] shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none"
+							className="bg-white select-text:text-[#020202] focus-welcome-field-shadowfocus select-text:font-[Sarabun-SemiBold] mt-4 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold text-[#CDCCCD] shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none"
 							onChange={(e) => {
 								setCulture(e.target.value)
 							}}
 						>
-							<option value="" disabled hidden>
+							<option value="">
 								Culture
 							</option>
 							<option value="South Indian">South Indian</option>
@@ -276,7 +309,7 @@ const Home = (pageProps) => {
 						</select>
 
 						<select
-							className="focus-welcome-field-shadowfocus select-text:font-[Sarabun-SemiBold] mt-4 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold text-[#CDCCCD] shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none"
+							className="bg-white focus-welcome-field-shadowfocus select-text:font-[Sarabun-SemiBold] mt-4 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold text-[#CDCCCD] shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none"
 							onChange={(e) => {
 								setYearsInRelationship(e.target.value)
 							}}
@@ -284,8 +317,6 @@ const Home = (pageProps) => {
 							<option
 								className=" text-gray-500"
 								value=""
-								disabled
-								hidden
 							>
 								Year's in relationship
 							</option>
@@ -330,7 +361,7 @@ const Home = (pageProps) => {
 						<GoogleIcon32 />{' '}
 					</button> */}
 					<GoogleLogin
-						clientId={'781525716783-bckl1mhi7lp21gevc6cjgi5vvoto3odf.apps.googleusercontent.com'}
+						clientId={'65395984080-s2sso604b22cihc6ntj7cg3vl2tmhn69.apps.googleusercontent.com'}
 						render = { renderProps => (
 						<button 
 							className="h-10 w-64 flex items-center justify-center rounded-full bg-white font-[Sarabun-Regular] text-lg font-normal -tracking-tighter text-[#F67A95] shadow-button-shadow"
