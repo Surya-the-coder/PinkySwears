@@ -20,6 +20,7 @@ let redirectToLoginPage = (router) => {
 
 const Home = (pageProps) => {
 	const router = useRouter()
+	let googleClientId = process.env.GOOGLE_ID
 	const [username, setUsername] = useState<any>()
 	const [email, setEmail] = useState<any>()
 	const [password, setPassword] = useState<any>()
@@ -126,18 +127,20 @@ const Home = (pageProps) => {
 	}
 
 	const handleLogin = async (googleData) => {
-		let googleIdToken = googleData.tokenId;
-
+		let googleIdToken = await googleData.tokenId;
+		console.log(googleIdToken)
 		let createUserApiUrl = 'https://backend.pinkyswears.in/api/user/social-signup/google-oauth2/'
-		// let response = await fetch(createUserApiUrl, {
-		// 	method: 'POST',
-		// 	headers: { 'Content-Type': 'application/json' },
-		// 	body: JSON.stringify({
-		// 		access_token : googleIdToken,
-		// 	}),
-		// })
-
-		// console.log(response)
+		let response = await fetch(createUserApiUrl, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				'access_token' : await googleIdToken
+			}),
+		})
+		
+		let data = await response.json()
+		
+		console.log(data)
 	  }
 
 	if (AccessToken != null) {
@@ -167,7 +170,7 @@ const Home = (pageProps) => {
 					<p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">
 						Create a new account
 					</p>
-					<form action="" className="flex w-full flex-col items-center">
+					<form action="" className="flex w-full flex-col items-center" autoComplete='on'>
 						<input
 							className=" focus-welcome-field-shadowfocus mt-2 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]"
 							type="text"
@@ -204,6 +207,7 @@ const Home = (pageProps) => {
 							name="Password"
 							id="password"
 							placeholder="Password"
+							autoComplete='on'
 							onChange={(e) => {
 								setPassword(e.target.value)
 							}}
@@ -218,6 +222,7 @@ const Home = (pageProps) => {
 							name="password"
 							id="Repassword"
 							placeholder="Re-enter Password"
+							autoComplete='on'
 							onChange={(e) => {
 								setReEnterPassword(e.target.value)
 							}}
@@ -261,7 +266,7 @@ const Home = (pageProps) => {
 								setCulture(e.target.value)
 							}}
 						>
-							<option value="" hidden>
+							<option value="" disabled hidden>
 								Culture
 							</option>
 							<option value="South Indian">South Indian</option>
@@ -277,8 +282,9 @@ const Home = (pageProps) => {
 							}}
 						>
 							<option
-								className=" text-[#CDCCCD]"
+								className=" text-gray-500"
 								value=""
+								disabled
 								hidden
 							>
 								Year's in relationship
@@ -324,7 +330,7 @@ const Home = (pageProps) => {
 						<GoogleIcon32 />{' '}
 					</button> */}
 					<GoogleLogin
-						clientId={process.env.GOOGLE_ID}
+						clientId={'781525716783-bckl1mhi7lp21gevc6cjgi5vvoto3odf.apps.googleusercontent.com'}
 						render = { renderProps => (
 						<button 
 							className="h-10 w-64 flex items-center justify-center rounded-full bg-white font-[Sarabun-Regular] text-lg font-normal -tracking-tighter text-[#F67A95] shadow-button-shadow"
@@ -340,8 +346,10 @@ const Home = (pageProps) => {
 				</div>
 
 				<div className="mx-auto mt-1 flex h-3 w-full text-center">
-					<FooterVector className="fixed -z-50 w-full md:hidden" />
-					<span className=" fixed z-50 flex w-full justify-center pt-12 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-gray-400">
+					<FooterVector className="-z-50 w-full md:hidden" />
+				</div>
+				<div>
+					<span className="relative z-50 bottom-0 flex bg-transparent w-full justify-center pt-12 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-gray-400">
 						Already have an account? &nbsp;
 						<Link href={'/signin'}>
 							<p className=" cursor-pointer font-[Sarabun-SemiBold] text-xs font-semibold text-[#FF848E]">&nbsp;Sign In&nbsp;</p>
