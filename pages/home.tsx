@@ -53,7 +53,7 @@ const home = ({session}) => {
 
     let getAllPosts = async () => {
         console.log('========================INSIDE GETALL POST===========================')
-        let postUrl = 'https://dream-pg-backend.herokuapp.com/api/post/';
+        let postUrl = 'https://backend.pinkyswears.in/api/post/';
         let response = await fetch(postUrl);
         let data = await response.json();
         setPosts(data);

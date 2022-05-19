@@ -10,7 +10,7 @@ import { useSession, signIn, signOut, getSession } from 'next-auth/react'
 
 
 let signInUserPassword = async (userInputUserName, userInputPassword, router) => {
-  let loginApiUrl = 'https://dream-pg-backend.herokuapp.com/api/user/login/';
+  let loginApiUrl = 'https://backend.pinkyswears.in/api/user/login/';
   
   let response = await( await fetch(loginApiUrl, {
       method:'POST',
@@ -67,26 +67,28 @@ const signin = (pageProps) => {
         <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">Create a new account</p>
       </div>
       <div className="mt-5 flex flex-col items-center w-full">
-        
-        <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username" onChange={ (e) => setUserInputUserName(e.target.value) }/>
-        <div className='flex items-center justify-end mt-4 '>
-          <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1] z-0" type="password" name="Password" id="password" placeholder="Password" onChange={ (e) => setuserInputPassword(e.target.value) }/>
-          <button className='z-50 fixed mr-3'><PasswordEye/></button>
-        </div>
-        
-        <div className=" px-2 mt-3 flex w-full max-w-md items-center justify-between">
-          <div className="mx-10 flex items-center justify-center">
-            <input className=" accent-pink-500 outline-hidden h-2 w-2 " type="radio" id="radiobutton" name="radiobutton"/>
-            <label className="pl-2 font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold"> Remember Me </label>
+        <form>
+          <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username" onChange={ (e) => setUserInputUserName(e.target.value) }/>
+          <div className='flex items-center justify-end mt-4 '>
+            <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1] z-0" type="password" name="Password" id="password" placeholder="Password" onChange={ (e) => setuserInputPassword(e.target.value) }/>
+            <button className='z-50 fixed mr-3'><PasswordEye/></button>
           </div>
+
+          <div className=" px-2 mt-3 flex w-full max-w-md items-center justify-between">
+            <div className="mx-10 flex items-center justify-center">
+              <input className=" accent-pink-500 outline-hidden h-2 w-2 " type="radio" id="radiobutton" name="radiobutton"/>
+              <label className="pl-2 font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold"> Remember Me </label>
+            </div>
+
+            <div className="mx-10">
+              <Link href="/forgotpassword">
+                <p className="font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold "> Forgot password? </p>
+              </Link>
+            </div>          
+          </div>
+          <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16' onClick={() => signInUserPassword(userInputUserName, userInputPassword, router)}>Sign In</button>
           
-          <div className="mx-10">
-            <Link href="/forgotpassword">
-              <p className="font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold "> Forgot password? </p>
-            </Link>
-          </div>          
-        </div>
-          <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16' onClick={() => signInUserPassword(userInputUserName, userInputPassword, router)}>Sign In</button>  
+        </form>
       </div>
         {/* <p className=' mt-3 font-[Sarabun-SemiBold] text-xs text-[#262626]'>Continue with</p> */}
         {/* <div className=" mt-3 px-32 flex w-full max-w-md items-center justify-around">

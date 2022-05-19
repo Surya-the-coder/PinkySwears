@@ -133,24 +133,22 @@ const Home = (pageProps) => {
 	const handleLogin = (googleData) => {
 		console.log(googleData)
 		let googleIdToken = googleData.tokenId;
+		localStorage.setItem('google_ID_Token', googleIdToken)
 		setGoogleIDToken(googleIdToken)
 		SignUpWithGoogle()
 	}
 	
 	let SignUpWithGoogle = async () => {
-		let googleIDTok = GoogleIDToken
+		let googleIDTok = localStorage.getItem('google_ID_Token')
 		console.log(googleIDTok)
 		console.log(GoogleIDToken)
-		// while ( GoogleIDToken==undefined ) {
-		// 	// console.log('======Waiting for googleIDToken State======')
-		// }
 		let createUserApiUrl = 'https://backend.pinkyswears.in/api/user/social-signup/google-oauth2/'
 		
 		let response = await fetch(createUserApiUrl, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
-				'access_token' : GoogleIDToken
+				'access_token' : googleIDTok
 			}),
 		})
 		
@@ -393,6 +391,7 @@ const Home = (pageProps) => {
 }
 
 export default Home
+
 
 // export async function getServerSideProps (context) {
 //	 const session = await getSession(context);

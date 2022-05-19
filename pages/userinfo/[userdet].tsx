@@ -36,7 +36,7 @@ const userdet = () => {
     }, []);
 	console.log(router.query.userdet)
     let getAllPostsOfUser = async () => {
-        let fetchAllPostApiUrl = `https://dream-pg-backend.herokuapp.com/api/post/user/${router.query.userdet}/`;
+        let fetchAllPostApiUrl = `https://backend.pinkyswears.in/api/post/user/${router.query.userdet}/`;
         let response = await fetch(fetchAllPostApiUrl);
         let postData = await response.json()        
 		setPostsData(postData)
@@ -44,13 +44,13 @@ const userdet = () => {
 		setPostsOfUser(Object.keys(postData).length);
     }
 	let getFollowers = async () => {
-        let fetchFollowerApiUrl = `https://dream-pg-backend.herokuapp.com/api/user/followers/${router.query.userdet}/`;
+        let fetchFollowerApiUrl = `https://backend.pinkyswears.in/api/user/followers/${router.query.userdet}/`;
         let response = await fetch(fetchFollowerApiUrl);
         let followerinfo = await response.json()        
 		setFollowerCount(Object.keys(followerinfo).length);
     }
 	let getFollowing = async () => {
-        let fetchFollowingApiUrl = `https://dream-pg-backend.herokuapp.com/api/user/followings/${router.query.userdet}/`;
+        let fetchFollowingApiUrl = `https://backend.pinkyswears.in/api/user/followings/${router.query.userdet}/`;
         let response = await fetch(fetchFollowingApiUrl);
         let followinginfo = await response.json()        
 		setFollowingCount(Object.keys(followinginfo).length);

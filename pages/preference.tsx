@@ -5,9 +5,12 @@ import Ellipse from '../assets/images/Ellipse.svg'
 // import { getSession, signOut } from 'next-auth/react'
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { GoogleLogout } from "react-google-login";
 
 let signOut = (router) => {
+    console.log("================Inside SignOut================")
     localStorage.clear()
+    sessionStorage.clear()
     router.push('/')
 }
 
@@ -39,6 +42,12 @@ const preference = () => {
         }
         console.log(localStorage.getItem('UserDetails'))
     }, [])
+
+
+    let logout = () => {
+        signOut(router)
+    }
+
     if (accessToken != null) {
         return (
             <div className="flex flex-col  items-center min-h-screen bg-gradient-to-t from-[rgb(253,235,247)] to-[#FFBCD1]">
@@ -49,7 +58,7 @@ const preference = () => {
 			    <div className="flex flex-col w-full max-w-md z-50">
                     <TopBar displayPic = {true} displayName = {true} loggedInUserName = {user.first_name + ' ' + user.last_name} loggedInUserProfilePic={user.profileImg}/>
 			    	<div className="flex justify-center">
-                        <button className="border-none bg-pink-400 rounded-full w-28 h-12 text-xl text-white" onClick={() => signOut(router)}> Sign Out </button>
+                        <GoogleLogout clientId='65395984080-s2sso604b22cihc6ntj7cg3vl2tmhn69.apps.googleusercontent.com' onLogoutSuccess={logout} render={ renderProps => (<button className="border-none bg-pink-400 rounded-full w-28 h-12 text-xl text-white" onClick={renderProps.onClick} disabled = {renderProps.disabled}> Sign Out </button>)}/>
                     </div>
 			        <NavBar/>
 			    </div>
