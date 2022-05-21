@@ -1,5 +1,5 @@
 import TopBar from "../components/TopBar";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
@@ -15,6 +15,8 @@ let redirectToHomePage = () => {
 
 const home = ({session}) => {
     console.log('=============================HOME=============================')
+
+    const ref = useRef();
 
     let [All, setAll] = useState(false)
     let [Recent, setRecent] = useState(false)
@@ -107,7 +109,7 @@ const home = ({session}) => {
 
                     {isDataFetched?
                         <div className="">
-                            {posts.map( (post) => <Card postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImage} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
+                            {posts.map( (post) => <Card key={post.id} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImage} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
                         </div>
                     :
                     <div className="">
@@ -118,6 +120,7 @@ const home = ({session}) => {
                     </div>
                     }
                 </div>
+                {/* {React.forwardRef((props, ref) => <NavBar refs={ref} {...props} />)} */}
                 <NavBar/>
             </div>
         );
