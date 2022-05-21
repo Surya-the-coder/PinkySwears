@@ -113,14 +113,13 @@ const accountdetails = () => {
           		</select>
 				<Link href="/changepassword">
 					<button className=' mt-4 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-[330px] h-[56px]'>Click here to change password</button>  
-				</Link>
-				
+				</Link>				
 				<div className='flex mt-[40px] mb-6 mx-3 justify-between'>	
 				<Link href="/home">
 					<button className=' h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl'>Back</button> 
 				</Link>				
-					<button className='  ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={editUserDetails}>Save</button>  				
-				</div>			
+					<button className='  ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={editUserDetails}>Save</button>  								
+				</div>		
 			</div>
 			:<LoadingSpinner/>}
 		</div>
