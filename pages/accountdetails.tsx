@@ -2,6 +2,8 @@ import Head from 'next/head';
 import AccountDetailsTopBar from '../components/AccountDetailsTopBar'
 import Ellipse from '../assets/images/Ellipse.svg'
 import { useEffect, useState } from 'react';
+import Link from 'next/link'
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const accountdetails = () => {
 	const [firstname, setFirstname] = useState<any>()
@@ -17,6 +19,7 @@ const accountdetails = () => {
 	const [defgender, setDefGender] = useState<any>()
 	const [defculture, setDefCulture] = useState<any>()
 	const [defyearsInRelationship, setDefYearsInRelationship] = useState<any>()
+	const [isDataFetched, setIsDataFetched] = useState(false)
 	useEffect(() => {
 		console.log("UseEffect")
 		let accessTokenLS = localStorage.getItem('access_token')
@@ -54,6 +57,7 @@ const accountdetails = () => {
 		setDefGender(userinfo.gender)
 		setDefCulture(userinfo.culture)
 		setDefYearsInRelationship(userinfo.years_in_relationShip)
+		setIsDataFetched(true)
 	}
 	let editUserDetails = async () => {		
 			let editUserDetailsUrl = 'https://backend.pinkyswears.in/api/user/edit/'
@@ -71,7 +75,7 @@ const accountdetails = () => {
 					years_in_relationShip: yearsInRelationship,
 				}),
 			})
-			console.log(response)
+			console.log(response)			
 		}
 	
 
@@ -82,7 +86,7 @@ const accountdetails = () => {
 				<meta name='theme-color' content='#FFBCD1' />
 			</Head>
 			<AccountDetailsTopBar/>
-			{console.log(userinfo)}
+			{isDataFetched?
 			<div className='flex flex-col items-center mx-6 h-[65vh] max-h-[70vh] w-[95vw] max-w-md rounded-3xl mt-7 bg-[#FFFFFF] '>
 				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-10  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={deffirstname} placeholder="First Name" onChange={(e) => {setFirstname(e.target.value)}}/>
 				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-3  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="lastname" id="lastname" defaultValue={deflastname} placeholder="Last Name" onChange={(e) => {setLastname(e.target.value)}}/>
@@ -107,11 +111,18 @@ const accountdetails = () => {
               		<option value="3">3</option>
               		<option value="4">4</option>
           		</select>
-				<div className='flex mt-[80px] mb-6 mx-3 justify-between'>					
+				<Link href="/changepassword">
+					<button className=' mt-4 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-[330px] h-[56px]'>Click here to change password</button>  
+				</Link>
+				
+				<div className='flex mt-[40px] mb-6 mx-3 justify-between'>	
+				<Link href="/home">
 					<button className=' h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl'>Back</button> 
-					<button className='  ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={editUserDetails}>Save</button>  
+				</Link>				
+					<button className='  ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={editUserDetails}>Save</button>  				
 				</div>			
 			</div>
+			:<LoadingSpinner/>}
 		</div>
 	);
 }

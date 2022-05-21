@@ -33,7 +33,7 @@ const NavBar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/preference">
+            <Link href="/accountdetails">
               <Preference refs={ref}/>
             </Link>
           </li>
