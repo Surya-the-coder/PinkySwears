@@ -1,4 +1,3 @@
-import { getSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,12 +14,12 @@ const userdet = () => {
     const router = useRouter();
 	const [accessToken, setaccessToken] = useState<any>()
 	const [refreshToken, setRefreshToken] = useState<any>()
+	const[isFollowing,setFollow]=useState<any>()
 
     useEffect(() => {
 		
 		let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
-        
         if (accessTokenLS == null) {
 			console.log('No Access Token')
             router.push('/')
@@ -32,9 +31,10 @@ const userdet = () => {
 			getFollowers();
 			getFollowing();
         }
-		// console.log(postsOfUser+" "+FollowerCount+" "+FollowingCount)
     }, []);
-	console.log(router.query.userdet)
+	
+	console.log(router.query.userdet)	
+	 
     let getAllPostsOfUser = async () => {
         let fetchAllPostApiUrl = `https://backend.pinkyswears.in/api/post/user/${router.query.userdet}/`;
         let response = await fetch(fetchAllPostApiUrl);
@@ -46,8 +46,21 @@ const userdet = () => {
 	let getFollowers = async () => {
         let fetchFollowerApiUrl = `https://backend.pinkyswears.in/api/user/followers/${router.query.userdet}/`;
         let response = await fetch(fetchFollowerApiUrl);
-        let followerinfo = await response.json()        
+        let followerinfo = await response.json()  
+		console.log(followerinfo)      
 		setFollowerCount(Object.keys(followerinfo).length);
+		var newA = followerinfo.filter(function (item) {
+			return item.id== 33;});
+		console.log(newA)
+		const countOfArray = (Object.keys(newA).length)
+		console.log("countOfArray")
+		console.log(countOfArray)
+		if(countOfArray==0)
+		setFollow(false)
+		else
+		setFollow(true)
+
+		console.log(isFollowing)
     }
 	let getFollowing = async () => {
         let fetchFollowingApiUrl = `https://backend.pinkyswears.in/api/user/followings/${router.query.userdet}/`;
@@ -55,7 +68,8 @@ const userdet = () => {
         let followinginfo = await response.json()        
 		setFollowingCount(Object.keys(followinginfo).length);
     }
-	let followUser =async () => {
+	let followUnFollowUser =async () => {
+		console.log("Followedd.................")
 		console.log("Follow Function")
 		let response= await fetch(`https://backend.pinkyswears.in/api/user/follow/${router.query.userdet}/`, {
 				method: "POST",
@@ -74,8 +88,12 @@ const userdet = () => {
 				if(procesinfo.processdone=="followed")
 				console.log("User Followed Successfully")
 		}
-		
+		console.log("State Change")
+		console.log(isFollowing)
+		setFollow(!isFollowing)				
 	}
+	 
+	
 	if(accessToken==null)
 	{
 		console.log("No Access Token")
@@ -110,7 +128,7 @@ const userdet = () => {
 				<h6 className=" font-[Sarabun-Medium] font-semibold text-black text-xs mt-[7px]">Programmer, developer, designer...</h6>
 			</div>
 			<div className="mx-[40px] mt-[19px] flex items-center justify-center ">
-				<button className=" rounded-3xl w-[201px] h-[45px] font-[Sarabun-Medium] font-semibold text-sm text-[#ffffff] bg-[#F67A95]" onClick={followUser}> Follow </button>
+				<button className=" rounded-3xl w-[201px] h-[45px] font-[Sarabun-Medium] font-semibold text-sm text-[#ffffff] bg-[#F67A95]" onClick={followUnFollowUser} > {isFollowing?"Unfollow":"Follow"} </button>
 			</div>
 			<div className="">
             	{PostsData.map( (post) => <AccountCard numberOfLikesCheck={true} postid = {post.id} userid={post.user.id} username = {post.user.username} profileImage = {PostUserInfo.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} accessToken={accessToken}/> )}
@@ -118,7 +136,7 @@ const userdet = () => {
 		</div>
 	);
 }
-
+	
 export default userdet;
 
 
