@@ -14,27 +14,27 @@ const NavBar = () => {
         <ul className="flex justify-around">
           <li className="">
             <Link href="/home">
-              <Home refs={ref}/>
+              <Home refs={ref} className = 'cursor-pointer'/>
             </Link>
           </li>
           <li>
             <Link href="#">
-              <Posts refs={ref} />
+              <Posts refs={ref}  className = 'cursor-pointer'/>
             </Link>
           </li>
           <li>
             <Link href="/createpost">
-              <CreatePost refs={ref}/>
+              <CreatePost refs={ref} className = 'cursor-pointer'/>
             </Link>
           </li>
           <li>
             <Link href="#">
-              <People refs={ref}/>
+              <People refs={ref} className = 'cursor-pointer'/>
             </Link>
           </li>
           <li>
             <Link href="/preference">
-              <Preference refs={ref}/>
+              <Preference refs={ref} className = 'cursor-pointer'/>
             </Link>
           </li>
         </ul>

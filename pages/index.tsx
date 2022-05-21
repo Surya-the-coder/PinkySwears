@@ -9,6 +9,7 @@ import GoogleIcon48 from '../assets/images/Google-48.svg'
 import { useSession, signIn, signOut, getSession } from 'next-auth/react'
 import { waitForDebugger } from 'inspector'
 import GoogleLogin from 'react-google-login'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 let redirectToHomePage = (router) => {
 	return router.push('/home')
@@ -20,7 +21,8 @@ let redirectToLoginPage = (router) => {
 
 const Home = (pageProps) => {
 	const router = useRouter()
-	let googleClientId = process.env.GOOGLE_ID
+
+	const [loading, setLoading] = useState(false)
 	const [username, setUsername] = useState<any>()
 	const [email, setEmail] = useState<any>()
 	const [password, setPassword] = useState<any>()
@@ -94,6 +96,7 @@ const Home = (pageProps) => {
 
 	let signUp = async () => {
 		if (password === reEnterPassword) {
+			setLoading(true)
 			setPasswordMismatch(false)
 			let createUserApiUrl = 'https://backend.pinkyswears.in/api/user/new/'
 			let response = await fetch(createUserApiUrl, {
@@ -131,6 +134,7 @@ const Home = (pageProps) => {
 	}
 
 	const handleLogin = (googleData) => {
+		setLoading(true)
 		console.log(googleData)
 		let googleIdToken = googleData.tokenId;
 		localStorage.setItem('google_ID_Token', googleIdToken)
@@ -139,6 +143,7 @@ const Home = (pageProps) => {
 	}
 	
 	let SignUpWithGoogle = async () => {
+		setLoading(true)
 		let googleIDTok = localStorage.getItem('google_ID_Token')
 		console.log(googleIDTok)
 		console.log(GoogleIDToken)
@@ -190,7 +195,8 @@ const Home = (pageProps) => {
 					<meta name="theme-color" content="#FFBCD1" />
 					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 				</Head>
-
+				{loading?<LoadingSpinner/>:
+				<>
 				<div className="z-0 flex h-16 w-full items-center justify-center md:hidden">
 					<Vector className="w-full"></Vector>
 				</div>
@@ -385,6 +391,8 @@ const Home = (pageProps) => {
 						</Link>
 					</span>
 				</div>
+				</>
+			}
 			</div>
 		</>
 	)
