@@ -85,7 +85,7 @@ const accountdetails = () => {
 			<Head>
 				<meta name='theme-color' content='#FFBCD1' />
 			</Head>
-			<AccountDetailsTopBar/>
+			<AccountDetailsTopBar first_name={deffirstname} last_name={deflastname} />
 			{isDataFetched?
 			<div className='flex flex-col items-center mx-6 h-[65vh] max-h-[70vh] w-[95vw] max-w-md rounded-3xl mt-7 bg-[#FFFFFF] '>
 				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-10  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={deffirstname} placeholder="First Name" onChange={(e) => {setFirstname(e.target.value)}}/>
