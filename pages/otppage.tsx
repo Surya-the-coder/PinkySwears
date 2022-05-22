@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Head from 'next/head'
 import Ellipse from '../assets/images/Ellipse.svg'
-const forgotpassword = () => {
+const otppage = () => {
 	return (
 		<div className="flex flex-col justify-center min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] items-center">
 			<Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
@@ -27,4 +27,4 @@ const forgotpassword = () => {
 	);
 }
 
-export default forgotpassword;
+export default otppage;

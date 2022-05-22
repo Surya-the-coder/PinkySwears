@@ -88,7 +88,6 @@ const accountdetails = () => {
 				<meta name='theme-color' content='#FFBCD1' />
 			</Head>
 			<AccountDetailsTopBar first_name={deffirstname} last_name={deflastname} />
-			{isDataFetched?
 			<div className='flex flex-col items-center mx-6 max-h-screen w-[95vw] max-w-md rounded-3xl mt-7 bg-[#FFFFFF] '>
 			<form autoComplete='on' className='flex flex-col justify-center'>				
 				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-10  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={deffirstname} placeholder="First Name" autoComplete='on' onChange={(e) => {setFirstname(e.target.value)}}/>
@@ -123,11 +122,10 @@ const accountdetails = () => {
 					<Link href="/home">
 						<button className=' h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl cursor-pointer'>Back</button> 
 					</Link>				
-					<button className='  ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={editUserDetails}>Save</button>  								
+					<button className='  ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' type="button" onClick={editUserDetails}>Save</button>  								
 				</div>	
 			</form>	
 			</div>
-			:<LoadingSpinner/>}
 		</div>
 	);
 }
