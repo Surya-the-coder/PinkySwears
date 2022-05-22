@@ -95,7 +95,7 @@ const home = ({session}) => {
         return (
             <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
-                <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh] z-50  w-full max-w-md">
+                <div className="pb-5 overflow-y-auto overflow-hidden h-[92vh] z-50  w-full max-w-md ">
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} loggedInUserProfilePic = {user.profileImage}/>
                     <div className="flex justify-around mx-10 top-24">
@@ -104,7 +104,7 @@ const home = ({session}) => {
                         <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Most")}>Most</button>
                         <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Top")}>Top</button>
                     </div>
-                    <p className="mx-8 my-8">Today</p>
+                    <p className="mx-8 my-2">Today</p>
 
                     {isDataFetched?
                         <div className="">
