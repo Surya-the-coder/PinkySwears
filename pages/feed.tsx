@@ -55,8 +55,8 @@ const feed = ({session}) => {
                 <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh] z-50  w-full max-w-md">
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} loggedInUserProfilePic = {user.profileImage}/>
-                    <div className="flex justify-around mx-10 top-24">
-                        <button className="flex w-full bg-white rounded-lg justify-between h-[32px] px-3">
+                    <div className="flex justify-around mx-6 top-24 ">
+                        <button className="flex w-full bg-white rounded-lg justify-between items-center h-[32px] px-3">
 							<p className="items-center">Feed</p>
 							<p className="items-center align-center"><FeedIcon/></p>
 						</button>

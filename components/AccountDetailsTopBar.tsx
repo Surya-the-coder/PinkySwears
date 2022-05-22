@@ -7,11 +7,7 @@ const AccountDetailsTopBar = (props) => {
 	return (
 		<div className='flex flex-col w-full max-w-md'>
 			<div className="flex mt-3 justify-between items-center">     			 
-				<p className='mx-4 text-[#5F5D5D] font-[Sarabun-SemiBold[ font-semibold text-xl'>Account Details</p> 				
-				<div className="mx-4 flex">
-          			<BellIcon className="mx-2"/>
-          			<Search className="mx-2"/>
-      			</div>
+				{/* <p className='mx-4 text-[#5F5D5D] font-[Sarabun-SemiBold[ font-semibold text-xl'>Account Details</p> 				 */}
 			</div>
 			<div className='pt-2 flex flex-col justify-center items-center'>
 				<img src={'https://ucarecdn.com/05f649bf-b70b-4cf8-90f7-2588ce404a08/'} className=' rounded-full h-16 w-16'></img> {/* <Profile className="mx-2"/> */}

@@ -84,9 +84,11 @@ const changepassword = () => {
 			</Head>
 			<AccountDetailsTopBar first_name={deffirstname} last_name={deflastname} />
 			{isDataFetched?
-			<div className='flex flex-col items-center mx-6 h-[65vh] max-h-[70vh] w-[95vw] max-w-md rounded-3xl mt-7 bg-[#FFFFFF] '>
-			<form autoComplete='on'>
-				<p className=' mt-[40px] items-center text-[#F67A95] font-[Sarabun-Bold] font-bold text-xl'> Change Password</p>
+			<div className='flex flex-col justify-center items-center mx-6 h-[65vh] max-h-[70vh] w-[95vw] max-w-md rounded-3xl mt-7 bg-[#FFFFFF] '>
+			<form autoComplete='on' className='flex flex-col justify-center'>
+				<div className='flex justify-center'>
+					<p className=' mt-[40px] items-center text-[#F67A95] font-[Sarabun-Bold] font-bold text-xl'> Change Password</p>
+				</div>
 				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-[40px]  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="password" name="password" id="password" autoComplete='on' placeholder="Current Password" onChange={(e) => {setOldPassword(e.target.value)}} />
 				{currentPasswordCheck ? (
 							<p className="pt-2 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-red-500">

@@ -17,7 +17,6 @@ const forgotpassword = () => {
 				<p className=" mt-3 text-xs font-[Sarabun-ExtraBold] font-extrabold -tracking-tighter" >Remember password?<Link href="/"><a className=" text-[#F67A95] cursor-pointer">Login</a></Link></p>
 				<button className=" bg-[#F67A95] mt-24 mb-9 h-14 w-80 rounded-3xl text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter">Send</button>				
 			</div>
-			
 		</div>	
 	);
 }

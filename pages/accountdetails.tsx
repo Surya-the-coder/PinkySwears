@@ -20,6 +20,7 @@ const accountdetails = () => {
 	const [defculture, setDefCulture] = useState<any>()
 	const [defyearsInRelationship, setDefYearsInRelationship] = useState<any>()
 	const [isDataFetched, setIsDataFetched] = useState(false)
+
 	useEffect(() => {
 		console.log("UseEffect")
 		let accessTokenLS = localStorage.getItem('access_token')
@@ -36,6 +37,7 @@ const accountdetails = () => {
 			getUserInfo(accessTokenLS)
         }
     }, []);
+
 	let getUserInfo = async (accessTokenLS) => {
 		console.log("******getuserinfo*****")
 		console.log(accessTokenLS)
@@ -59,25 +61,25 @@ const accountdetails = () => {
 		setDefYearsInRelationship(userinfo.years_in_relationShip)
 		setIsDataFetched(true)
 	}
+
 	let editUserDetails = async () => {		
-			let editUserDetailsUrl = 'https://backend.pinkyswears.in/api/user/edit/'
-			let response = await fetch(editUserDetailsUrl, {
-				method: 'POST',
-				headers: {
-					"Content-Type": "application/json",
-					'Authorization': 'Bearer '+accessToken,
-				},
-				body: JSON.stringify({
-					first_name: firstname,
-					last_name: lastname,
-					gender: gender,
-					culture: culture,
-					years_in_relationShip: yearsInRelationship,
-				}),
-			})
-			console.log(response)			
-		}
-	
+		let editUserDetailsUrl = 'https://backend.pinkyswears.in/api/user/edit/'
+		let response = await fetch(editUserDetailsUrl, {
+			method: 'POST',
+			headers: {
+				"Content-Type": "application/json",
+				'Authorization': 'Bearer '+accessToken,
+			},
+			body: JSON.stringify({
+				first_name: firstname,
+				last_name: lastname,
+				gender: gender,
+				culture: culture,
+				years_in_relationShip: yearsInRelationship,
+			}),
+		})
+		console.log(response)			
+	}
 
 	return (
 		<div className=" flex flex-col items-center min-h-screen w-full bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
@@ -87,12 +89,12 @@ const accountdetails = () => {
 			</Head>
 			<AccountDetailsTopBar first_name={deffirstname} last_name={deflastname} />
 			{isDataFetched?
-			<div className='flex flex-col items-center mx-6 h-[65vh] max-h-[70vh] w-[95vw] max-w-md rounded-3xl mt-7 bg-[#FFFFFF] '>
-			<form autoComplete='on'>				
+			<div className='flex flex-col items-center mx-6 max-h-screen w-[95vw] max-w-md rounded-3xl mt-7 bg-[#FFFFFF] '>
+			<form autoComplete='on' className='flex flex-col justify-center'>				
 				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-10  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={deffirstname} placeholder="First Name" autoComplete='on' onChange={(e) => {setFirstname(e.target.value)}}/>
 				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-3  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="lastname" id="lastname" defaultValue={deflastname} placeholder="Last Name" autoComplete='on' onChange={(e) => {setLastname(e.target.value)}}/>
 				<div className='mx-3  mt-4 flex justify-between'>
-					<select className=' pl-6 ml-3 text-[#FF848E] rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-[160px] h-[56px]' name="gender" id="gender" onChange={(e) => {setGender(e.target.value)}} >
+					<select className=' pl-6 text-[#FF848E] rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-[160px] h-[56px]' name="gender" id="gender" onChange={(e) => {setGender(e.target.value)}} >
               			<option value="female">Female</option>
               			<option value="male">Male</option>
               			<option value="" disabled selected hidden>{defgender}</option>
@@ -112,13 +114,15 @@ const accountdetails = () => {
               		<option value="3">3</option>
               		<option value="4">4</option>
           		</select>
-				<Link href="/changepassword">
-					<button className=' mt-4 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-[330px] h-[56px] cursor-pointer'>Click here to change password</button>  
-				</Link>				
-				<div className='flex mt-[40px] mb-6 mx-3 justify-between'>	
-				<Link href="/home">
-					<button className=' h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl cursor-pointer'>Back</button> 
-				</Link>				
+				<div className='mt-5 w-full flex justify-center'>
+					<Link href="/changepassword">
+						<button className=' mt-4 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-[330px] h-[56px] cursor-pointer'>Click here to change password</button>  
+					</Link>
+				</div>
+				<div className='flex mt-10 mb-6 mx-3 justify-between'>
+					<Link href="/home">
+						<button className=' h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl cursor-pointer'>Back</button> 
+					</Link>				
 					<button className='  ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={editUserDetails}>Save</button>  								
 				</div>	
 			</form>	
