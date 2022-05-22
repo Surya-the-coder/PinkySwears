@@ -1,13 +1,10 @@
 import TopBar from "../components/TopBar";
 import { useState, useEffect, useRef } from 'react';
 import NavBar from "../components/NavBar";
-import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
-import dateFormat from 'dateformat';
 import Router, { useRouter } from 'next/router'
 import LoadingCard from "../components/LoadingCard";
 import InfoCard from '../components/InfoCard'
-import { UserRefreshClient } from "google-auth-library";
 
 let redirectToHomePage = () => {
     const router = useRouter()
@@ -27,8 +24,8 @@ const userinterest = ({session}) => {
     const [refreshToken, setRefreshToken] = useState<any>()   
     const [user, setUser] = useState<any>()   
     const [isDataFetched, setIsDataFetched] = useState(false)
-	const[followinginfo,setFollowingInfo]=useState<any>()
-	const[followerInfo,setFollowerInfo]=useState<any>()
+	const[followinginfo,setFollowingInfo]=useState([])
+	const[followerInfo,setFollowerInfo]=useState([])
 
     
     const router = useRouter()
