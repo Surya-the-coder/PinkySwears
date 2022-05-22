@@ -107,8 +107,8 @@ const userinterest = ({session}) => {
 
                     {isDataFetched?
                         <div className="w-full">
-                            {followings? followinginfo.map((eachfollowinginfo)=> <InfoCard buttoncontent={"Unfollow"} profileImage={eachfollowinginfo.profileImg} first_name={eachfollowinginfo.first_name} last_name={eachfollowinginfo.last_name} username={eachfollowinginfo.username}/>) :null}
-							{followers? followerInfo.map((eachfollowerinfo)=> <InfoCard buttoncontent={"Remove"} profileImage={eachfollowerinfo.profileImg} first_name={eachfollowerinfo.first_name} last_name={eachfollowerinfo.last_name} username={eachfollowerinfo.username}/>) :null}
+                            {followings? followinginfo.map((eachfollowinginfo)=> <InfoCard buttoncontent={"Unfollow"} profileImage={eachfollowinginfo.profileImg} userid={eachfollowinginfo.id} first_name={eachfollowinginfo.first_name} last_name={eachfollowinginfo.last_name} username={eachfollowinginfo.username}/>) :null}
+							{followers? followerInfo.map((eachfollowerinfo)=> <InfoCard buttoncontent={"Remove"} profileImage={eachfollowerinfo.profileImg} userid={eachfollowerinfo.id} first_name={eachfollowerinfo.first_name} last_name={eachfollowerinfo.last_name} username={eachfollowerinfo.username}/>) :null}
 							{activity? <div>Actvity</div> :null}
                         </div>
                     :
