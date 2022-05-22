@@ -6,6 +6,7 @@ import Ellipse from '../assets/images/Ellipse.svg'
 import dateFormat from 'dateformat';
 import Router, { useRouter } from 'next/router'
 import LoadingCard from "../components/LoadingCard";
+import FeedIcon from '../assets/images/FeedIcon.svg'
 
 const feed = ({session}) => {
     console.log('=============================FEED=============================')   
@@ -55,9 +56,9 @@ const feed = ({session}) => {
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} loggedInUserProfilePic = {user.profileImage}/>
                     <div className="flex justify-around mx-10 top-24">
-                        <button className="flex w-full bg-white rounded-lg justify-between px-3">
-							<p>Feed</p>
-							<p>svg</p>
+                        <button className="flex w-full bg-white rounded-lg justify-between h-[32px] px-3">
+							<p className="items-center">Feed</p>
+							<p className="items-center align-center"><FeedIcon/></p>
 						</button>
                     </div>
                     {isDataFetched?

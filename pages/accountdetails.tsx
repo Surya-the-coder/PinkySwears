@@ -88,8 +88,9 @@ const accountdetails = () => {
 			<AccountDetailsTopBar first_name={deffirstname} last_name={deflastname} />
 			{isDataFetched?
 			<div className='flex flex-col items-center mx-6 h-[65vh] max-h-[70vh] w-[95vw] max-w-md rounded-3xl mt-7 bg-[#FFFFFF] '>
-				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-10  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={deffirstname} placeholder="First Name" onChange={(e) => {setFirstname(e.target.value)}}/>
-				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-3  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="lastname" id="lastname" defaultValue={deflastname} placeholder="Last Name" onChange={(e) => {setLastname(e.target.value)}}/>
+			<form autoComplete='on'>				
+				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-10  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={deffirstname} placeholder="First Name" autoComplete='on' onChange={(e) => {setFirstname(e.target.value)}}/>
+				<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-3  rounded-2xl border w-[330px] h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="lastname" id="lastname" defaultValue={deflastname} placeholder="Last Name" autoComplete='on' onChange={(e) => {setLastname(e.target.value)}}/>
 				<div className='mx-3  mt-4 flex justify-between'>
 					<select className=' pl-6 ml-3 text-[#FF848E] rounded-2xl border font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-[160px] h-[56px]' name="gender" id="gender" onChange={(e) => {setGender(e.target.value)}} >
               			<option value="female">Female</option>
@@ -112,14 +113,15 @@ const accountdetails = () => {
               		<option value="4">4</option>
           		</select>
 				<Link href="/changepassword">
-					<button className=' mt-4 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-[330px] h-[56px]'>Click here to change password</button>  
+					<button className=' mt-4 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-[330px] h-[56px] cursor-pointer'>Click here to change password</button>  
 				</Link>				
 				<div className='flex mt-[40px] mb-6 mx-3 justify-between'>	
 				<Link href="/home">
-					<button className=' h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl'>Back</button> 
+					<button className=' h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl cursor-pointer'>Back</button> 
 				</Link>				
 					<button className='  ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={editUserDetails}>Save</button>  								
-				</div>		
+				</div>	
+			</form>	
 			</div>
 			:<LoadingSpinner/>}
 		</div>
