@@ -4,7 +4,6 @@ import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
 import dateFormat from 'dateformat';
-import { getSession, useSession } from 'next-auth/react'
 import Router, { useRouter } from 'next/router'
 import LoadingCard from "../components/LoadingCard";
 
@@ -131,13 +130,3 @@ const home = ({session}) => {
 }
 
 export default home;
-
-// export async function getServerSideProps (context) {
-//     console.log('=============================GETSSP=============================')
-//     console.log(context)
-//     const session = await getSession(context);
-//     if (!session) {
-//         return{redirect :{destination: '/', permanent : false}}
-//     }
-//     return {props : {session}}
-// }

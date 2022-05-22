@@ -46,6 +46,7 @@ const Home = (pageProps) => {
 		let refreshTokenLS = localStorage.getItem('refresh_token')
 
 		if (accessTokenLS != null) {
+			setLoading(true)
 			isAccessTokenValid(accessTokenLS)
 
 			setAccessToken(accessTokenLS)
@@ -117,7 +118,7 @@ const Home = (pageProps) => {
 			if (response.status === 201) {
 				console.log('User Created')
 				setUserCreated(true)
-				redirectToHomePage(router)
+				redirectToLoginPage(router)
 			}
 			else if (response.status === 409) {
 				console.log('User Already exist')
@@ -339,6 +340,7 @@ const Home = (pageProps) => {
 							</label>
 						</div>
 						<button
+							type='submit'
 							className=" mt-5 h-10 w-64 rounded-full bg-[#F67A95] font-[Sarabun-Regular] font-normal -tracking-tighter text-white shadow-button-shadow"
 							onClick={signUp}
 						>
@@ -352,18 +354,6 @@ const Home = (pageProps) => {
 					or{' '}
 				</p>
 				<div className=" mt-3 flex w-full max-w-md items-center justify-around px-3">
-					{/* <button
-						onClick={() => signIn('facebook')}
-						className="fa fa-facebook flex h-8 w-8 items-center justify-center rounded-full bg-[#4267B2] text-center text-sm text-white"
-					/>
-					<button
-						onClick={() => signIn('twitter')}
-						className="fa fa-twitter flex h-8 w-8 items-center justify-center rounded-full bg-[#00ACEE] text-center text-sm text-white"
-					/> */}
-					{/* <button onClick={() => signIn('google')} className="">
-						{' '}
-						<GoogleIcon32 />{' '}
-					</button> */}
 					<GoogleLogin
 						clientId={'65395984080-s2sso604b22cihc6ntj7cg3vl2tmhn69.apps.googleusercontent.com'}
 						render = { renderProps => (
@@ -400,11 +390,7 @@ const Home = (pageProps) => {
 
 export default Home
 
-
-// export async function getServerSideProps (context) {
-//	 const session = await getSession(context);
-//	 if (!session) {
-//			 return{redirect :{destination: '/', permanent : false}}
-//	 }
-//	 return {props : {session}}
-// }
+// Multiple Provider Login buttons
+{/* <button onClick={() => signIn('facebook')} className="fa fa-facebook flex h-8 w-8 items-center justify-center rounded-full bg-[#4267B2] text-center text-sm text-white"/> */}
+{/* <button onClick={() => signIn('twitter')} className="fa fa-twitter flex h-8 w-8 items-center justify-center rounded-full bg-[#00ACEE] text-center text-sm text-white"/> */}
+{/* <button onClick={() => signIn('google')} className=""> <GoogleIcon32 /> </button> */}

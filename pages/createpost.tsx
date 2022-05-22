@@ -3,6 +3,7 @@ import TopBar from '../components/TopBar'
 import NavBar from '../components/NavBar'
 import { getSession } from 'next-auth/react';
 import Ellipse from '../assets/images/Ellipse.svg'
+import LoadingSpinner from '../components/LoadingSpinner'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { redirect } from 'next/dist/server/api-utils';
@@ -15,6 +16,7 @@ let redirectToHomePage = (router) => {
 
 const createpost = () => {
 	const router = useRouter()
+	const [loading, setLoading] = useState(false)
 	const [accessToken, setaccessToken] = useState<any>()
 	const [refreshToken, setRefreshToken] = useState<any>()
 	const [user, setUser] = useState<any>()
@@ -39,6 +41,7 @@ const createpost = () => {
     }, []);
 	
 	let CreateNewPost = async () =>{
+		setLoading(true)
 		console.log(accessToken)
 		let response = await fetch(`https://backend.pinkyswears.in/api/post/`, {
 			method: "POST",
@@ -56,18 +59,22 @@ const createpost = () => {
 				<Head>
 					<meta name='theme-color' content='#FFBCD1' />
 				</Head>
-				<div className="flex flex-col w-full max-w-md z-50">
+				<div className="flex flex-col w-full max-w-md">
 					<TopBar displayPic = {true} displayName = {true} loggedInUserName = {user.first_name + ' ' + user.last_name} loggedInUserProfilePic={user.profileImage}/>
-					<div className='flex mx-6'>
-						<p className='font-[Sarabun-SemiBold] font-semibold text-[#2F2F2F] text-xl'>Create Post</p>			
-					</div>
-					<div className='mx-6 mt-5 justify-center'>
-						<textarea className='shadow-welcome-field-shadowfocus pl-5 pt-8 rounded-xl w-full h-[45vh] max-h-[55vh]' id="caption" placeholder="write a caption.." onChange={(e)=>setPostContent(e.target.value)} />
-						<div className='flex w-full justify-center'>
-							<button className=' h-16 w-40 mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl'>Back</button>  
-							<button className=' ml-8 h-16 w-40 mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={CreateNewPost} >Post</button> 
-						</div>
-					</div>
+					{loading?<LoadingSpinner/>:
+						<>
+							<div className='flex mx-6'>
+								<p className='font-[Sarabun-SemiBold] font-semibold text-[#2F2F2F] text-xl z-0'>Create Post</p>
+							</div>
+							<div className='mx-6 mt-5 justify-center'>
+								<textarea className='shadow-welcome-field-shadowfocus pl-5 pt-8 rounded-xl w-full h-[45vh] max-h-[55vh] focus:outline-none' id="caption" placeholder="write a caption.." onChange={(e)=>setPostContent(e.target.value)} />
+								<div className='flex w-full justify-center'>
+									<button className=' h-16 w-40 mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl'>Back</button>  
+									<button className=' ml-8 h-16 w-40 mt-5 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={CreateNewPost} >Post</button> 
+								</div>
+							</div>
+						</>
+					}
 					<NavBar/>
 				</div>
 			</div>

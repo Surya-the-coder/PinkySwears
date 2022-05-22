@@ -76,13 +76,13 @@ const signin = (pageProps) => {
             <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">Create a new account</p>
           </div>
           <div className="mt-5 flex flex-col items-center w-full">
-              <form>
+              <form className="flex w-full flex-col items-center" autoComplete='on'>
                 <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username" onChange={(e) => setUserInputUserName(e.target.value)} />
                 <div className='flex items-center justify-end mt-4 '>
-                  <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1] z-0" type="password" name="Password" id="password" placeholder="Password" onChange={(e) => setuserInputPassword(e.target.value)} />
-                  <button className='z-50 fixed mr-3'><PasswordEye /></button>
+                  <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 pr-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1] z-0" type="password" name="Password" id="password" placeholder="Password" onChange={(e) => setuserInputPassword(e.target.value)} />
+                  {/* <button className='z-50 fixed mr-3'><PasswordEye /></button> */}
                 </div>
-                <div className=" px-2 mt-3 flex w-full max-w-md items-center justify-between">
+                <div className="mt-3 flex max-w-md items-center justify-between w-80">
                   <div className="mx-10 flex items-center justify-center">
                     <input className=" accent-pink-500 outline-hidden h-2 w-2 " type="radio" id="radiobutton" name="radiobutton" />
                     <label className="pl-2 font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold"> Remember Me </label>

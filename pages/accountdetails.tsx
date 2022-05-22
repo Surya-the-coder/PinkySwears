@@ -26,7 +26,7 @@ const accountdetails = () => {
 			console.log('No Access Token')
 
         }
-        else{			
+        else{
 			console.log(accessTokenLS)
             setaccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
