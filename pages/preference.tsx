@@ -150,7 +150,7 @@ const preference = () => {
                                 <div className="flex justify-center">
                                     <GoogleLogout clientId='65395984080-s2sso604b22cihc6ntj7cg3vl2tmhn69.apps.googleusercontent.com' onLogoutSuccess={logout} render={ renderProps => (<button type="button" className="h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl cursor-pointer" onClick={renderProps.onClick} disabled = {renderProps.disabled}> Sign Out </button>)}/>
                                 </div>
-			            		<button type="submit" className='ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={() => editUserDetails(user)}>Save</button>  								
+			            		<button type="button" className='ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={() => editUserDetails(user)}>Save</button>  								
 			            	</div>
 
 			            </form>
