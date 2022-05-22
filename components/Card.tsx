@@ -38,10 +38,10 @@ const Card = (props) => {
           <p className='text-sm text-gray-500 mt-2'>{props.content}</p>
           <div className='mt-3 flex items-center'>
             <Link href={'#'}>
-              <div className='flex items-center text-xs'>
+              <button className='flex items-center text-xs z-50' onClick={likePost}>
                 <Like/>
                 <p className='mx-2 text-xs text-gray-400'> like </p>
-              </div>
+              </button>
             </Link>
             <Link href={'#'}>
               <div className='flex items-center text-xs text-gray-400'>
