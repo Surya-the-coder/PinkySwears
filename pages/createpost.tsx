@@ -19,7 +19,6 @@ const createpost = () => {
 	const [loading, setLoading] = useState(false)
 	const [accessToken, setaccessToken] = useState<any>()
 	const [refreshToken, setRefreshToken] = useState<any>()
-	const [user, setUser] = useState<any>()
 	const [PostContent, setPostContent] = useState<any>();
 	
 	
@@ -36,7 +35,6 @@ const createpost = () => {
 			
             setaccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
-            setUser(userLS)
         }
     }, []);
 	
@@ -53,6 +51,7 @@ const createpost = () => {
 	}
 
 	if (accessToken != null) {
+		const user = JSON.parse(localStorage.getItem('UserDetails'))
 		return (
 			<div className="flex justify-center min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
 				<Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>

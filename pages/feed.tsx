@@ -13,8 +13,6 @@ const feed = ({session}) => {
     const [accessToken, setaccessToken] = useState<any>()
     const [refreshToken, setRefreshToken] = useState<any>()
     
-    const [user, setUser] = useState<any>()
-    
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
     
@@ -29,15 +27,11 @@ const feed = ({session}) => {
             router.push('/')
         }
         else{
-            let userLS = JSON.parse(localStorage.getItem('UserDetails'))
-
             setaccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
-            setUser(userLS)
             
             getAllPosts();
         }
-        console.log(user)
     }, []);
 
     let getAllPosts = async () => {
@@ -49,6 +43,7 @@ const feed = ({session}) => {
         setIsDataFetched(true);
     }   
     if (accessToken!=null) {
+        const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (
             <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
