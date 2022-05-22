@@ -1,76 +1,87 @@
-import TopBar from '../components/TopBar'
-import Head from 'next/head';
-import NavBar from '../components/NavBar'
-import dateFormat from 'dateformat';
-import AccountCard  from "../components/AccountCard";
-import { useEffect, useState } from 'react'
+import TopBar from "../components/TopBar";
+import { useState, useEffect, useRef } from 'react';
+import NavBar from "../components/NavBar";
+import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
+import dateFormat from 'dateformat';
+import Router, { useRouter } from 'next/router'
+import LoadingCard from "../components/LoadingCard";
+import FeedIcon from '../assets/images/FeedIcon.svg'
 
-const feed = () => {
+const feed = ({session}) => {
+    console.log('=============================FEED=============================')   
+    const [accessToken, setaccessToken] = useState<any>()
+    const [refreshToken, setRefreshToken] = useState<any>()
+    
+    const [user, setUser] = useState<any>()
+    
+    const [isDataFetched, setIsDataFetched] = useState(false)
+    const [posts, setPosts] = useState([])
+    
+    const router = useRouter()
 
-	const [accessToken, setaccessToken] = useState<any>()
-	const [refreshToken, setRefreshToken] = useState<any>()
-	const [firstname, setFirstname] = useState<any>()
-	const [lastname, setLastname] = useState<any>()
-	const [profimg, setProfImg] = useState<any>()
-	const [user, setUser] = useState<any>()
-	const [PostUserInfo, setPostUserInfo] = useState<any>([]);
-	const [PostsData, setPostsData] = useState<any>([]);
-
-	useEffect(() => {
-		let accessTokenLS = localStorage.getItem('access_token')
+    useEffect(() => {
+        let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
         
         if (accessTokenLS == null) {
-			console.log('No Access Token')
+            console.log('No Access Token')
+            router.push('/')
         }
         else{
-			let userLS = JSON.parse(localStorage.getItem('UserDetails'))			
+            let userLS = JSON.parse(localStorage.getItem('UserDetails'))
+
             setaccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
             setUser(userLS)
-			setFirstname(userLS.first_name)
-			setLastname(userLS.last_name)
-			setProfImg(userLS.profileImage)
-			getPersonalizedPosts(accessTokenLS)
+            
+            getAllPosts();
         }
+        console.log(user)
     }, []);
 
-	let getPersonalizedPosts = async (accessTokenLS) => {
-		console.log("******Get Personalized Posts*****")
-		console.log(accessTokenLS)
-		let getPersonalizedPostsUrl = 'https://backend.pinkyswears.in/api/user/followings/posts/filter/user/'
-		let response = await fetch(getPersonalizedPostsUrl, {
-			method: 'GET',
-			headers: {
-				"Content-Type": "application/json",
-				'Authorization': 'Bearer '+accessTokenLS,
-			},
-			
-		})
-		console.log(response)
-		let postData = await response.json()     
-		setPostsData(postData)
-		setPostUserInfo(postData[0].user)
-	}
-  return (
-	<div className="flex flex-col justify-center min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
-		<Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
-		<Head>
-			<meta name='theme-color' content='#FFBCD1' />
-		</Head>
-		<div className="flex flex-col w-full max-w-md z-50">
-			<TopBar displayPic = {true} displayName = {true} loggedInUserName = {firstname + ' ' + lastname} loggedInUserProfilePic={profimg}/>	
-		</div>
-		<div>
-			<textarea className=' pl-4 mt-2 mx-5 my-5 rounded-xl w-[330px] h-[32px] pt-2 bg-[#FFFFFF] font-[Sarabun] font-bold text-[#2F2F2F]' placeholder='Feed'/>
-		</div>
-		<div className="">
-            	{PostsData.map( (post) => <AccountCard numberOfLikes={false} postid = {post.id} userid={post.user.id} username = {post.user.username} profileImage = {PostUserInfo.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} accessToken={accessToken}/> )}
-        </div>
-		<NavBar/>
-		</div>
-  )
+    let getAllPosts = async () => {
+        console.log('========================INSIDE GETALL POST===========================')
+        let postUrl = 'https://backend.pinkyswears.in/api/post/';
+        let response = await fetch(postUrl);
+        let data = await response.json();
+        setPosts(data);
+        setIsDataFetched(true);
+    }   
+    if (accessToken!=null) {
+        return (
+            <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
+                <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
+                <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh] z-50  w-full max-w-md">
+                    <meta name='theme-color' content='#FFBCD1' />
+                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} loggedInUserProfilePic = {user.profileImage}/>
+                    <div className="flex justify-around mx-10 top-24">
+                        <button className="flex w-full bg-white rounded-lg justify-between h-[32px] px-3">
+							<p className="items-center">Feed</p>
+							<p className="items-center align-center"><FeedIcon/></p>
+						</button>
+                    </div>
+                    {isDataFetched?
+                        <div className="">
+                            {posts.map( (post) => <Card key={post.id} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImage} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
+                        </div>
+                    :
+                    <div className="">
+                        <LoadingCard></LoadingCard>
+                        <LoadingCard></LoadingCard>
+                        <LoadingCard></LoadingCard>
+                        <LoadingCard></LoadingCard>
+                    </div>
+                    }
+                </div>
+                <NavBar/>
+            </div>
+        );
+    }
+    else{
+        return null
+    }
 }
 
-export default feed
+export default feed;
+

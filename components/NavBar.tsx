@@ -18,7 +18,7 @@ const NavBar = () => {
             </Link>
           </li>
           <li>
-            <Link href="#">
+            <Link href="/feed">
               <Posts refs={ref}  className = 'cursor-pointer'/>
             </Link>
           </li>

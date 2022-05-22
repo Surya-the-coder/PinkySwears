@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import TopBar from "../../components/TopBar";
 import AccountCard  from "../../components/AccountCard";
 import dateFormat from 'dateformat';
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const userdet = () => {	
 	const [postsOfUser, setPostsOfUser] = useState<any>();
@@ -14,8 +15,9 @@ const userdet = () => {
     const router = useRouter();
 	const [accessToken, setaccessToken] = useState<any>()
 	const [refreshToken, setRefreshToken] = useState<any>()
+	const [isDataFetched, setIsDataFetched] = useState(false)
 	const[isFollowing,setFollow]=useState<any>()
-
+	
     useEffect(() => {
 		
 		let accessTokenLS = localStorage.getItem('access_token')
@@ -30,6 +32,7 @@ const userdet = () => {
 			getAllPostsOfUser();
 			getFollowers();
 			getFollowing();
+			
         }
     }, []);
 	
@@ -42,6 +45,7 @@ const userdet = () => {
 		setPostsData(postData)
 		setPostUserInfo(postData[0].user)
 		setPostsOfUser(Object.keys(postData).length);
+		setIsDataFetched(true)
     }
 	let getFollowers = async () => {
         let fetchFollowerApiUrl = `https://backend.pinkyswears.in/api/user/followers/${router.query.userdet}/`;
@@ -67,6 +71,7 @@ const userdet = () => {
         let response = await fetch(fetchFollowingApiUrl);
         let followinginfo = await response.json()        
 		setFollowingCount(Object.keys(followinginfo).length);
+		
     }
 	let followUnFollowUser =async () => {
 		console.log("Followedd.................")
@@ -99,12 +104,14 @@ const userdet = () => {
 		console.log("No Access Token")
 	}
 	return (
+		
 		<div className="flex flex-col bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">           
             <Head>
 			   <meta name='theme-color' content='#FFBCD1' />
 			</Head>
-			<TopBar backButton = {true}/>
-			
+		{isDataFetched?
+		<div>
+			<TopBar backButton = {true}/>			
 			<div className="flex items-center justify-center">
 				<div className=" h-[84px] w-[84px]">
 					<img src="https://picsum.photos/200" className='w-full h-full rounded-full'/>
@@ -122,6 +129,7 @@ const userdet = () => {
 					<p className="text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{FollowerCount}</p>
 				</div>
 			</div>
+	
 			<div className="  ml-[40px] mt-[13px] flex flex-col  justify-center">
 				<p className=" font-[Sarabun-Medium] font-semibold text-[#939090] text-sm">@{PostUserInfo.username}</p>
 				<h5 className="font-[Sarabun-Medium] font-semibold text-black text-sm  mt-[3px]">{PostUserInfo.first_name} {PostUserInfo.last_name}</h5>
@@ -132,7 +140,13 @@ const userdet = () => {
 			</div>
 			<div className="">
             	{PostsData.map( (post) => <AccountCard numberOfLikesCheck={true} postid = {post.id} userid={post.user.id} username = {post.user.username} profileImage = {PostUserInfo.image} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} accessToken={accessToken}/> )}
-            </div>
+            </div>			
+		</div>
+		:
+		<div className="">
+			<LoadingSpinner/>
+		</div>
+		}						
 		</div>
 	);
 }
