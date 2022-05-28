@@ -23,9 +23,9 @@ const NavBar = (props) => {
 	const ref = useRef();
 
 	return (
-		<div className="fixed bottom-0 my-3 w-full max-w-md rounded-2xl bg-white py-6 shadow-navbar z-[100]">
-			<nav>
-				<ul className="flex justify-around">
+		<div className="fixed flex items-center bottom-0 my-3 w-full max-w-md rounded-2xl bg-white py-6 shadow-navbar z-[100] h-[11vh]">
+			<nav className='flex items-center w-full'>
+				<ul className="flex w-full justify-around items-center">
 					<li className="">
 						  <Link href="/home">
 						  	{props.page=="Home"?<div className='flex flex-col justify-center items-center'><HomePink refs={ref} className = 'cursor-pointer'/><UnderLine className="mt-2"/></div>:<div className='flex flex-col justify-center items-center'><HomeLight refs={ref} className = 'cursor-pointer'/></div>}

@@ -21,6 +21,7 @@ const SinglePost = () => {
     const [refreshToken, setRefreshToken] = useState<any>()
     
     const [userData, setUserData] = useState<any>()
+    const [newComment, setNewComment] = useState<any>(null)
 
     // let user = JSON.parse(localStorage.getItem('UserDetails'))
     
@@ -35,8 +36,11 @@ const SinglePost = () => {
             router.push('/')
         }
         else{
-            console.log()
             if (router.isReady) {
+                // let fetchSinglePostApiUrl = `https://backend.pinkyswears.in/api/post/${router.query.postid}/`;
+                // fetch(fetchSinglePostApiUrl)
+                // .then(response => response.json())
+                // .then((postData) => {console.log(postData); setSinglePostData(postData); setPostUserInfo(postData.user);setIsDataFetched(true)})
                 getSinglePostData()
             }
 
@@ -46,7 +50,10 @@ const SinglePost = () => {
             setRefreshToken(refreshTokenLS)
             console.log('Setting UserData')
             setUserData(userLS)
-
+            console.log(newComment)
+            console.log("=========IN==========")
+            console.log(newComment)
+            // singlePostData.comments = [...singlePostData.comments, newComment]
         }
     }, [router.isReady]);
 
@@ -68,7 +75,7 @@ const SinglePost = () => {
         return (
             <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
             <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
-            <div className="overflow-y-auto overflow-hidden h-[89vh] z-50  w-full max-w-md">
+            <div className="pb-8 overflow-y-auto overflow-hidden h-[92vh] z-50  w-full max-w-md">
                 <meta name='theme-color' content='#FFBCD1' />
                 <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {"https://backend.pinkyswears.in/"+userData.profileImg}/>
                 {/* <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
@@ -82,8 +89,8 @@ const SinglePost = () => {
                 <div className="flex justify-around mx-10 top-24">
                 </div>
                 {isDataFetched?
-                    <div className="h-[50%]">
-                        <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {"https://backend.pinkyswears.in/"+PostUserInfo.profileImg} currentUserImage = {"https://backend.pinkyswears.in/"+userData.profileImg} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
+                    <div className="">
+                        <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {"https://backend.pinkyswears.in/"+PostUserInfo.profileImg} currentUserImage = {"https://backend.pinkyswears.in/"+userData.profileImg} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment}/>
                         {singlePostData.comments.map( (comment) =><CommentCard commentUserProfilePic = {"https://backend.pinkyswears.in/"+comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}/>)}
                     </div>
                 : //else

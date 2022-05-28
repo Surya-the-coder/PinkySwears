@@ -3,17 +3,20 @@ import Like from '../assets/images/Like.svg'
 import Comment from '../assets/images/Reply.svg'
 import Share from '../assets/images/Share.svg'
 import ThreeDots from '../assets/images/ThreeDots.svg'
-import { useState } from 'react'
-import getSinglePostData from '../pages/post/[postid]'
-
-
-let reload = () => {
-    // getSinglePostData()
-}
+import { useEffect, useState } from 'react'
 
 const SinglePostCard = (props) => {
     
     const [newCommentContent, setNewCommentContent] = useState<any>()
+
+    useEffect(() => {
+        // let fetchSinglePostApiUrl = `https://backend.pinkyswears.in/api/post/${router.query.postid}/`;
+        // fetch(fetchSinglePostApiUrl)
+        // .then(response => response.json())
+        // .then((postData) => {console.log(postData); setSinglePostData(postData); setPostUserInfo(postData.user);setIsDataFetched(true)})
+        // getSinglePostData()
+    }, [])
+    
 
     let postComment = async () => {
         if (newCommentContent.trim() !== "") {
@@ -26,9 +29,13 @@ const SinglePostCard = (props) => {
 		    });
 		    console.log(response)
         }
-        reload()
+        window.location.reload();
     }
     
+    let sendCommentToParent = () => {
+        props.setNewComment(newCommentContent)
+    }
+
     return (
         <div className="flex flex-col bg-white rounded-2xl mx-5 px-3 py-5">
             <div className="flex justify-between mx-1">
