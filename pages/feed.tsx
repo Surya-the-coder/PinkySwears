@@ -69,7 +69,7 @@ const feed = ({session}) => {
                     </div>
                     }
                 </div>
-                <NavBar/>
+                <NavBar page="Feed"/>
             </div>
         );
     }

@@ -74,7 +74,7 @@ const createpost = () => {
 							</div>
 						</>
 					}
-					<NavBar/>
+					<NavBar page = "CreatePost" />
 				</div>
 			</div>
 		);
