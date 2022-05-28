@@ -104,8 +104,8 @@ const userinterest = ({session}) => {
 
                     {isDataFetched?
                         <div className="w-full">
-                            {followings? followinginfo.map((eachfollowinginfo)=> <InfoCard buttoncontent={"Unfollow"} profileImage={"https://backend.pinkyswears.in/"+user.profileImg} userid={eachfollowinginfo.id} first_name={eachfollowinginfo.first_name} last_name={eachfollowinginfo.last_name} username={eachfollowinginfo.username}/>) :null}
-							{followers? followerInfo.map((eachfollowerinfo)=> <InfoCard buttoncontent={"Remove"} profileImage={"https://backend.pinkyswears.in/"+user.profileImg} userid={eachfollowerinfo.id} first_name={eachfollowerinfo.first_name} last_name={eachfollowerinfo.last_name} username={eachfollowerinfo.username}/>) :null}
+                            {followings? followinginfo.map((eachfollowinginfo)=> <InfoCard accessToken={accessToken} showbutton={true} buttoncontent={"Unfollow"} profileImage={"https://backend.pinkyswears.in/"+user.profileImg} userid={eachfollowinginfo.id} first_name={eachfollowinginfo.first_name} last_name={eachfollowinginfo.last_name} username={eachfollowinginfo.username}/>) :null}
+							{followers? followerInfo.map((eachfollowerinfo)=> <InfoCard showbutton={false} buttoncontent={"Remove"} profileImage={"https://backend.pinkyswears.in/"+user.profileImg} userid={eachfollowerinfo.id} first_name={eachfollowerinfo.first_name} last_name={eachfollowerinfo.last_name} username={eachfollowerinfo.username}/>) :null}
 							{activity? <div>Actvity</div> :null}
                         </div>
                     :
