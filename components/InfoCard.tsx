@@ -1,6 +1,9 @@
 import Link from 'next/link'
+import { useState } from 'react'
 const InfoCard = (props) => {
+	const [isUnfollowed, setIsUnfollowed] = useState(true)
 	let followUnFollowUser =async () => {
+		setIsUnfollowed(true)
 		console.log("Followedd.................")
 		console.log("Follow Function")
 		let response= await fetch(`https://backend.pinkyswears.in/api/user/follow/${props.userid}/`, {
@@ -11,7 +14,7 @@ const InfoCard = (props) => {
 				},
 			});
 			console.log(response)
-			let procesinfo = await response.json()  
+			let procesinfo = await response.json()
 			console.log(procesinfo.processdone)
 		if(response.status==202)
 		{
@@ -33,7 +36,9 @@ const InfoCard = (props) => {
 					<h3 className='flex font-Sarabun-Medium text-base tracking-[0.2px] font-medium'>{props.first_name} {props.last_name}  </h3>
 				</div>
 				{props.showbutton?
-				<button className=' px-3 font-[Sarabun-Regular] font-normal -tracking-tighter bg-white rounded-3xl cursor-pointer' onClick={followUnFollowUser}>{props.buttoncontent}</button>
+					<Link href={"#"}> 
+						<button className=' px-3 font-[Sarabun-Regular] font-normal -tracking-tighter bg-white rounded-3xl cursor-pointer' onClick={followUnFollowUser}>{props.buttoncontent}</button>
+					</Link>
 				:null}
 				</div>
 		</div>
