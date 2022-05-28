@@ -15,7 +15,7 @@ const forgotpassword = () => {
 	const[loadResetPasswordPage,setLoadResetPasswordPage]=useState(false)
 	const [newPassword,setNewPassword] = useState<any>()
 	const [reenternewPassword,setReEnterNewPassword] = useState<any>()
-	const [passwordMismatch, setPasswordMismatch] = useState(true)
+	const [passwordMismatch, setPasswordMismatch] = useState(false)
 
 	let sendEmailApi=async ()=>
 	{

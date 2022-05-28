@@ -1,5 +1,26 @@
 import Link from 'next/link'
 const InfoCard = (props) => {
+	let followUnFollowUser =async () => {
+		console.log("Followedd.................")
+		console.log("Follow Function")
+		let response= await fetch(`https://backend.pinkyswears.in/api/user/follow/${props.userid}/`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					'Authorization': 'Bearer '+props.accessToken,
+				},
+			});
+			console.log(response)
+			let procesinfo = await response.json()  
+			console.log(procesinfo.processdone)
+		if(response.status==202)
+		{
+			if(procesinfo.processdone=="unfollowed")
+				console.log("User Unfollowed Successfully")
+				if(procesinfo.processdone=="followed")
+				console.log("User Followed Successfully")
+		}			
+	}
   return (
 	<Link href={`/userinfo/${props.userid}`}>
 		<div className='mt-2 px-5 flex items-center w-full py-2'>
@@ -11,8 +32,10 @@ const InfoCard = (props) => {
 					<h3 className='flex font-Sarabun-Medium text-base tracking-[0.2px] font-medium'> {props.username} </h3>
 					<h3 className='flex font-Sarabun-Medium text-base tracking-[0.2px] font-medium'>{props.first_name} {props.last_name}  </h3>
 				</div>
-				<button className=' px-3 font-[Sarabun-Regular] font-normal -tracking-tighter bg-white rounded-3xl cursor-pointer'>{props.buttoncontent}</button>
-			</div>
+				{props.showbutton?
+				<button className=' px-3 font-[Sarabun-Regular] font-normal -tracking-tighter bg-white rounded-3xl cursor-pointer' onClick={followUnFollowUser}>{props.buttoncontent}</button>
+				:null}
+				</div>
 		</div>
 	</Link>
   )
