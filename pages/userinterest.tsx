@@ -117,7 +117,7 @@ const userinterest = ({session}) => {
                     </div>
                     }
                 </div>
-                <NavBar/>
+                <NavBar  page = "Activity"/>
             </div>
         );
     }

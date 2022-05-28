@@ -31,6 +31,7 @@ const home = ({session}) => {
     const router = useRouter()
 
     useEffect(() => {
+
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
         
@@ -106,16 +107,16 @@ const home = ({session}) => {
                             {posts.map( (post) => <Card key={post.id} accessToken = {accessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImage} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
                         </div>
                     :
-                    <div className="">
-                        <LoadingCard></LoadingCard>
-                        <LoadingCard></LoadingCard>
-                        <LoadingCard></LoadingCard>
-                        <LoadingCard></LoadingCard>
-                    </div>
+                        <div className="">
+                            <LoadingCard></LoadingCard>
+                            <LoadingCard></LoadingCard>
+                            <LoadingCard></LoadingCard>
+                            <LoadingCard></LoadingCard>
+                        </div>
                     }
                 </div>
                 {/* {React.forwardRef((props, ref) => <NavBar refs={ref} {...props} />)} */}
-                <NavBar/>
+                <NavBar page = {"Home"}/>
             </div>
         );
     }

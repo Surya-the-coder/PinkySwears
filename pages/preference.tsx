@@ -155,7 +155,7 @@ const preference = () => {
 
 			            </form>
 			        </div>
-			        <NavBar/>
+			        <NavBar page = "Preference"/>
 			    </div>
 		    </div>
         );
