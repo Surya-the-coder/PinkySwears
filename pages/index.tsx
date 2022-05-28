@@ -208,7 +208,7 @@ const Home = (pageProps) => {
 					<p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">
 						Create a new account
 					</p>
-					<form action="" className="flex w-full flex-col items-center" autoComplete='on'>
+					<form action="" className="flex w-full flex-col items-center" autoComplete='on' method='POST'>
 						<input
 							className=" focus-welcome-field-shadowfocus mt-2 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]"
 							type="text"

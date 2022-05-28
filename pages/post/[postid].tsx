@@ -36,11 +36,11 @@ const SinglePost = () => {
         }
         else{
             console.log()
-            getSinglePostData()
+            if (router.isReady) {
+                getSinglePostData()
+            }
 
             let userLS = JSON.parse(localStorage.getItem('UserDetails'))
-
-            // console.log(userData.profileImg)
 
             setaccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
@@ -48,10 +48,12 @@ const SinglePost = () => {
             setUserData(userLS)
 
         }
-    }, []);
+    }, [router.isReady]);
 
     let getSinglePostData = async () => {
         console.log('========================= IN GET SINGLE POST DATA =========================')
+        while(router.query.postid)
+            break
         let fetchSinglePostApiUrl = await `https://backend.pinkyswears.in/api/post/${router.query.postid}/`;
         console.log(fetchSinglePostApiUrl)
         let response = await fetch(fetchSinglePostApiUrl);
@@ -62,37 +64,41 @@ const SinglePost = () => {
         console.log('Setting is Data Fetched to true in getSinglePostData')
         setIsDataFetched(true);
     }
-
-    return (
-        <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
-        <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
-        <div className="overflow-y-auto overflow-hidden h-[89vh] z-50  w-full max-w-md">
-            <meta name='theme-color' content='#FFBCD1' />
-            {/* <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic={userData.profileImage}/> */}
-            <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
-                <div className="pl-4 pr-2 py-1">
-                    <SearchGray/>
+    if (accessToken!=null) {
+        return (
+            <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
+            <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
+            <div className="overflow-y-auto overflow-hidden h-[89vh] z-50  w-full max-w-md">
+                <meta name='theme-color' content='#FFBCD1' />
+                <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {"https://backend.pinkyswears.in/"+userData.profileImg}/>
+                {/* <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
+                    <div className="pl-4 pr-2 py-1">
+                        <SearchGray/>
+                    </div>
+                    <div className='w-full'>
+                        <input type="text" name="SearchBox" id="searchBox" placeholder="Search Here" className="bg-transparent text-xs text-gray-400 border-none focus:outline-none w-full"/>
+                    </div>
+                </div> */}
+                <div className="flex justify-around mx-10 top-24">
                 </div>
-                <div className='w-full'>
-                    <input type="text" name="SearchBox" id="searchBox" placeholder="Search Here" className="bg-transparent text-xs text-gray-400 border-none focus:outline-none w-full"/>
-                </div>
+                {isDataFetched?
+                    <div className="h-[50%]">
+                        <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {"https://backend.pinkyswears.in/"+PostUserInfo.profileImg} currentUserImage = {"https://backend.pinkyswears.in/"+userData.profileImg} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
+                        {singlePostData.comments.map( (comment) =><CommentCard commentUserProfilePic = {"https://backend.pinkyswears.in/"+comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}/>)}
+                    </div>
+                : //else
+                    <div className="">
+                        <LoadingCard></LoadingCard>
+                    </div>
+                }
             </div>
-            <div className="flex justify-around mx-10 top-24">
-            </div>
-            {isDataFetched?
-                <div className="h-[50%]">
-                    <SinglePostCard currentUserImage = {PostUserInfo.username} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content}/>
-                    {singlePostData.comments.map( (comment) =><CommentCard commentUsername = {comment.user.username} commentContent = {comment.content}/>)}
-                </div>
-            :
-            <div className="">
-                <LoadingCard></LoadingCard>
-            </div>
-            }
+            <NavBar page = "Home" />
         </div>
-        <NavBar/>
-    </div>
-    );
+        );
+    }
+    else{
+        return null;
+    }
 }
 
 export default SinglePost;
