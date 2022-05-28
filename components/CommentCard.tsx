@@ -2,6 +2,7 @@ const CommentCard = (props) => {
     let comment = props.postComments
     return (
         <div className="flex items-center mx-10 my-2">
+            
             <div>
                 <img src={props.commentUserProfilePic} alt="" className="w-8 h-8 rounded-full" />
             </div>

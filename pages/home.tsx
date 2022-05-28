@@ -93,7 +93,7 @@ const home = ({session}) => {
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
                 <div className="pb-5 overflow-y-auto overflow-hidden h-[92vh] z-50  w-full max-w-md ">
                     <meta name='theme-color' content='#FFBCD1' />
-                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} loggedInUserProfilePic = {"https://backend.pinkyswears.in/"+user.profileImg}/>
+                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {"https://backend.pinkyswears.in/"+user.profileImg}/>
                     <div className="flex justify-around mx-10 top-24">
                         <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button>
                         <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Recent")}>Recent</button>

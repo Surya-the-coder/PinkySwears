@@ -103,7 +103,7 @@ const preference = () => {
 			    </Head>
 			    <div className="flex flex-col w-full max-w-md z-50">
                     <div className='flex flex-col items-center w-full max-w-md pb-5 h-[91vh] overflow-y-auto px-2 '>
-                        <AccountDetailsTopBar username = {user.username}/>
+                        <AccountDetailsTopBar profileImg = {'https://backend.pinkyswears.in/'+user.profileImg} username = {user.username}/>
 			            <form autoComplete='on' className='flex flex-col justify-center w-full' action='' method="POST">
                             <label className="mt-10 mx-7 text-[#6e6e6e] text-sm font-semibold">First Name</label>
 			            	<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-1  rounded-2xl border h-[56px] mx-3 font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:text-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={user.first_name} placeholder="First Name" autoComplete='on' onChange={(e) => {user.first_name = e.target.value}}/>
