@@ -66,6 +66,7 @@ const SinglePost = () => {
         let response = await fetch(fetchSinglePostApiUrl);
         console.log(response)
         let postData = await response.json()
+        console.log(postData)
         setSinglePostData(postData);
         setPostUserInfo(postData.user);
         console.log('Setting is Data Fetched to true in getSinglePostData')
@@ -77,7 +78,7 @@ const SinglePost = () => {
             <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
             <div className="pb-8 overflow-y-auto overflow-hidden h-[92vh] z-50  w-full max-w-md">
                 <meta name='theme-color' content='#FFBCD1' />
-                <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+userData.profileImg}/>
+                <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {userData.profileImg}/>
                 {/* <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
                     <div className="pl-4 pr-2 py-1">
                         <SearchGray/>
@@ -90,8 +91,8 @@ const SinglePost = () => {
                 </div>
                 {isDataFetched?
                     <div className="">
-                        <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+PostUserInfo.profileImg} currentUserImage = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+userData.profileImg} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment}/>
-                        {singlePostData.comments.map( (comment) =><CommentCard commentUserProfilePic = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}/>)}
+                        <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment}/>
+                        {singlePostData.comments.map( (comment) =><CommentCard commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}/>)}
                     </div>
                 : //else
                     <div className="">
