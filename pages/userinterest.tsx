@@ -5,6 +5,9 @@ import Ellipse from '../assets/images/Ellipse.svg'
 import Router, { useRouter } from 'next/router'
 import LoadingCard from "../components/LoadingCard";
 import InfoCard from '../components/InfoCard'
+import AccountCard from "../components/AccountCard";
+import dateFormat from 'dateformat';
+import ActivityCard from "../components/ActivityCard";
 
 let redirectToHomePage = () => {
     const router = useRouter()
@@ -26,6 +29,7 @@ const userinterest = ({session}) => {
     const [isDataFetched, setIsDataFetched] = useState(false)
 	const[followinginfo,setFollowingInfo]=useState([])
 	const[followerInfo,setFollowerInfo]=useState([])
+    const[postsInfo,setPostsInfo]=useState([])
 
     
     const router = useRouter()
@@ -46,6 +50,7 @@ const userinterest = ({session}) => {
 			console.log(userLS) 
 			getFollowing(userLS)			
 			getFollowers(userLS)
+            getPostsCreatedByUser(userLS)
         }
     }, []);
 
@@ -61,7 +66,16 @@ const userinterest = ({session}) => {
         let response = await fetch(fetchFollowerApiUrl);
         let followerinfo = await response.json()  
 		console.log(followerinfo)      
-		setFollowerInfo(followerinfo);
+		setFollowerInfo(followerinfo);		
+    }
+    
+    let getPostsCreatedByUser = async(userLS) =>
+    {
+        let getPostsCreatedByUserURL  = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/user/${userLS.id}/`;
+        let response = await fetch(getPostsCreatedByUserURL);
+        let postinfo = await response.json()  
+		console.log(postinfo)      
+		setPostsInfo(postinfo);
 		setIsDataFetched(true)
     }
 	
@@ -106,7 +120,7 @@ const userinterest = ({session}) => {
                         <div className="w-full">
                             {followings? followinginfo.map((eachfollowinginfo)=> <InfoCard accessToken={accessToken} showbutton={true} buttoncontent={"Unfollow"} profileImage={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+user.profileImg} userid={eachfollowinginfo.id} first_name={eachfollowinginfo.first_name} last_name={eachfollowinginfo.last_name} username={eachfollowinginfo.username}/>) :null}
 							{followers? followerInfo.map((eachfollowerinfo)=> <InfoCard showbutton={false} buttoncontent={"Remove"} profileImage={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+user.profileImg} userid={eachfollowerinfo.id} first_name={eachfollowerinfo.first_name} last_name={eachfollowerinfo.last_name} username={eachfollowerinfo.username}/>) :null}
-							{activity? <div>Actvity</div> :null}
+							{activity? postsInfo.map((eachpostsinfo)=><ActivityCard createdDate={dateFormat(eachpostsinfo.created_at, "dS mmmm yyyy")} numberOfLikes = {eachpostsinfo.likes}/>) :null}
                         </div>
                     :
                     <div className="">
@@ -127,3 +141,5 @@ const userinterest = ({session}) => {
 }
 
 export default userinterest;
+
+
