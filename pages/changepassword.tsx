@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react';
 import Ellipse from '../assets/images/Ellipse.svg';
 import LoadingSpinner from "../components/LoadingSpinner";
 import AccountDetailsTopBar from '../components/AccountDetailsTopBar';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import Router, { useRouter } from 'next/router'
+import { setTimeout } from 'timers';
 
 const changepassword = () => {
 	
@@ -20,6 +24,7 @@ const changepassword = () => {
 	const [deffirstname, setDefFirstname] = useState<any>()
 	const [deflastname, setDefLastname] = useState<any>()
 	const [isDataFetched, setIsDataFetched] = useState(false)
+	const[showUpdateMsg,setShowUpdateMsg]=useState(false)
 
 	useEffect(() => {
 		setPasswordMismatch(false)
@@ -39,6 +44,10 @@ const changepassword = () => {
 			setIsDataFetched(true)
         }
     }, []);
+
+	let redirectToAccPage = (router) => {
+		return router.push('/preference')
+	  };
 	let getUserInfo = async (accessTokenLS) => {
 		console.log("******getuserinfo*****")
 		console.log(accessTokenLS)
@@ -58,6 +67,7 @@ const changepassword = () => {
 		setIsDataFetched(true)
 	}
 	let passwordUpdate = async () => {
+		console.log("Updateeeeeeeeee")
 		if (newPassword === reenternewPassword) {
 	
 		let passwordUpdateUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/change-password/`
@@ -75,9 +85,12 @@ const changepassword = () => {
 		console.log(response)
 		if(response.status!=200)
 		setCurrentPasswordCheck(true)
-	}
+		if(response.status==200)
+		{setShowUpdateMsg(true)
+		redirectToAccPage(Router)}
 	else{
 		setPasswordMismatch(true)	
+		}
 	}			
 	}
 	if (accessToken!=null) {
@@ -92,7 +105,6 @@ const changepassword = () => {
 				<AccountDetailsTopBar username={user.username}/>
 				{isDataFetched?
 					<div className=" flex flex-col w-full max-w-md">
-					<form autoComplete='on' className='flex flex-col justify-center' method='POST'>
 						<div className='flex justify-center'>
 							<p className=' mt-[40px] items-center text-[#F67A95] font-[Sarabun-Bold] font-bold text-xl'> Change Password</p>
 						</div>
@@ -113,9 +125,11 @@ const changepassword = () => {
 							<Link href="/preference">
 								<button className='h-[53px] w-full text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl cursor-pointer'>Back</button> 
 							</Link>
-							<button className=' ml-2  h-[53px] w-full text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={passwordUpdate}>Save</button>
-						</div>	
-					</form>		
+							<button onClick={passwordUpdate} className=' ml-2  h-[53px] w-full text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' type="submit" >Save</button>						
+							<Popup open={showUpdateMsg}>
+								<div className='flex w-full h-[53px]'>Password Updated Successfully!</div>
+							</Popup>
+						</div>						
 					</div>
 				:<LoadingSpinner/>}
 			</div>
