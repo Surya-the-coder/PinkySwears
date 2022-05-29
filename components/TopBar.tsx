@@ -8,13 +8,18 @@ import { useSession, signIn, signOut, SessionProvider } from "next-auth/react"
 import { redirect } from 'next/dist/server/api-utils';
 
 const TopBar = (props) => {
+  
+  let profilePicLoader = ({ src, width, quality }) => {
+    return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
+  }
+  
   return (
     <div className="flex py-5 justify-between items-center z-[100] px-5">
       <div className="flex justify-center items-center">
           {props.backButton?<Link href='/home'><BackButton className="mx-3"></BackButton></Link>:null}
           {props.displayPic?
             <Link href={`/userinfo/${props.userid}`}>
-              <img src={props.loggedInUserProfilePic} className="w-12 h-12 rounded-full cursor-pointer" alt="" />
+              <Image loader={profilePicLoader} src={`${props.loggedInUserProfilePic}`} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
             </Link>
           :null}
           {props.displayName?

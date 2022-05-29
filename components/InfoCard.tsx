@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 const InfoCard = (props) => {
 	const [isUnfollowed, setIsUnfollowed] = useState(true)
@@ -23,26 +24,31 @@ const InfoCard = (props) => {
 				console.log("User Followed Successfully")
 		}			
 	}
-  return (
-	<Link href={`/userinfo/${props.userid}`}>
-		<div className='mt-2 px-5 flex items-center w-full py-2'>
-			<div className='w-14 h-12 mx-2'>
-	  			<img src={props.profileImage} className='w-full h-full rounded-full'/>
+
+	let profilePicLoader = ({ src, width, quality }) => {
+		return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
+	}
+  	
+	return (
+		<Link href={`/userinfo/${props.userid}`}>
+			<div className='mt-2 px-5 flex items-center w-full py-2'>
+				<div className='w-14 h-12 mx-2'>
+					<Image loader={profilePicLoader} src={`${props.profileImage}`} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
+				</div>
+				<div className='flex w-full justify-between'>
+					<div className='flex flex-col items-start'>
+						<h3 className='flex font-Sarabun-Medium text-base tracking-[0.2px] font-medium'> {props.username} </h3>
+						<h3 className='flex font-Sarabun-Medium text-base tracking-[0.2px] font-medium'>{props.first_name} {props.last_name}  </h3>
+					</div>
+					{props.showbutton?
+						<Link href={"."}>
+							<button className=' px-3 font-[Sarabun-Regular] font-normal -tracking-tighter bg-white rounded-3xl cursor-pointer' onClick={followUnFollowUser}>{props.buttoncontent}</button>
+						</Link>
+					:null}
+					</div>
 			</div>
-			<div className='flex w-full justify-between'>
-				<div className='flex flex-col items-start'>
-					<h3 className='flex font-Sarabun-Medium text-base tracking-[0.2px] font-medium'> {props.username} </h3>
-					<h3 className='flex font-Sarabun-Medium text-base tracking-[0.2px] font-medium'>{props.first_name} {props.last_name}  </h3>
-				</div>
-				{props.showbutton?
-					<Link href={"."}>
-						<button className=' px-3 font-[Sarabun-Regular] font-normal -tracking-tighter bg-white rounded-3xl cursor-pointer' onClick={followUnFollowUser}>{props.buttoncontent}</button>
-					</Link>
-				:null}
-				</div>
-		</div>
-	</Link>
-  )
+		</Link>
+  	)
 }
 
 

@@ -86,7 +86,8 @@ const preference = () => {
             fd.append('profileImg', profilePic)
         }
         else{
-            fd.append('profileImg',localStorage.getItem('profileImage'))
+            console.log('Profile pic not updated')
+            // fd.append('profileImg',localStorage.getItem('profileImage'))
         }
 
 		let editUserDetailsUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/edit/`
@@ -103,10 +104,14 @@ const preference = () => {
         getUserInfo(accessToken)
 	}
 
+    let profilePicLoader = ({ src, width, quality }) => {
+        console.log(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`)
+        return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
+    }
+
     let updateProfilePic = (e) => {
         setProfilePic(e.target.files[0]);
         setProfilePicUpdated(true);
-        localStorage.setItem('profileImage', e.target.files[0]);
     }
 
     let logout = () => {
@@ -121,12 +126,13 @@ const preference = () => {
 			    <Head>
 			    	<meta name='theme-color' content='#FFBCD1' />
 			    </Head>
+                {console.log(process.env.NEXT_PUBLIC_BACKEND_BASE_URL+user.profileImg)}
 			    <div className="flex flex-col w-full max-w-md z-50">
                     <div className='flex flex-col items-center w-full max-w-md pb-5 h-[91vh] overflow-y-auto px-2 '>
                         <div className='pt-4 flex flex-col justify-center items-center'>
                             <input type="file" name="profilePic" id="profilePic" className="hidden" ref={inputFileRef} onChange={(e) => {updateProfilePic(e)}}/>
                             <button className="rounded-full w-16 h-16" onClick={() => inputFileRef.current.click()}>
-                                <img src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL+user.profileImg}`} className = "rounded-full w-16 h-16"></img>
+                                <Image loader={profilePicLoader} src={`${user.profileImg}`} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
                             </button>
         	            	<h4 className='mx-2 mt-4 text-[#A268AC] font-[Sarabun-SemiBold] font-semibold text-'>{user.username}</h4>       
 			            </div>
@@ -150,10 +156,10 @@ const preference = () => {
                                     <label className="mt-3 mx-5 text-[#6e6e6e] text-sm font-semibold">Culture</label>
 			            		    <select className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]'  name="culture" id="culture" onChange={(e) => {user.culture = e.target.value}}>
                           		    	<option value={user.culture} disabled selected hidden>{user.culture}</option>
-                          		    	<option value="Culture 1">South Indian</option>
-                          		    	<option value="Culture 2">North Indian</option>
-                          		    	<option value="Culture 3">East Indian</option>
-                          		    	<option value="Culture 4">Others</option>
+                          		    	<option value="South Indian">South Indian</option>
+                          		    	<option value="North Indian">North Indian</option>
+                          		    	<option value="East Indian">East Indian</option>
+                          		    	<option value="Others">Others</option>
           	            		    </select>
                                 </div>
 			            	</div>
