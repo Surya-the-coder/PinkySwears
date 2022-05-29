@@ -5,9 +5,6 @@ import { useRouter } from 'next/router'
 import Vector from '../assets/images/Vector 4.svg'
 import FooterVector from '../assets/images/Vector 1.svg'
 import GoogleIcon32 from '../assets/images/Google-32.svg'
-import GoogleIcon48 from '../assets/images/Google-48.svg'
-import { useSession, signIn, signOut, getSession } from 'next-auth/react'
-import { waitForDebugger } from 'inspector'
 import GoogleLogin from 'react-google-login'
 import LoadingSpinner from '../components/LoadingSpinner'
 
@@ -27,6 +24,9 @@ const Home = (pageProps) => {
 	const router = useRouter()
 
 	const [loading, setLoading] = useState(false)
+
+	const [firstName, setFirstName] = useState<any>()
+	const [lastName, setLastName] = useState<any>()
 	const [username, setUsername] = useState<any>()
 	const [email, setEmail] = useState<any>()
 	const [password, setPassword] = useState<any>()
@@ -36,7 +36,7 @@ const Home = (pageProps) => {
 	const [yearsInRelationship, setYearsInRelationship] = useState<any>()
 
 	const [passwordMismatch, setPasswordMismatch] = useState(false)
-	const [userCreated, setUserCreated] = useState(false)
+	const [userCreated, setUserCreated] = useState(true)
 	const [userAlreadyExist, setUserAlreadyExist] = useState(false)
 
 	const [AccessToken, setAccessToken] = useState<any>()
@@ -105,8 +105,8 @@ const Home = (pageProps) => {
 			setPasswordMismatch(false)
 
 			let fd = new FormData()
-        	fd.append('first_name', username)
-        	fd.append('last_name', username)
+        	fd.append('first_name', firstName)
+        	fd.append('last_name', lastName)
 			fd.append('username', username)
 			fd.append('email', email)
 			fd.append('password', password)
@@ -133,7 +133,8 @@ const Home = (pageProps) => {
 			else if (response.status === 409) {
 				console.log('User Already exist')
 				setUserAlreadyExist(true)
-				redirectToLoginPage(router)
+				setLoading(false)
+				// redirectToLoginPage(router)
 			}
 			else {
 				console.log('User Creation Failed')
@@ -149,7 +150,6 @@ const Home = (pageProps) => {
 
 	const handleLogin = (googleData) => {
 		setLoading(true)
-		console.log(googleData)
 		let googleIdToken = googleData.tokenId;
 		localStorage.setItem('google_ID_Token', googleIdToken)
 		setGoogleIDToken(googleIdToken)
@@ -159,8 +159,6 @@ const Home = (pageProps) => {
 	let SignUpWithGoogle = async () => {
 		setLoading(true)
 		let googleIDTok = localStorage.getItem('google_ID_Token')
-		console.log(googleIDTok)
-		console.log(GoogleIDToken)
 		let createUserApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/social-signup/google-oauth2/`
 		
 		let response = await fetch(createUserApiUrl, {
@@ -171,15 +169,12 @@ const Home = (pageProps) => {
 			}),
 		})
 		
-		console.log(response)
+		// console.log(response)
+		// console.log(data)
+		// console.log(data.success)
+		
 		let data = await response.json()
-		
-		console.log(data)
-		console.log(data.success)
-		
 		if (response.status === 201) {
-			console.log('User Created')
-			
 			localStorage.setItem('access_token', data.tokens.access)
 			localStorage.setItem('refresh_token', data.tokens.refresh)
 			localStorage.setItem('UserDetails', JSON.stringify(data.user))
@@ -194,7 +189,6 @@ const Home = (pageProps) => {
 			}
 		}
 		else {
-			console.log('User Creation Failed')
 			setUserCreated(false)
 			localStorage.clear()
 			window.location.reload()
@@ -222,7 +216,7 @@ const Home = (pageProps) => {
 				<div className="z-0 flex h-16 w-full items-center justify-center md:hidden">
 					<Vector className="w-full"></Vector>
 				</div>
-				<div className="z-50 mt-10 flex w-full flex-col items-center">
+				<div className="z-50 mt-5 flex w-full flex-col items-center">
 					<h2 className="text-center font-[segoepr] text-3xl font-bold">
 						Welcome!
 					</h2>
@@ -230,6 +224,28 @@ const Home = (pageProps) => {
 						Create a new account
 					</p>
 					<form action="" className="flex w-full flex-col items-center" autoComplete='on' method='POST'>
+						{userCreated ? null : <p className='text-red-500 text-center font-[Sarabun-SemiBold] text-xs font-semibold mb-2'>User creation failed. Please retry</p>}
+						{userAlreadyExist ? <p className='text-red-500 text-center font-[Sarabun-SemiBold] text-xs font-semibold mb-2'>UserName/Email Already Exists, Please Login</p> : null}
+						<input
+							className=" focus-welcome-field-shadowfocus mt-2 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]"
+							type="text"
+							name="FirstName"
+							id="FirstName"
+							placeholder="First Name"
+							onChange={(e) => {
+								setFirstName(e.target.value)
+							}}
+						/>
+						<input
+							className=" focus-welcome-field-shadowfocus mt-2 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]"
+							type="text"
+							name="LastName"
+							id="LastName"
+							placeholder="Last Name"
+							onChange={(e) => {
+								setLastName(e.target.value)
+							}}
+						/>
 						<input
 							className=" focus-welcome-field-shadowfocus mt-2 h-12 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]"
 							type="text"

@@ -1,16 +1,11 @@
 import Head from "next/head";
 import NavBar from "../components/NavBar";
-import TopBar from "../components/TopBar";
 import Ellipse from '../assets/images/Ellipse.svg'
-// import { getSession, signOut } from 'next-auth/react'
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { GoogleLogout } from "react-google-login";
 import Link from "next/link";
-import AccountDetailsTopBar from "../components/AccountDetailsTopBar";
-import { get } from "https";
 import Image from 'next/image'
-import PIC from '../assets/images/photo.png'
 
 let signOut = (router) => {
     console.log("================Inside SignOut================")

@@ -1,13 +1,10 @@
 import Head from 'next/head';
 import TopBar from '../components/TopBar'
 import NavBar from '../components/NavBar'
-import { getSession } from 'next-auth/react';
 import Ellipse from '../assets/images/Ellipse.svg'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { redirect } from 'next/dist/server/api-utils';
-
 
 let redirectToHomePage = (router) => {
 	return router.push('/home')

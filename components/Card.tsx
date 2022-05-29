@@ -42,18 +42,18 @@ const Card = (props) => {
           <p className='text-xs text-purple-500 font-Sarabun'>{props.createdData}</p>
           <p className='text-sm text-gray-500 mt-2'>{props.content}</p>
           <div className='mt-3 flex items-center'>
-            <Link href={'#'}>
-              <button className='flex items-center text-xs z-50' onClick={likePost}>
+            {/* <Link href={'#'}> */}
+              {/* <button className='flex items-center text-xs z-50' onClick={likePost}> */}
                 <Like/>
-                <p className='mx-2 text-xs text-gray-400'> like </p>
-              </button>
-            </Link>
-            <Link href={'#'}>
+                <p className='mx-2 text-xs text-gray-400'>{props.numberOfLikes==null?0:props.numberOfLikes} Likes</p>
+              {/* </button> */}
+            {/* </Link> */}
+            {/* <Link href={'#'}>
               <div className='flex items-center text-xs text-gray-400'>
                 <Reply/>
                 <p className='mx-1'>{props.numberOfLikes>0?props.numberOfLikes:0}</p>
               </div>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
