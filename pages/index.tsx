@@ -103,20 +103,23 @@ const Home = (pageProps) => {
 		if (password === reEnterPassword) {
 			setLoading(true)
 			setPasswordMismatch(false)
+
+			let fd = new FormData()
+        	fd.append('first_name', username)
+        	fd.append('last_name', username)
+			fd.append('username', username)
+			fd.append('email', email)
+			fd.append('password', password)
+        	fd.append('gender', gender)
+        	fd.append('culture', culture)
+        	fd.append('years_in_relationShip', yearsInRelationship)
+        	// fd.append('profileImg', '')
+        	
 			let createUserApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/new/`
 			let response = await fetch(createUserApiUrl, {
 				method: 'POST',
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					first_name: username,
-					last_name: username,
-					username: username,
-					email: email,
-					password: password,
-					gender: gender,
-					culture: culture,
-					years_in_relationShip: yearsInRelationship,
-				}),
+				headers: {},
+				body: fd,
 			})
 
 			console.log(response)
@@ -135,6 +138,7 @@ const Home = (pageProps) => {
 			else {
 				console.log('User Creation Failed')
 				setUserCreated(false)
+				localStorage.clear()
 				window.location.reload()
 			}
 		} 
@@ -192,6 +196,7 @@ const Home = (pageProps) => {
 		else {
 			console.log('User Creation Failed')
 			setUserCreated(false)
+			localStorage.clear()
 			window.location.reload()
 		}
 	}

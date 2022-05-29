@@ -1,8 +1,8 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import Like from '../assets/images/Like.svg'
 import Love from '../assets/images/Love.svg'
 import Reply from '../assets/images/Reply.svg'
-import '../assets/images/photo.png'
 
 const Card = (props) => {
 
@@ -22,13 +22,18 @@ const Card = (props) => {
       console.log("Post Unliked")
   }
 
+  let profilePicLoader = ({ src, width, quality }) => {
+    return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
+  }
+
   return (
     <Link href={`/post/${props.postid}`}>
       <div className='flex mx-5 my-5 bg-white py-2 px-5 rounded-3xl shadow-card cursor-pointer'>
         <div>
           <Link href={`/userinfo/${props.userid}`}>
             <div className='w-12 h-12 mt-5 mr-3'>
-              <img src={props.profileImage} className='w-full h-full rounded-full'/>
+              <Image loader={profilePicLoader} src={`${props.profileImage}`} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
+              {/* <img src={props.profileImage} className='w-full h-full rounded-full'/> */}
             </div>
           </Link>
         </div>

@@ -11,24 +11,29 @@ import LoadingCard from '../components/LoadingCard'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 
-let signInUserPassword = async (userInputUserName, userInputPassword, router, setLoading) => {
-
+let signInUserPassword = async (userInputUserName, userInputPassword, router, setLoading, setLoginFailed) => {
   setLoading(true)
-  
   let loginApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/login/`;
   
-  let response = await( await fetch(loginApiUrl, {
+  let response =await fetch(loginApiUrl, {
       method:'POST',
       headers: {'Content-Type':'application/json'},
       body : JSON.stringify({"username" : userInputUserName, "password" : userInputPassword}),
-    })).json()
-    console.log(response.user)
-    
-    if (response.access!=null) {
-      localStorage.setItem('access_token', response.access);
-      localStorage.setItem('refresh_token', response.refresh);
-      localStorage.setItem('UserDetails', JSON.stringify(response.user))
-      router.push('/home')
+    })
+    console.log(response)
+    if (response.status === 200) {
+      let data = await response.json()
+      if (data.access!=null) {
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+        localStorage.setItem('UserDetails', JSON.stringify(data.user))
+        router.push('/home')
+      }
+    }
+    else {
+      setLoading(false)
+      setLoginFailed(true)
+      router.push('/signin')
     }
 };
 
@@ -40,6 +45,7 @@ const signin = (pageProps) => {
   const [userInputPassword, setuserInputPassword] = useState<any>();
 
   const [loading, setLoading] = useState(false)
+  const [loginFailed, setLoginFailed] = useState(false)
 
   useEffect(() => {
     let accessTokenLS = localStorage.getItem('access_token')
@@ -71,38 +77,40 @@ const signin = (pageProps) => {
       <div className='w-full flex items-center justify-center md:hidden z-0'>
         <Vector className="w-full"></Vector>
       </div>
-          <div className="z-50 -mt-5 md:mt-5">
-            <h2 className="text-center font-[segoepr] text-3xl font-bold">Welcome!</h2>
-            <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">Create a new account</p>
+      <div className="z-50 -mt-5 md:mt-5">
+        <h2 className="text-center font-[segoepr] text-3xl font-bold">Welcome!</h2>
+        <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-[#939090]">Create a new account</p>
+        
+      </div>
+      <div className="mt-5 flex flex-col items-center w-full">
+        {loginFailed? <p className='text-red-500 text-center font-[Sarabun-SemiBold] text-xs font-semibold mb-2'>Username or password incorrect. Please try again</p> : null}
+        <form className="flex w-full flex-col items-center" autoComplete='on'>
+          <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username" onChange={(e) => setUserInputUserName(e.target.value)} />
+          <div className='flex items-center justify-end mt-4 '>
+            <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 pr-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1] z-0" type="password" name="Password" id="password" placeholder="Password" onChange={(e) => setuserInputPassword(e.target.value)} />
+            {/* <button className='z-50 fixed mr-3'><PasswordEye /></button> */}
           </div>
-          <div className="mt-5 flex flex-col items-center w-full">
-              <form className="flex w-full flex-col items-center" autoComplete='on'>
-                <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="Username" id="username" placeholder="Username" onChange={(e) => setUserInputUserName(e.target.value)} />
-                <div className='flex items-center justify-end mt-4 '>
-                  <input className=" focus-welcome-field-shadowfocus h-14 w-80 rounded-2xl border pl-6 pr-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1] z-0" type="password" name="Password" id="password" placeholder="Password" onChange={(e) => setuserInputPassword(e.target.value)} />
-                  {/* <button className='z-50 fixed mr-3'><PasswordEye /></button> */}
-                </div>
-                <div className="mt-3 flex max-w-md items-center justify-between w-80">
-                  <div className="mx-10 flex items-center justify-center">
-                    <input className=" accent-pink-500 outline-hidden h-2 w-2 " type="radio" id="radiobutton" name="radiobutton" />
-                    <label className="pl-2 font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold"> Remember Me </label>
-                  </div>
-                  <div className="mx-10">
-                    <Link href="/forgotpassword">
-                      <p className="font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold "> Forgot password?</p>
-                    </Link>
-                  </div>
-                </div>
-                <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16' onClick={() => signInUserPassword(userInputUserName, userInputPassword, router, setLoading)}>Sign In</button>
-              </form>
+          <div className="mt-3 flex max-w-md items-center justify-between w-80">
+            <div className="mx-10 flex items-center justify-center">
+              <input className=" accent-pink-500 outline-hidden h-2 w-2 " type="radio" id="radiobutton" name="radiobutton" />
+              <label className="pl-2 font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold"> Remember Me </label>
             </div>
+            <div className="mx-10">
+              <Link href="/forgotpassword">
+                <p className="font-[Sarabun-ExtraBold] text-[0.5rem] font-extrabold "> Forgot password?</p>
+              </Link>
+            </div>
+          </div>
+          <button className=' mt-10 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-64 h-16' onClick={() => signInUserPassword(userInputUserName, userInputPassword, router, setLoading, setLoginFailed)}>Sign In</button>
+        </form>
+      </div>
       <div className='flex h-3 w-full text-center mt-1 mx-auto'>
           <FooterVector className="w-full -z-50 fixed md:hidden"/>
-          <p className=' text-[#FFFFFF] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-24 fixed md:text-gray-400'>Don't have an account? &nbsp;
+          <span className=' text-[#FFFFFF] text-xs font-[Sarabun-SemiBold] font-semibold flex text-center justify-center w-full z-50 pt-24 fixed md:text-gray-400'>Don't have an account? &nbsp;
             <Link href={'/'}>
               <p className=' text-xs font-[Sarabun-SemiBold] font-semibold text-[#FF848E] cursor-pointer'> Sign Up </p>
             </Link>
-          </p>
+          </span>
       </div> 
         </>
       }
