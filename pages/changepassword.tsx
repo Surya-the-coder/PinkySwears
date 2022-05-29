@@ -42,7 +42,7 @@ const changepassword = () => {
 	let getUserInfo = async (accessTokenLS) => {
 		console.log("******getuserinfo*****")
 		console.log(accessTokenLS)
-		let getuserInfoUrl = 'https://backend.pinkyswears.in/api/user/info/'
+		let getuserInfoUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/info/`
 		let response = await fetch(getuserInfoUrl, {
 			method: 'GET',
 			headers: {
@@ -60,7 +60,7 @@ const changepassword = () => {
 	let passwordUpdate = async () => {
 		if (newPassword === reenternewPassword) {
 	
-		let passwordUpdateUrl = 'https://backend.pinkyswears.in/api/user/change-password/'
+		let passwordUpdateUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/change-password/`
 		let response = await fetch(passwordUpdateUrl, {
 			method: 'PUT',
 			headers: {

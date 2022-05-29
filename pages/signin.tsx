@@ -15,7 +15,7 @@ let signInUserPassword = async (userInputUserName, userInputPassword, router, se
 
   setLoading(true)
   
-  let loginApiUrl = 'https://backend.pinkyswears.in/api/user/login/';
+  let loginApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/login/`;
   
   let response = await( await fetch(loginApiUrl, {
       method:'POST',

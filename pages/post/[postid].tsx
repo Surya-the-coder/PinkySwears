@@ -37,7 +37,7 @@ const SinglePost = () => {
         }
         else{
             if (router.isReady) {
-                // let fetchSinglePostApiUrl = `https://backend.pinkyswears.in/api/post/${router.query.postid}/`;
+                // let fetchSinglePostApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
                 // fetch(fetchSinglePostApiUrl)
                 // .then(response => response.json())
                 // .then((postData) => {console.log(postData); setSinglePostData(postData); setPostUserInfo(postData.user);setIsDataFetched(true)})
@@ -61,7 +61,7 @@ const SinglePost = () => {
         console.log('========================= IN GET SINGLE POST DATA =========================')
         while(router.query.postid)
             break
-        let fetchSinglePostApiUrl = await `https://backend.pinkyswears.in/api/post/${router.query.postid}/`;
+        let fetchSinglePostApiUrl = await `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
         console.log(fetchSinglePostApiUrl)
         let response = await fetch(fetchSinglePostApiUrl);
         console.log(response)
@@ -77,7 +77,7 @@ const SinglePost = () => {
             <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
             <div className="pb-8 overflow-y-auto overflow-hidden h-[92vh] z-50  w-full max-w-md">
                 <meta name='theme-color' content='#FFBCD1' />
-                <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {"https://backend.pinkyswears.in/"+userData.profileImg}/>
+                <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+userData.profileImg}/>
                 {/* <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
                     <div className="pl-4 pr-2 py-1">
                         <SearchGray/>
@@ -90,8 +90,8 @@ const SinglePost = () => {
                 </div>
                 {isDataFetched?
                     <div className="">
-                        <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {"https://backend.pinkyswears.in/"+PostUserInfo.profileImg} currentUserImage = {"https://backend.pinkyswears.in/"+userData.profileImg} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment}/>
-                        {singlePostData.comments.map( (comment) =><CommentCard commentUserProfilePic = {"https://backend.pinkyswears.in/"+comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}/>)}
+                        <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+PostUserInfo.profileImg} currentUserImage = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+userData.profileImg} postUserName = {PostUserInfo.username} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment}/>
+                        {singlePostData.comments.map( (comment) =><CommentCard commentUserProfilePic = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}/>)}
                     </div>
                 : //else
                     <div className="">

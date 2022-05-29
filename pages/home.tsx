@@ -49,7 +49,7 @@ const home = ({session}) => {
 
     let getAllPosts = async () => {
         console.log('========================INSIDE GETALL POST===========================')
-        let postUrl = 'https://backend.pinkyswears.in/api/post/';
+        let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
         let response = await fetch(postUrl);
         let data = await response.json();
         setPosts(data);
@@ -93,7 +93,7 @@ const home = ({session}) => {
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
                 <div className="pb-5 overflow-y-auto overflow-hidden h-[92vh] z-50  w-full max-w-md ">
                     <meta name='theme-color' content='#FFBCD1' />
-                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {"https://backend.pinkyswears.in/"+user.profileImg}/>
+                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+user.profileImg}/>
                     <div className="flex justify-around mx-10 top-24">
                         <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button>
                         <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Recent")}>Recent</button>
@@ -104,7 +104,7 @@ const home = ({session}) => {
                     {console.log(posts)}
                     {isDataFetched?
                         <div className="">
-                            {posts.map( (post) => <Card key={post.id} accessToken = {accessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {"https://backend.pinkyswears.in/"+post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
+                            {posts.map( (post) => <Card key={post.id} accessToken = {accessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
                         </div>
                     :
                         <div className="">

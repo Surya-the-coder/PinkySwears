@@ -21,7 +21,7 @@ const forgotpassword = () => {
 	{
 		console.log("Testtttt")
 		localStorage.setItem('email', email)	
-		let requestOTPUrl = 'https://backend.pinkyswears.in/api/user/resetPassword/01/requestOTP/'
+		let requestOTPUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/resetPassword/01/requestOTP/`
 		let response = await fetch(requestOTPUrl, {
 			method: 'POST',
 			headers: {
@@ -50,7 +50,7 @@ const forgotpassword = () => {
 		localStorage.setItem('otp', otp)
 		let email = localStorage.getItem('email')	
 		console.log(email)
-		let verifyOTPUrl = 'https://backend.pinkyswears.in/api/user/resetPassword/02/verifyOTP/'
+		let verifyOTPUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/resetPassword/02/verifyOTP/`
 		let response = await fetch(verifyOTPUrl, {
 			method: 'POST',
 			headers: {
@@ -84,7 +84,7 @@ const forgotpassword = () => {
 		if (newPassword === reenternewPassword) {
 			let email = localStorage.getItem('email')
 			let otp = localStorage.getItem('otp')
-			let passwordUpdateUrl = 'https://backend.pinkyswears.in/api/user/resetPassword/03/changePassword/'
+			let passwordUpdateUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/resetPassword/03/changePassword/`
 			let response = await fetch(passwordUpdateUrl, {
 				method: 'POST',
 				headers: {

@@ -41,7 +41,7 @@ const createpost = () => {
 	let CreateNewPost = async () =>{
 		setLoading(true)
 		console.log(accessToken)
-		let response = await fetch(`https://backend.pinkyswears.in/api/post/`, {
+		let response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
 			body: JSON.stringify({'content' : PostContent}),
@@ -59,7 +59,7 @@ const createpost = () => {
 					<meta name='theme-color' content='#FFBCD1' />
 				</Head>
 				<div className="flex flex-col w-full max-w-md">
-				<TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {"https://backend.pinkyswears.in/"+user.profileImg}/>
+				<TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+user.profileImg}/>
 					{loading?<LoadingSpinner/>:
 						<>
 							<div className='flex mx-6'>

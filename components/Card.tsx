@@ -8,7 +8,7 @@ const Card = (props) => {
 
   let likePost =async () => {
     console.log(props.accessToken)
-    let response= await fetch(`https://backend.pinkyswears.in/api/post/like/${props.postid}/`, {
+    let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/like/${props.postid}/`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

@@ -5,7 +5,7 @@ const InfoCard = (props) => {
 	let followUnFollowUser =async () => {
 		console.log("Followedd.................")
 		console.log("Follow Function")
-		let response= await fetch(`https://backend.pinkyswears.in/api/user/follow/${props.userid}/`, {
+		let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/follow/${ process.env.NEXT_PUBLIC_FOLLOW_USER_API + props.userid}/`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

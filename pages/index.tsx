@@ -19,6 +19,10 @@ let redirectToLoginPage = (router) => {
 	return router.push('/signin')
 }
 
+let redirectToPreferencePage = (router) => {
+	return router.push('/preference')
+}
+
 const Home = (pageProps) => {
 	const router = useRouter()
 
@@ -57,7 +61,7 @@ const Home = (pageProps) => {
 	}, [])
 
 	let isAccessTokenValid = async (accessTokenLS) => {
-		let verifyTokenAPI = 'https://backend.pinkyswears.in/api/user/verify/'
+		let verifyTokenAPI = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/verify/`
 		let response = await fetch(verifyTokenAPI, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -74,7 +78,7 @@ const Home = (pageProps) => {
 	let getRefreshedAccessToken = async (refreshTokenLS) => {
 		setRefreshNotInitiated(false)
 
-		let refreshTokenAPI = 'https://backend.pinkyswears.in/api/user/refresh/'
+		let refreshTokenAPI = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/refresh/`
 
 		let response = await fetch(refreshTokenAPI, {
 			method: 'POST',
@@ -99,10 +103,10 @@ const Home = (pageProps) => {
 		if (password === reEnterPassword) {
 			setLoading(true)
 			setPasswordMismatch(false)
-			let createUserApiUrl = 'https://backend.pinkyswears.in/api/user/new/'
+			let createUserApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/new/`
 			let response = await fetch(createUserApiUrl, {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					first_name: username,
 					last_name: username,
@@ -115,6 +119,9 @@ const Home = (pageProps) => {
 				}),
 			})
 
+			console.log(response)
+			console.log(await response.json())
+
 			if (response.status === 201) {
 				console.log('User Created')
 				setUserCreated(true)
@@ -123,10 +130,12 @@ const Home = (pageProps) => {
 			else if (response.status === 409) {
 				console.log('User Already exist')
 				setUserAlreadyExist(true)
+				redirectToLoginPage(router)
 			}
 			else {
 				console.log('User Creation Failed')
 				setUserCreated(false)
+				window.location.reload()
 			}
 		} 
 		else {
@@ -148,7 +157,7 @@ const Home = (pageProps) => {
 		let googleIDTok = localStorage.getItem('google_ID_Token')
 		console.log(googleIDTok)
 		console.log(GoogleIDToken)
-		let createUserApiUrl = 'https://backend.pinkyswears.in/api/user/social-signup/google-oauth2/'
+		let createUserApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/social-signup/google-oauth2/`
 		
 		let response = await fetch(createUserApiUrl, {
 			method: 'POST',
@@ -158,25 +167,32 @@ const Home = (pageProps) => {
 			}),
 		})
 		
+		console.log(response)
 		let data = await response.json()
 		
 		console.log(data)
+		console.log(data.success)
 		
 		if (response.status === 201) {
 			console.log('User Created')
-			setUserCreated(true)
+			
 			localStorage.setItem('access_token', data.tokens.access)
 			localStorage.setItem('refresh_token', data.tokens.refresh)
 			localStorage.setItem('UserDetails', JSON.stringify(data.user))
-			redirectToHomePage(router)
-		} 
-		else if (response.status === 409) {
-			console.log('User Already exist')
-			setUserAlreadyExist(true)
-		} 
+			
+			if (data.success == "user is created and logged in.") {
+				setUserCreated(true)
+				redirectToPreferencePage(router)
+			}
+			else if(data.success == "user already exists and is logged in."){
+				setUserAlreadyExist(true)
+				redirectToHomePage(router)
+			}
+		}
 		else {
 			console.log('User Creation Failed')
 			setUserCreated(false)
+			window.location.reload()
 		}
 	}
 
@@ -355,7 +371,7 @@ const Home = (pageProps) => {
 				</p>
 				<div className=" mt-3 flex w-full max-w-md items-center justify-around px-3">
 					<GoogleLogin
-						clientId={'65395984080-s2sso604b22cihc6ntj7cg3vl2tmhn69.apps.googleusercontent.com'}
+						clientId={process.env.NEXT_PUBLIC_GOOGLE_ID}
 						render = { renderProps => (
 						<button 
 							className="h-10 w-64 flex items-center justify-center rounded-full bg-white font-[Sarabun-Regular] text-lg font-normal -tracking-tighter text-[#F67A95] shadow-button-shadow"

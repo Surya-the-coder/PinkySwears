@@ -10,7 +10,7 @@ const SinglePostCard = (props) => {
     const [newCommentContent, setNewCommentContent] = useState<any>()
 
     useEffect(() => {
-        // let fetchSinglePostApiUrl = `https://backend.pinkyswears.in/api/post/${router.query.postid}/`;
+        // let fetchSinglePostApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
         // fetch(fetchSinglePostApiUrl)
         // .then(response => response.json())
         // .then((postData) => {console.log(postData); setSinglePostData(postData); setPostUserInfo(postData.user);setIsDataFetched(true)})
@@ -22,7 +22,7 @@ const SinglePostCard = (props) => {
         if (newCommentContent.trim() !== "") {
             // console.log(newCommentContent)
             console.log(props.postid)
-            let response = await fetch(`https://backend.pinkyswears.in/api/comment/all/post/${props.postid}/`, {
+            let response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/all/post/${props.postid}/`, {
 		    	method: "POST",
 		    	headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${props.accessToken}` },
 		    	body: JSON.stringify({'content' : newCommentContent}),

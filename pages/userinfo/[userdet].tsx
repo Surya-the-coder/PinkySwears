@@ -45,7 +45,7 @@ const userdet = () => {
 	console.log(router.query.userdet)	
 	 
     let getAllPostsOfUser = async () => {
-        let fetchAllPostApiUrl = `https://backend.pinkyswears.in/api/post/user/${router.query.userdet}/`;
+        let fetchAllPostApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/user/${router.query.userdet}/`;
         let response = await fetch(fetchAllPostApiUrl);
         let postData = await response.json()
 		
@@ -55,7 +55,7 @@ const userdet = () => {
 		setIsDataFetched(true)
     }
 	let getFollowers = async () => {
-        let fetchFollowerApiUrl = `https://backend.pinkyswears.in/api/user/followers/${router.query.userdet}/`;
+        let fetchFollowerApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followers/${router.query.userdet}/`;
         let response = await fetch(fetchFollowerApiUrl);
         let followerinfo = await response.json()
 		let userId = JSON.parse(localStorage.getItem('UserDetails')).id
@@ -70,7 +70,7 @@ const userdet = () => {
 			setFollow(true)
     }
 	let getFollowing = async () => {
-        let fetchFollowingApiUrl = `https://backend.pinkyswears.in/api/user/followings/${router.query.userdet}/`;
+        let fetchFollowingApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followings/${router.query.userdet}/`;
         let response = await fetch(fetchFollowingApiUrl);
         let followinginfo = await response.json()        
 		setFollowingCount(Object.keys(followinginfo).length);
@@ -79,7 +79,7 @@ const userdet = () => {
 	let followUnFollowUser =async () => {
 		console.log("Followedd.................")
 		console.log("Follow Function")
-		let response= await fetch(`https://backend.pinkyswears.in/api/user/follow/${router.query.userdet}/`, {
+		let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/follow/${router.query.userdet}/`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -114,7 +114,7 @@ const userdet = () => {
 				<div>
 					<div className="flex items-center justify-center">
 						<div className=" h-[84px] w-[84px]">
-							<img src={'https://backend.pinkyswears.in/'+PostUserInfo.profileImg} className='w-full h-full rounded-full'/>
+							<img src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+PostUserInfo.profileImg} className='w-full h-full rounded-full'/>
 						</div>            		
 						<div className=" ml-[40px] flex flex-col">
 							<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Posts</p>
@@ -143,7 +143,7 @@ const userdet = () => {
 						</div>
 					}
 					<div className="">
-    	        		{PostsData.map( (post) => <AccountCard numberOfLikesCheck={true} postid = {post.id} userid={post.user.id} username = {post.user.username} profileImage = {'https://backend.pinkyswears.in/'+PostUserInfo.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} accessToken={accessToken}/> )}
+    	        		{PostsData.map( (post) => <AccountCard numberOfLikesCheck={true} postid = {post.id} userid={post.user.id} username = {post.user.username} profileImage = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+PostUserInfo.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} accessToken={accessToken}/> )}
     	        	</div>
 				</div>
 				:

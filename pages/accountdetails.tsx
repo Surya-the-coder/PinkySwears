@@ -41,7 +41,7 @@ const accountdetails = () => {
 	let getUserInfo = async (accessTokenLS) => {
 		console.log("******getuserinfo*****")
 		console.log(accessTokenLS)
-		let getuserInfoUrl = 'https://backend.pinkyswears.in/api/user/info/'
+		let getuserInfoUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/info/`
 		let response = await fetch(getuserInfoUrl, {
 			method: 'GET',
 			headers: {
@@ -63,7 +63,7 @@ const accountdetails = () => {
 	}
 
 	let editUserDetails = async () => {		
-		let editUserDetailsUrl = 'https://backend.pinkyswears.in/api/user/edit/'
+		let editUserDetailsUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/edit/`
 		let response = await fetch(editUserDetailsUrl, {
 			method: 'POST',
 			headers: {

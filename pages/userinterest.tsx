@@ -50,14 +50,14 @@ const userinterest = ({session}) => {
     }, []);
 
 	let getFollowing = async (userLS) => {
-        let fetchFollowingApiUrl = `https://backend.pinkyswears.in/api/user/followings/${userLS.id}/`;
+        let fetchFollowingApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followings/${userLS.id}/`;
         let response = await fetch(fetchFollowingApiUrl);
         let followinginfo = await response.json()        
 		setFollowingInfo(followinginfo);
 		console.log(followinginfo)
     }
     let getFollowers = async (userLS) => {
-        let fetchFollowerApiUrl = `https://backend.pinkyswears.in/api/user/followers/${userLS.id}/`;
+        let fetchFollowerApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followers/${userLS.id}/`;
         let response = await fetch(fetchFollowerApiUrl);
         let followerinfo = await response.json()  
 		console.log(followerinfo)      
@@ -95,7 +95,7 @@ const userinterest = ({session}) => {
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
                 <div className="mb-6 overflow-y-auto overflow-hidden h-[95vh] z-50  w-full max-w-md">
                     <meta name='theme-color' content='#FFBCD1' />
-                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {"https://backend.pinkyswears.in/"+user.profileImg}/>
+                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+user.profileImg}/>
                     <div className="flex justify-around mx-5 top-24">
                         <button className={followings?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Followings")}>Followings</button>
                         <button className={followers?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Followers")}>Followers</button>
@@ -104,8 +104,8 @@ const userinterest = ({session}) => {
 
                     {isDataFetched?
                         <div className="w-full">
-                            {followings? followinginfo.map((eachfollowinginfo)=> <InfoCard accessToken={accessToken} showbutton={true} buttoncontent={"Unfollow"} profileImage={"https://backend.pinkyswears.in/"+user.profileImg} userid={eachfollowinginfo.id} first_name={eachfollowinginfo.first_name} last_name={eachfollowinginfo.last_name} username={eachfollowinginfo.username}/>) :null}
-							{followers? followerInfo.map((eachfollowerinfo)=> <InfoCard showbutton={false} buttoncontent={"Remove"} profileImage={"https://backend.pinkyswears.in/"+user.profileImg} userid={eachfollowerinfo.id} first_name={eachfollowerinfo.first_name} last_name={eachfollowerinfo.last_name} username={eachfollowerinfo.username}/>) :null}
+                            {followings? followinginfo.map((eachfollowinginfo)=> <InfoCard accessToken={accessToken} showbutton={true} buttoncontent={"Unfollow"} profileImage={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+user.profileImg} userid={eachfollowinginfo.id} first_name={eachfollowinginfo.first_name} last_name={eachfollowinginfo.last_name} username={eachfollowinginfo.username}/>) :null}
+							{followers? followerInfo.map((eachfollowerinfo)=> <InfoCard showbutton={false} buttoncontent={"Remove"} profileImage={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+user.profileImg} userid={eachfollowerinfo.id} first_name={eachfollowerinfo.first_name} last_name={eachfollowerinfo.last_name} username={eachfollowerinfo.username}/>) :null}
 							{activity? <div>Actvity</div> :null}
                         </div>
                     :

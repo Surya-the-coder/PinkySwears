@@ -3,12 +3,14 @@ import NavBar from "../components/NavBar";
 import TopBar from "../components/TopBar";
 import Ellipse from '../assets/images/Ellipse.svg'
 // import { getSession, signOut } from 'next-auth/react'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { GoogleLogout } from "react-google-login";
 import Link from "next/link";
 import AccountDetailsTopBar from "../components/AccountDetailsTopBar";
 import { get } from "https";
+import Image from 'next/image'
+import PIC from '../assets/images/photo.png'
 
 let signOut = (router) => {
     console.log("================Inside SignOut================")
@@ -22,6 +24,10 @@ const preference = () => {
 
     const [accessToken, setaccessToken] = useState<any>()
     const [refreshToken, setRefreshToken] = useState<any>()
+    const [profilePic, setProfilePic] = useState<any>()
+    const [profilePicUpdated, setProfilePicUpdated] = useState(false)
+
+    const inputFileRef = useRef( null );
 
     useEffect(() => {
         console.log('=========================PREF LOG================================')
@@ -37,7 +43,7 @@ const preference = () => {
             
             setaccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
-            // getUserInfo(accessTokenLS)
+            getUserInfo(accessTokenLS)
             
             console.log(userLS)
         }
@@ -47,7 +53,8 @@ const preference = () => {
     let getUserInfo = async (accessToken) => {
 		console.log("******getuserinfo*****")
 		console.log(accessToken)
-		let getuserInfoUrl = 'https://backend.pinkyswears.in/api/user/info/'
+        
+		let getuserInfoUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/info/`
 		let response = await fetch(getuserInfoUrl, {
 			method: 'GET',
 			headers: {
@@ -68,26 +75,39 @@ const preference = () => {
         console.log(formUserDetails.gender)
         console.log(formUserDetails.culture)
         console.log(formUserDetails.years_in_relationShip)
+        
+        let fd = new FormData()
+        fd.append('first_name', formUserDetails.first_name)
+        fd.append('last_name', formUserDetails.last_name)
+        fd.append('gender', formUserDetails.gender)
+        fd.append('culture', formUserDetails.culture)
+        fd.append('years_in_relationShip', formUserDetails.years_in_relationShip)
+        if (profilePicUpdated) {
+            fd.append('profileImg', profilePic)
+        }
+        else{
+            fd.append('profileImg',localStorage.getItem('profileImage'))
+        }
 
-		let editUserDetailsUrl = 'https://backend.pinkyswears.in/api/user/edit/'
+		let editUserDetailsUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/edit/`
 		let response = await fetch(editUserDetailsUrl, {
 			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
 				'Authorization': 'Bearer '+accessToken,
 			},
-			body: JSON.stringify({
-				'first_name': formUserDetails.first_name,
-				'last_name': formUserDetails.last_name,
-				'gender': formUserDetails.gender,
-				'culture': formUserDetails.culture,
-				'years_in_relationShip': formUserDetails.years_in_relationShip,
-			}),
+			body: fd,
 		})
         console.log(accessToken)
-        getUserInfo(accessToken)
 		console.log(response)
+        console.log(await response.json())
+        getUserInfo(accessToken)
 	}
+
+    let updateProfilePic = (e) => {
+        setProfilePic(e.target.files[0]);
+        setProfilePicUpdated(true);
+        localStorage.setItem('profileImage', e.target.files[0]);
+    }
 
     let logout = () => {
         signOut(router)
@@ -103,7 +123,14 @@ const preference = () => {
 			    </Head>
 			    <div className="flex flex-col w-full max-w-md z-50">
                     <div className='flex flex-col items-center w-full max-w-md pb-5 h-[91vh] overflow-y-auto px-2 '>
-                        <AccountDetailsTopBar profileImg = {'https://backend.pinkyswears.in/'+user.profileImg} username = {user.username}/>
+                        <div className='pt-4 flex flex-col justify-center items-center'>
+                            <input type="file" name="profilePic" id="profilePic" className="hidden" ref={inputFileRef} onChange={(e) => {updateProfilePic(e)}}/>
+                            <button className="rounded-full w-16 h-16" onClick={() => inputFileRef.current.click()}>
+                                <img src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL+user.profileImg}`} className = "rounded-full w-16 h-16"></img>
+                            </button>
+        	            	<h4 className='mx-2 mt-4 text-[#A268AC] font-[Sarabun-SemiBold] font-semibold text-'>{user.username}</h4>       
+			            </div>
+                        {/* <AccountDetailsTopBar profileImg = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+user.profileImg} username = {user.username}/> */}
 			            <form autoComplete='on' className='flex flex-col justify-center w-full' action='' method="POST">
                             <label className="mt-10 mx-7 text-[#6e6e6e] text-sm font-semibold">First Name</label>
 			            	<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-1  rounded-2xl border h-[56px] mx-3 font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:text-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={user.first_name} placeholder="First Name" autoComplete='on' onChange={(e) => {user.first_name = e.target.value}}/>
@@ -114,19 +141,19 @@ const preference = () => {
                                 <div className="mx-1">
                                     <label className="mt-3 mx-5 text-[#6e6e6e] text-sm font-semibold">Gender</label>
 			            		    <select className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]' name="gender" id="gender" onChange={(e) => {user.gender = e.target.value}} >
+                          		    	<option value={user.gender} disabled selected hidden>{user.gender}</option>
                           		    	<option value="Female">Female</option>
                           		    	<option value="Male">Male</option>
-                          		    	<option value={user.gender} disabled selected hidden>{user.gender}</option>
           	            		    </select>
                                 </div>
                                 <div className="mx-1">
                                     <label className="mt-3 mx-5 text-[#6e6e6e] text-sm font-semibold">Culture</label>
 			            		    <select className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]'  name="culture" id="culture" onChange={(e) => {user.culture = e.target.value}}>
                           		    	<option value={user.culture} disabled selected hidden>{user.culture}</option>
-                          		    	<option value="Culture 1">Culture 1</option>
-                          		    	<option value="Culture 2">Culture 2</option>
-                          		    	<option value="Culture 3">Culture 3</option>
-                          		    	<option value="Culture 4">Culture 4</option>
+                          		    	<option value="Culture 1">South Indian</option>
+                          		    	<option value="Culture 2">North Indian</option>
+                          		    	<option value="Culture 3">East Indian</option>
+                          		    	<option value="Culture 4">Others</option>
           	            		    </select>
                                 </div>
 			            	</div>
@@ -148,7 +175,7 @@ const preference = () => {
 			            	
                             <div className='flex mt-10 mb-6 mx-3 justify-between'>
                                 <div className="flex justify-center">
-                                    <GoogleLogout clientId='65395984080-s2sso604b22cihc6ntj7cg3vl2tmhn69.apps.googleusercontent.com' onLogoutSuccess={logout} render={ renderProps => (<button type="button" className="h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl cursor-pointer" onClick={renderProps.onClick} disabled = {renderProps.disabled}> Sign Out </button>)}/>
+                                    <GoogleLogout clientId={process.env.NEXT_PUBLIC_GOOGLE_ID} onLogoutSuccess={logout} render={ renderProps => (<button type="button" className="h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl cursor-pointer" onClick={renderProps.onClick} disabled = {renderProps.disabled}> Sign Out </button>)}/>
                                 </div>
 			            		<button type="button" className='ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={() => editUserDetails(user)}>Save</button>  								
 			            	</div>
