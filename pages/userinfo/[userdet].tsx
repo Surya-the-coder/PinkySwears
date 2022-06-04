@@ -5,6 +5,7 @@ import TopBar from "../../components/TopBar";
 import AccountCard  from "../../components/AccountCard";
 import dateFormat from 'dateformat';
 import LoadingSpinner from "../../components/LoadingSpinner";
+import {getFollowing,getFollowers} from '../../components/CommonFunctions'
 
 const userdet = () => {	
 	const [postsOfUser, setPostsOfUser] = useState<any>();
@@ -33,8 +34,7 @@ const userdet = () => {
             setRefreshToken(refreshTokenLS)
 			if (router.isReady) {
 				getAllPostsOfUser();
-				getFollowers();
-				getFollowing();
+				callCommonFunctions()
 				if (userID == router.query.userdet) {
 					setSelfView(true)
 				}
@@ -53,29 +53,30 @@ const userdet = () => {
 		setPostUserInfo(postData[0].user)
 		setPostsOfUser(Object.keys(postData).length);
 		setIsDataFetched(true)
+		callCommonFunctions()
     }
-	let getFollowers = async () => {
-        let fetchFollowerApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followers/${router.query.userdet}/`;
-        let response = await fetch(fetchFollowerApiUrl);
-        let followerinfo = await response.json()
+	let callCommonFunctions =async () => {
+		let followerinfojson = getFollowers(router.query.userdet)		
 		let userId = JSON.parse(localStorage.getItem('UserDetails')).id
-		setFollowerCount(Object.keys(followerinfo).length);
-		var newA = followerinfo.filter(function (item) {
-			return item.id== userId;});
-		const countOfArray = (Object.keys(newA).length)
+		followerinfojson.then(async function (result) {
+			setFollowerCount(Object.keys(result).length);
+			var newA = result.filter(function (item) {
+				return item.id== userId;});
+			const countOfArray = (Object.keys(newA).length)						
+			if(countOfArray==0)
+				setFollow(false)
+			else
+				setFollow(true)
+		})
 		
-		if(countOfArray==0)
-			setFollow(false)
-		else
-			setFollow(true)
-    }
-	let getFollowing = async () => {
-        let fetchFollowingApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followings/${router.query.userdet}/`;
-        let response = await fetch(fetchFollowingApiUrl);
-        let followinginfo = await response.json()        
-		setFollowingCount(Object.keys(followinginfo).length);
+		let followinginfojson = getFollowing(router.query.userdet)
+		followinginfojson.then(async function(result){
+			console.log(result)
+			console.log(Object.keys(result).length)
+			setFollowingCount(await Object.keys(result).length);
+		})
 		
-    }
+	}
 	let followUnFollowUser =async () => {
 		console.log("Followedd.................")
 		console.log("Follow Function")

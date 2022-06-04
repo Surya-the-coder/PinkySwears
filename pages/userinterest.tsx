@@ -8,6 +8,7 @@ import InfoCard from '../components/InfoCard'
 import AccountCard from "../components/AccountCard";
 import dateFormat from 'dateformat';
 import ActivityCard from "../components/ActivityCard";
+import {getFollowing,getFollowers} from '../components/CommonFunctions'
 
 let redirectToHomePage = () => {
     const router = useRouter()
@@ -48,27 +49,18 @@ const userinterest = ({session}) => {
             setRefreshToken(refreshTokenLS)
             setUser(userLS)  
 			console.log(userLS) 
-			getFollowing(userLS)			
-			getFollowers(userLS)
             getPostsCreatedByUser(userLS)
+            callCommonFunctions(userLS.id)
         }
     }, []);
+        let callCommonFunctions =async(userLS)=>
+        {
+            let followinginfojson = getFollowing(userLS)
+            setFollowingInfo(await followinginfojson)
+            let followerinfojson = getFollowers(userLS)
+            setFollowerInfo(await followerinfojson)
 
-	let getFollowing = async (userLS) => {
-        let fetchFollowingApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followings/${userLS.id}/`;
-        let response = await fetch(fetchFollowingApiUrl);
-        let followinginfo = await response.json()        
-		setFollowingInfo(followinginfo);
-		console.log(followinginfo)
-    }
-    let getFollowers = async (userLS) => {
-        let fetchFollowerApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followers/${userLS.id}/`;
-        let response = await fetch(fetchFollowerApiUrl);
-        let followerinfo = await response.json()  
-		console.log(followerinfo)      
-		setFollowerInfo(followerinfo);		
-    }
-    
+        }
     let getPostsCreatedByUser = async(userLS) =>
     {
         let getPostsCreatedByUserURL  = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/user/${userLS.id}/`;

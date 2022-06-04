@@ -132,7 +132,7 @@ const changepassword = () => {
 							</Link>
 							<button onClick={passwordUpdate} className=' ml-2  h-[53px] w-full text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' type="submit" >Save</button>						
 							<Popup open={showUpdateMsg}>
-								<div className='flex w-full h-[50px] rounded-3xl text-[#FF848E] text-center font-[Sarabun-SemiBold] font-semibold' >Password Updated Successfully!</div>
+								<div className='flex w-full h-[50px] rounded-3xl text-[#FF848E] text-center font-[Sarabun-SemiBold]  font-semibold' >Password Updated Successfully!</div>
 							</Popup>
 						</div>						
 					</div>

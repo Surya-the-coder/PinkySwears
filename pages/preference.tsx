@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { GoogleLogout } from "react-google-login";
 import Link from "next/link";
 import Image from 'next/image'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 let signOut = (router) => {
     console.log("================Inside SignOut================")
@@ -23,6 +25,7 @@ const preference = () => {
     const [profilePicUpdated, setProfilePicUpdated] = useState(false)
 
     const inputFileRef = useRef( null );
+    const[showUpdateMsg,setShowUpdateMsg]=useState(false)
 
     useEffect(() => {
         console.log('=========================PREF LOG================================')
@@ -95,9 +98,18 @@ const preference = () => {
 		})
         console.log(accessToken)
 		console.log(response)
+        if(response.status==200)
+		{
+            setShowUpdateMsg(true)
+			await timeout(2000);
+            router.reload()
+		}
         console.log(await response.json())
         getUserInfo(accessToken)
 	}
+    function timeout(delay: number) {
+		return new Promise( res => setTimeout(res, delay) );
+	}	
 
     let profilePicLoader = ({ src, width, quality }) => {
         console.log(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`)
@@ -180,7 +192,9 @@ const preference = () => {
                                 </div>
 			            		<button type="button" className='ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={() => editUserDetails(user)}>Save</button>  								
 			            	</div>
-
+                            <Popup open={showUpdateMsg}>
+								<div className='flex w-full h-[50px] rounded-3xl text-[#FF848E] text-center font-[Sarabun-SemiBold] font-semibold' >User Details Updated Successfully!</div>
+							</Popup>
 			            </form>
 			        </div>
 			        <NavBar page = "Preference"/>
