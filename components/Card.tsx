@@ -44,8 +44,8 @@ const Card = (props) => {
           <div className='mt-3 flex items-center'>
             {/* <Link href={'#'}> */}
               {/* <button className='flex items-center text-xs z-50' onClick={likePost}> */}
-                <Like/>
-                <p className='mx-2 text-xs text-gray-400'>{props.numberOfLikes==null?0:props.numberOfLikes} Likes</p>
+                <Love/>
+                <p className='mx-2 text-xs text-gray-400'>{props.numberOfLikes==null?0:props.numberOfLikes}</p>
               {/* </button> */}
             {/* </Link> */}
             {/* <Link href={'#'}>

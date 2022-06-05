@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Send from '../assets/images/Send.svg'
-import Like from '../assets/images/Like.svg'
+import Like from '../assets/images/Love.svg'
+import LikePink from '../assets/images/LovePink.svg'
 import Share from '../assets/images/Share.svg'
 import Comment from '../assets/images/Reply.svg'
 import ThreeDots from '../assets/images/ThreeDots.svg'
@@ -9,6 +10,9 @@ import ThreeDots from '../assets/images/ThreeDots.svg'
 const SinglePostCard = (props) => {
     
     const [newCommentContent, setNewCommentContent] = useState<any>()
+    
+    const [likes, setLikes] = useState(props.likes)
+    const [isLiked, setisLiked] = useState(props.isLiked)
 
     useEffect(() => {
         // let fetchSinglePostApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
@@ -27,6 +31,14 @@ const SinglePostCard = (props) => {
 			},
 		});
         console.log(response)
+        if (isLiked) {
+            setisLiked(false)
+            setLikes(likes-1)
+        }
+        else{
+            setisLiked(true)
+            setLikes(likes+1)
+        }
     }
 
     let postComment = async () => {
@@ -62,17 +74,17 @@ const SinglePostCard = (props) => {
                         <h3 className='text-xs text-purple-500 font-Sarabun'>{props.postCreatedDate}</h3>
                         <p className='text-sm text-gray-500 mt-2'>{props.postContent}</p>
                         <div className="flex mt-3 w-full justify-between pr-14">
-                            <button className='flex items-center text-xs' onClick={likePost}>
-                                <Like/>
-                                <p className='mx-2 text-xs text-gray-400'> like </p>
+                            <button className='flex items-center text-xs text-pink-400' onClick={likePost}>
+                                {isLiked ? <LikePink/> :<Like/>}
+                                {isLiked ? <p className='mx-2 text-xs text-[#FF848E]'>{likes} </p> :<p className='mx-2 text-xs text-gray-400'> {likes} </p>}
                             </button>
                             <div className='flex items-center text-xs'>
                                 <Comment/>
-                                <p className='mx-2 text-xs text-gray-400'> comment </p>
+                                <p className='mx-2 text-xs text-gray-400'>{props.comments}&nbsp; </p>
                             </div>
                             <div className='flex items-center text-xs'>
                                 <Share/>
-                                <p className='mx-2 text-xs text-gray-400'> share </p>
+                                {/* <p className='mx-2 text-xs text-gray-400'> share </p> */}
                             </div>
                         </div>
                     </div>

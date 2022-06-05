@@ -58,12 +58,19 @@ const SinglePost = () => {
     }, [router.isReady]);
 
     let getSinglePostData = async () => {
+        let accessTokenLS = localStorage.getItem('access_token')
         console.log('========================= IN GET SINGLE POST DATA =========================')
         while(router.query.postid)
             break
         let fetchSinglePostApiUrl = await `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
         console.log(fetchSinglePostApiUrl)
-        let response = await fetch(fetchSinglePostApiUrl);
+        let response = await fetch(fetchSinglePostApiUrl, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				'Authorization': 'Bearer '+ accessTokenLS,
+			},
+		});
         console.log(response)
         let postData = await response.json()
         console.log(postData)
@@ -91,7 +98,7 @@ const SinglePost = () => {
                 </div>
                 {isDataFetched?
                     <div className="">
-                        <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment}/>
+                        <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {Object.keys(singlePostData.comments).length} isReported = {singlePostData.is_reported} />
                         {singlePostData.comments.map( (comment) =><CommentCard commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}/>)}
                     </div>
                 : //else
