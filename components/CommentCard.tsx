@@ -1,12 +1,37 @@
 import Image from 'next/image'
+import { useState } from 'react'
 import Love from '../assets/images/Love.svg'
 import LovePink from '../assets/images/LovePink.svg'
 
 const CommentCard = (props) => {
     let comment = props.postComments
+    const [commentIsLiked, setCommentIsLiked] = useState(false)
+    const [commentLikes, setCommentLikes] = useState(props.commentLikes)
+
+    let likeComment = async () => {
+        let likeCommentAPI = `process.env.NEXT_PUBLIC_BACKEND_BASE_URL /api/comment/like/${props.commentID}/`;
+        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/like/${props.commentID}/`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				'Authorization': 'Bearer '+props.accessToken,
+			},
+		});
+        console.log(response)
+
+        if(commentIsLiked){
+            setCommentIsLiked(false);
+            setCommentLikes(commentLikes-1);
+        }
+        else{
+            setCommentIsLiked(true);
+            setCommentLikes(commentLikes+1);
+        }
+    }
+
     
     let profilePicLoader = ({ src, width, quality }) => {
-        return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
+        return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 50}`
     }
     
     return (
@@ -20,7 +45,10 @@ const CommentCard = (props) => {
                     <p className='text-xs text-gray-400 mt-1'>{props.commentContent}</p>
                 </div>
                 <div className='flex'>
-                    <Love/>
+                    <button className='flex items-center text-xs text-pink-400' onClick={likeComment}>
+                        {commentIsLiked ? <LovePink/> :<Love/>}
+                        {commentIsLiked ? <p className='mx-2 text-xs text-[#FF848E]'>{commentLikes} </p> :<p className='mx-2 text-xs text-gray-400'> {commentLikes} </p>}
+                    </button>
                 </div>
             </div>
         </div>
