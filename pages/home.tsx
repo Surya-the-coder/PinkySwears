@@ -47,13 +47,51 @@ const home = ({session}) => {
         }
     }, []);
 
-    let getAllPosts = async () => {
-        console.log('========================INSIDE GETALL POST===========================')
-        let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
-        let response = await fetch(postUrl);
-        let data = await response.json();
-        setPosts(data);
-        setIsDataFetched(true);
+    let getAllPosts = async (option=null) => {
+        console.log('GET ALL POST')
+        console.log(option)
+        switch(option){
+            case "All":
+                console.log('========================INSIDE GETALL POST ALL===========================')
+                let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                let response = await fetch(postUrl);
+                let data = await response.json();
+                setPosts(data);
+                setIsDataFetched(true);
+                break;
+            case "Recent":
+                console.log('========================INSIDE GETALL POST RECENT===========================')
+                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                response = await fetch(postUrl);
+                data = await response.json();
+                setPosts(data);
+                setIsDataFetched(true);
+                break;
+            case "Most":
+                console.log('========================INSIDE GETALL POST MOST===========================')
+                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                response = await fetch(postUrl);
+                data = await response.json();
+                setPosts(data);
+                setIsDataFetched(true);
+                break;
+            case "Top":
+                console.log('========================INSIDE GETALL POST TOP===========================')
+                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                response = await fetch(postUrl);
+                data = await response.json();
+                setPosts(data);
+                setIsDataFetched(true);
+                break;
+            default:
+                console.log('========================INSIDE GETALL POST===========================')
+                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                response = await fetch(postUrl);
+                data = await response.json();
+                setPosts(data);
+                setIsDataFetched(true);
+                break;
+        }
     }
 
     let setAllFalse = () =>{
@@ -68,18 +106,22 @@ const home = ({session}) => {
             case "All":
                 setAllFalse();
                 setAll(true);
+                getAllPosts('All')
                 break;
             case "Recent":
                 setAllFalse();
                 setRecent(true);
+                getAllPosts('Recent')
                 break;
             case "Most":
                 setAllFalse();
                 setMost(true);
+                getAllPosts('Most')
                 break;
             case "Top":
                 setAllFalse();
                 setTop(true);
+                getAllPosts('Top')
                 break;
                     
             default:
