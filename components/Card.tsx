@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Like from '../assets/images/Like.svg'
 import Love from '../assets/images/Love.svg'
 import Reply from '../assets/images/Reply.svg'
+import { profilePicLoader } from './CommonFunctions'
 
 const Card = (props) => {
 
@@ -20,10 +21,6 @@ const Card = (props) => {
       console.log("Post Liked")
     if(response.status==200)
       console.log("Post Unliked")
-  }
-
-  let profilePicLoader = ({ src, width, quality }) => {
-    return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
   }
 
   return (

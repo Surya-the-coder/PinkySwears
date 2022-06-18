@@ -9,6 +9,7 @@ import AccountCard from "../components/AccountCard";
 import dateFormat from 'dateformat';
 import ActivityCard from "../components/ActivityCard";
 import {getFollowing,getFollowers} from '../components/CommonFunctions'
+import { isAccessTokenValid } from '../components/CommonFunctions'
 
 let redirectToHomePage = () => {
     const router = useRouter()
@@ -24,7 +25,7 @@ const userinterest = ({session}) => {
     let [followers, setFollowers] = useState(false)
     let [activity, setActivity] = useState(false)
     
-    const [accessToken, setaccessToken] = useState<any>()
+    const [AccessToken, setAccessToken] = useState<any>()
     const [refreshToken, setRefreshToken] = useState<any>()   
     const [user, setUser] = useState<any>()   
     const [isDataFetched, setIsDataFetched] = useState(false)
@@ -38,6 +39,7 @@ const userinterest = ({session}) => {
     useEffect(() => {
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
+        let accessTokenValid = false
         
         if (accessTokenLS == null) {
             console.log('No Access Token')
@@ -45,12 +47,19 @@ const userinterest = ({session}) => {
         }
         else{
             let userLS = JSON.parse(localStorage.getItem('UserDetails'))
-            setaccessToken(accessTokenLS)
+            setAccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
             setUser(userLS)  
 			console.log(userLS) 
             getPostsCreatedByUser(userLS)
             callCommonFunctions(userLS.id)
+            if(isAccessTokenValid(accessTokenLS, refreshTokenLS)){
+                accessTokenValid = true
+                setAccessToken(localStorage.getItem('access_token'))
+            }
+            if (!accessTokenValid) {
+                router.push('/')
+            }
         }
     }, []);
         let callCommonFunctions =async(userLS)=>
@@ -95,7 +104,7 @@ const userinterest = ({session}) => {
                 break;
         }
     }
-    if (accessToken!=null) {
+    if (AccessToken!=null) {
         return (
             <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
@@ -110,9 +119,9 @@ const userinterest = ({session}) => {
 
                     {isDataFetched?
                         <div className="w-full">
-                            {followings? followinginfo.map((eachfollowinginfo)=> <InfoCard accessToken={accessToken} showbutton={true} buttoncontent={"Unfollow"} profileImage={eachfollowinginfo.profileImg} userid={eachfollowinginfo.id} first_name={eachfollowinginfo.first_name} last_name={eachfollowinginfo.last_name} username={eachfollowinginfo.username}/>) :null}
-							{followers? followerInfo.map((eachfollowerinfo)=> <InfoCard showbutton={false} buttoncontent={"Remove"} profileImage={eachfollowerinfo.profileImg} userid={eachfollowerinfo.id} first_name={eachfollowerinfo.first_name} last_name={eachfollowerinfo.last_name} username={eachfollowerinfo.username}/>) :null}
-							{activity? postsInfo.map((eachpostsinfo)=><ActivityCard createdDate={dateFormat(eachpostsinfo.created_at, "dS mmmm yyyy")} numberOfLikes = {eachpostsinfo.likes}/>) :null}
+                            {followings? followinginfo.map((eachfollowinginfo)=> <InfoCard key = {eachfollowinginfo.id} accessToken={AccessToken} showbutton={true} buttoncontent={"Unfollow"} profileImage={eachfollowinginfo.profileImg} userid={eachfollowinginfo.id} first_name={eachfollowinginfo.first_name} last_name={eachfollowinginfo.last_name} username={eachfollowinginfo.username}/>) :null}
+							{followers? followerInfo.map((eachfollowerinfo)=> <InfoCard key = {eachfollowerinfo.id} showbutton={false} buttoncontent={"Remove"} profileImage={eachfollowerinfo.profileImg} userid={eachfollowerinfo.id} first_name={eachfollowerinfo.first_name} last_name={eachfollowerinfo.last_name} username={eachfollowerinfo.username}/>) :null}
+							{activity? postsInfo.map((eachpostsinfo)=><ActivityCard key = {eachpostsinfo.id} createdDate={dateFormat(eachpostsinfo.created_at, "dS mmmm yyyy")} numberOfLikes = {eachpostsinfo.likes}/>) :null}
                         </div>
                     :
                     <div className="">

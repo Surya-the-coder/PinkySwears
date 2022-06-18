@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { profilePicLoader } from './CommonFunctions'
 const InfoCard = (props) => {
 	const [isUnfollowed, setIsUnfollowed] = useState(true)
 	let followUnFollowUser =async () => {
@@ -23,10 +24,6 @@ const InfoCard = (props) => {
 				if(procesinfo.processdone=="followed")
 				console.log("User Followed Successfully")
 		}			
-	}
-
-	let profilePicLoader = ({ src, width, quality }) => {
-		return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
 	}
   	
 	return (

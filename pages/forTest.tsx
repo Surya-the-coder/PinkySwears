@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PIC from '../assets/images/Doggy.jpg'
-
+import { profilePicLoader } from '../components/CommonFunctions'
 import Image from 'next/image'
 
 
@@ -10,10 +10,6 @@ const forTest = () => {
     const [secondPage, setSecondPage] = useState(false)
 
     const picurl = 'https://picsum.photos/id/237/200/300'
-
-    let profilePicLoader = ({ src, width, quality }) => {
-        return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/${src}?w=${width}&q=${quality || 75}`
-    }
     
     return (
         <div className="flex flex-col justify-center items-center min-h-screen">

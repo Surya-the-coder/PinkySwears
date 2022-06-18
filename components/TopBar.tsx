@@ -6,12 +6,9 @@ import BackButton from '../assets/images/Shape.svg';
 import Link from 'next/link';
 import { useSession, signIn, signOut, SessionProvider } from "next-auth/react"
 import { redirect } from 'next/dist/server/api-utils';
+import { profilePicLoader } from './CommonFunctions'
 
 const TopBar = (props) => {
-  
-  let profilePicLoader = ({ src, width, quality }) => {
-    return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
-  }
   
   return (
     <div className="flex py-5 justify-between items-center z-[100] px-5">

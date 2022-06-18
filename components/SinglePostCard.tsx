@@ -6,6 +6,7 @@ import LikePink from '../assets/images/LovePink.svg'
 import Share from '../assets/images/Share.svg'
 import Comment from '../assets/images/Reply.svg'
 import ThreeDots from '../assets/images/ThreeDots.svg'
+import { profilePicLoader } from './CommonFunctions'
 
 const SinglePostCard = (props) => {
     
@@ -56,10 +57,6 @@ const SinglePostCard = (props) => {
     
     let sendCommentToParent = () => {
         props.setNewComment(newCommentContent)
-    }
-
-    let profilePicLoader = ({ src, width, quality }) => {
-        return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
     }
 
     return (

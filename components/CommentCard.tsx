@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import Love from '../assets/images/Love.svg'
 import LovePink from '../assets/images/LovePink.svg'
+import { profilePicLoader } from './CommonFunctions'
 
 const CommentCard = (props) => {
     let comment = props.postComments
@@ -27,11 +28,6 @@ const CommentCard = (props) => {
             setCommentIsLiked(true);
             setCommentLikes(commentLikes+1);
         }
-    }
-
-    
-    let profilePicLoader = ({ src, width, quality }) => {
-        return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 50}`
     }
     
     return (

@@ -6,6 +6,7 @@ import Ellipse from '../assets/images/Ellipse.svg'
 import dateFormat from 'dateformat';
 import Router, { useRouter } from 'next/router'
 import LoadingCard from "../components/LoadingCard";
+import { isAccessTokenValid } from '../components/CommonFunctions'
 
 let redirectToHomePage = () => {
     const router = useRouter()
@@ -22,8 +23,8 @@ const home = ({session}) => {
     let [Most, setMost] = useState(false)
     let [Top, setTop] = useState(false)
     
-    const [accessToken, setaccessToken] = useState<any>()
-    const [refreshToken, setRefreshToken] = useState<any>()
+    const [AccessToken, setAccessToken] = useState<any>()
+    const [RefreshToken, setRefreshToken] = useState<any>()
     
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
@@ -34,16 +35,25 @@ const home = ({session}) => {
 
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
+        let accessTokenValid = false
         
         if (accessTokenLS == null) {
             console.log('No Access Token')
             router.push('/')
         }
         else{
-            setaccessToken(accessTokenLS)
+            setAccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
-            
-            getAllPosts();
+            if(isAccessTokenValid(accessTokenLS, refreshTokenLS)){
+                accessTokenValid = true
+                setAccessToken(localStorage.getItem('access_token'))
+            }
+            if (accessTokenValid) {
+                getAllPosts();
+            }
+            else{
+                router.push('/')
+            }
         }
     }, []);
 
@@ -128,7 +138,8 @@ const home = ({session}) => {
                 break;
         }
     }
-    if (accessToken!=null) {
+
+    if (AccessToken!=null) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (
             <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
@@ -146,7 +157,7 @@ const home = ({session}) => {
                     {console.log(posts)}
                     {isDataFetched?
                         <div className="">
-                            {posts.map( (post) => <Card key={post.id} accessToken = {accessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} /> )}
+                            {posts.map( (post) => <Card key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} /> )}
                         </div>
                     :
                         <div className="">

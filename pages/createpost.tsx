@@ -5,6 +5,7 @@ import Ellipse from '../assets/images/Ellipse.svg'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { isAccessTokenValid } from '../components/CommonFunctions'
 
 let redirectToHomePage = (router) => {
 	return router.push('/home')
@@ -14,7 +15,7 @@ let redirectToHomePage = (router) => {
 const createpost = () => {
 	const router = useRouter()
 	const [loading, setLoading] = useState(false)
-	const [accessToken, setaccessToken] = useState<any>()
+	const [AccessToken, setAccessToken] = useState<any>()
 	const [refreshToken, setRefreshToken] = useState<any>()
 	const [PostContent, setPostContent] = useState<any>();
 	
@@ -22,7 +23,8 @@ const createpost = () => {
     useEffect(() => {
 		let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
-        
+        let accessTokenValid = false
+
         if (accessTokenLS == null) {
 			console.log('No Access Token')
             router.push('/')
@@ -30,24 +32,31 @@ const createpost = () => {
         else{
 			let userLS = JSON.parse(localStorage.getItem('UserDetails'))
 			
-            setaccessToken(accessTokenLS)
+            setAccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
+			if(isAccessTokenValid(accessTokenLS, refreshTokenLS)){
+                accessTokenValid = true
+                setAccessToken(localStorage.getItem('access_token'))
+            }
+            if (!accessTokenValid) {
+                router.push('/')
+            }
         }
     }, []);
 	
 	let CreateNewPost = async () =>{
 		setLoading(true)
-		console.log(accessToken)
+		console.log(AccessToken)
 		let response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`, {
 			method: "POST",
-			headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
+			headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${AccessToken}` },
 			body: JSON.stringify({'content' : PostContent}),
 		});
 		console.log(response)
 		redirectToHomePage(router)
 	}
 
-	if (accessToken != null) {
+	if (AccessToken != null) {
 		const user = JSON.parse(localStorage.getItem('UserDetails'))
 		return (
 			<div className="flex justify-center min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1]">
