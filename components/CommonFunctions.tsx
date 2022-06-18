@@ -1,3 +1,4 @@
+import useSWRInfinite from 'swr/infinite'
 // All Common functions used by multiple pages are written here.
 
 // To check if current AccessToken is Valid and if not refresh it.
@@ -38,6 +39,41 @@ export const isAccessTokenValid = async (accessTokenLS, refreshTokenLS) => {
 			return false
 		}
 	}
+}
+
+// Pagination
+export const paginate = (url) =>{
+	// let reachedEnd = false
+	const LIMIT = 10
+	const getKey = (pageIndex, previousPageData) => {
+        let offset = 0
+        if (pageIndex>0) {
+            offset = pageIndex * 10
+        }
+        if (previousPageData && !previousPageData.length) {
+			return null
+		}
+		else{
+			return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${url}?limit=${LIMIT}&offset=${offset}`
+		}
+    }
+    const fetcher = url => fetch(url).then(r => r.json())
+    const { data: PaginatedData, error, isValidating, mutate, size, setSize } = useSWRInfinite(getKey, fetcher)
+	
+	const isLoading = PaginatedData && typeof PaginatedData[size - 1] === "undefined"
+	
+	const reachedEnd = PaginatedData && PaginatedData[PaginatedData.length]?.length < LIMIT
+	
+	return({
+		isLoading,
+		PaginatedData,
+		error,
+		isValidating,
+		mutate,
+		size,
+		setSize,
+		reachedEnd
+	})
 }
 
 // Profile Pic Loader for Image Tag
