@@ -6,7 +6,7 @@ import { profilePicLoader } from './CommonFunctions'
 
 const CommentCard = (props) => {
     let comment = props.postComments
-    const [commentIsLiked, setCommentIsLiked] = useState(false)
+    const [commentIsLiked, setCommentIsLiked] = useState(props.isLiked)
     const [commentLikes, setCommentLikes] = useState(props.commentLikes)
 
     let likeComment = async () => {

@@ -9,7 +9,7 @@ import LoadingCard from "../../components/LoadingCard";
 import SearchGray from '../../assets/images/Search-Gray.svg'
 import SinglePostCard from "../../components/SinglePostCard";
 import CommentCard from '../../components/CommentCard';
-
+import { isAccessTokenValid } from '../../components/CommonFunctions'
 
 const SinglePost = () => {
     
@@ -17,7 +17,7 @@ const SinglePost = () => {
     const [PostUserInfo, setPostUserInfo] = useState<any>();
     const [isDataFetched, setIsDataFetched] = useState(false)
 
-    const [accessToken, setaccessToken] = useState<any>()
+    const [accessToken, setAccessToken] = useState<any>()
     const [refreshToken, setRefreshToken] = useState<any>()
     
     const [userData, setUserData] = useState<any>()
@@ -30,30 +30,33 @@ const SinglePost = () => {
     useEffect(() => {
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
+        let accessTokenValid = false
         
         if (accessTokenLS == null) {
             console.log('No Access Token')
             router.push('/')
         }
         else{
-            if (router.isReady) {
-                // let fetchSinglePostApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
-                // fetch(fetchSinglePostApiUrl)
-                // .then(response => response.json())
-                // .then((postData) => {console.log(postData); setSinglePostData(postData); setPostUserInfo(postData.user);setIsDataFetched(true)})
-                getSinglePostData()
-            }
-
             let userLS = JSON.parse(localStorage.getItem('UserDetails'))
 
-            setaccessToken(accessTokenLS)
+            setAccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
             console.log('Setting UserData')
             setUserData(userLS)
-            console.log(newComment)
-            console.log("=========IN==========")
-            console.log(newComment)
-            // singlePostData.comments = [...singlePostData.comments, newComment]
+            if(isAccessTokenValid(accessTokenLS, refreshTokenLS)){
+                accessTokenValid = true
+                setAccessToken(localStorage.getItem('access_token'))
+            }
+            if (accessTokenValid) {
+                if (router.isReady) {
+                    getSinglePostData()
+                }
+            }
+            else{
+                router.push('/')
+            }
+            
+
         }
     }, [router.isReady]);
 
@@ -99,7 +102,7 @@ const SinglePost = () => {
                 {isDataFetched?
                     <div className="">
                         <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {Object.keys(singlePostData.comments).length} isReported = {singlePostData.is_reported} />
-                        {singlePostData.comments.map( (comment) =><CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}/>)}
+                        {singlePostData.comments.map( (comment) =><CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>)}
                     </div>
                 : //else
                     <div className="">
