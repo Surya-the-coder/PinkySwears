@@ -8,7 +8,6 @@ import Link from "next/link";
 import Image from 'next/image'
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import Compressor from 'compressorjs';
 
 let signOut = (router) => {
     console.log("================Inside SignOut================")
@@ -17,7 +16,7 @@ let signOut = (router) => {
     router.push('/')
 }
 
-const preference = () => {
+const test = () => {
     const router = useRouter()
 
     const [accessToken, setaccessToken] = useState<any>()
@@ -27,7 +26,6 @@ const preference = () => {
 
     const inputFileRef = useRef( null );
     const[showUpdateMsg,setShowUpdateMsg]=useState(false)
-    const [compressedFile, setCompressedFile] = useState<any>()
 
     useEffect(() => {
         console.log('=========================PREF LOG================================')
@@ -104,7 +102,7 @@ const preference = () => {
 		{
             setShowUpdateMsg(true)
 			await timeout(2000);
-            // router.reload()
+            router.reload()
 		}
         console.log(await response.json())
         getUserInfo(accessToken)
@@ -114,18 +112,12 @@ const preference = () => {
 	}	
 
     let profilePicLoader = ({ src, width, quality }) => {
-        // console.log(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`)
+        console.log(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`)
         return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
     }
 
     let updateProfilePic = (e) => {
-        new Compressor(e.target.files[0], {      
-            quality: 0.8,
-            success: (compressedResult) => {
-                let compressedResultFile = new File([compressedResult], e.target.files[0].name);
-              setProfilePic(compressedResultFile)
-            },
-        });
+        setProfilePic(e.target.files[0]);
         setProfilePicUpdated(true);
     }
 
@@ -215,4 +207,4 @@ const preference = () => {
     }
 }
 
-export default preference;
+export default test;
