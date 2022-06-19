@@ -1,13 +1,17 @@
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Love from '../assets/images/Love.svg'
 import LovePink from '../assets/images/LovePink.svg'
 import { profilePicLoader } from './CommonFunctions'
 
 const CommentCard = (props) => {
-    let comment = props.postComments
     const [commentIsLiked, setCommentIsLiked] = useState(props.isLiked)
     const [commentLikes, setCommentLikes] = useState(props.commentLikes)
+
+    useEffect(() => {
+        console.log(props); 
+    })
+    
 
     let likeComment = async () => {
         let likeCommentAPI = `process.env.NEXT_PUBLIC_BACKEND_BASE_URL /api/comment/like/${props.commentID}/`;

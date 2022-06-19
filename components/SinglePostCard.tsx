@@ -52,7 +52,7 @@ const SinglePostCard = (props) => {
 		    });
 		    console.log(response)
         }
-        window.location.reload();
+        // window.location.reload();
     }
     
     let sendCommentToParent = () => {

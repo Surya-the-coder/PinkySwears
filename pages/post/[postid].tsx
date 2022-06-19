@@ -102,7 +102,11 @@ const SinglePost = () => {
                 {isDataFetched?
                     <div className="">
                         <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {Object.keys(singlePostData.comments).length} isReported = {singlePostData.is_reported} />
-                        {singlePostData.comments.map( (comment) =><CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>)}
+                        {console.log("TEST",singlePostData.comments,typeof singlePostData.comments[0].id === 'undefined' , singlePostData.comments.user)}
+                        {/* {singlePostData.comments.map( (comment) =>{comment.user?<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>:null})} */}
+                        {
+                            typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
+                        }
                     </div>
                 : //else
                     <div className="">
