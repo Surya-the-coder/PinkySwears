@@ -4,10 +4,11 @@ import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
 import dateFormat from 'dateformat';
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import LoadingCard from "../components/LoadingCard";
 import { isAccessTokenValid, paginate } from '../components/CommonFunctions'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 let redirectToHomePage = () => {
     const router = useRouter()
@@ -161,8 +162,8 @@ const home = ({session}) => {
                     {/* {console.log(posts)} */}
                     {isDataFetched?
                         <div className="">
-                            {console.log(reachedEnd)}
-                            <InfiniteScroll dataLength={PaginatedPosts?length:0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingCard/>} endMessage={<div className="flex justify-center items-center mb-10"><p>No more posts to show</p></div>}>
+                            <InfiniteScroll dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
+                                {console.log(reachedEnd)}
                                 {PaginatedPosts?.map( (post) => <Card key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} /> )}
                             </InfiniteScroll>
                         </div>

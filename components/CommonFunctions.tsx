@@ -44,16 +44,26 @@ export const isAccessTokenValid = async (accessTokenLS, refreshTokenLS) => {
 // Pagination
 export const paginate = (url) =>{
 	// let reachedEnd = false
+	console.log("==============================INSIDE PAGINATE==============================");
+	
 	const LIMIT = 10
+	let offset = 0
 	const getKey = (pageIndex, previousPageData) => {
-        let offset = 0
+		console.log("==============================INSIDE GETKEY==============================");
+		console.log({pageIndex, offset});
         if (pageIndex>0) {
+			console.log("==============================INSIDE SET OFFSET==============================");
             offset = pageIndex * 10
         }
-        if (previousPageData && !previousPageData.length) {
+		console.log({pageIndex, offset});
+		
+        if (previousPageData && previousPageData.length <= 0) {
+			console.log('INSIDE NULL CONDITION',pageIndex,offset);
 			return null
 		}
 		else{
+			console.log("==============================INSIDE RETURN KEY==============================");
+			console.log(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${url}?limit=${LIMIT}&offset=${offset}`);
 			return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${url}?limit=${LIMIT}&offset=${offset}`
 		}
     }
@@ -62,7 +72,8 @@ export const paginate = (url) =>{
 	
 	const isLoading = PaginatedData && typeof PaginatedData[size - 1] === "undefined"
 	
-	const reachedEnd = PaginatedData && PaginatedData[PaginatedData.length]?.length < LIMIT
+	const reachedEnd = PaginatedData && PaginatedData[PaginatedData.length - 1]?.length < LIMIT
+	console.log({isLoading, reachedEnd, PaginatedData, size});
 	
 	return({
 		isLoading,
