@@ -370,7 +370,7 @@ const Home = (pageProps) => {
 							<option value="more than 5">more than 5</option>
 						</select>
 
-						<div className=" pl-6 mt-3 flex w-full justify-center accent-[#FFBCD1]">							
+						<div className="  mt-3 flex w-full justify-center accent-[#FFBCD1]">							
 							<p className=" font-[Sarabun-SemiBold] text-xs font-semibold text-[#262626]">
 								By clicking Sign Up, you agree to our </p>
 								<Link href={'/termsandconditions'}>
