@@ -370,11 +370,12 @@ const Home = (pageProps) => {
 							<option value="more than 5">more than 5</option>
 						</select>
 
-						<div className=" mt-3 flex w-full items-center justify-center px-16 accent-[#FFBCD1]">
-							<input className="border-none" type="checkbox" id="checkbox" />
-							<label className=" pl-2 font-[Sarabun-SemiBold] text-xs font-semibold text-[#262626]">
-								Agree with Terms & Conditions
-							</label>
+						<div className=" mt-3 flex w-full justify-center accent-[#FFBCD1]">							
+							<p className=" font-[Sarabun-SemiBold] text-xs font-semibold text-[#262626]">
+								By clicking Sign Up, you agree to our </p>
+								<Link href={'/termsandconditions'}>
+									<p className=" cursor-pointer font-[Sarabun-SemiBold] text-xs font-semibold text-[#FF848E]">&nbsp;Terms and Conditions&nbsp;</p>
+								</Link>
 						</div>
 						<button
 							type='submit'
