@@ -30,6 +30,7 @@ const home = ({session}) => {
     
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
+    const [url,setUrl]=useState<any>(`/api/post/`)
     
     const router = useRouter()
 
@@ -78,22 +79,25 @@ const home = ({session}) => {
                 data = await response.json();
                 setPosts(data);
                 setIsDataFetched(true);
+                setUrl('/api/post/')
                 break;
             case "Most":
                 console.log('========================INSIDE GETALL POST MOST===========================')
-                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/mostliked/`;
                 response = await fetch(postUrl);
                 data = await response.json();
                 setPosts(data);
-                setIsDataFetched(true);
+                setIsDataFetched(true);  
+                setUrl('/api/post/mostliked/')             
                 break;
             case "Top":
                 console.log('========================INSIDE GETALL POST TOP===========================')
-                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/mostcommented/`;
                 response = await fetch(postUrl);
                 data = await response.json();
                 setPosts(data);
                 setIsDataFetched(true);
+                setUrl('/api/post/mostcommented/')
                 break;
             default:
                 console.log('========================INSIDE GETALL POST===========================')
@@ -141,7 +145,7 @@ const home = ({session}) => {
         }
     }
 
-    let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate('/api/post/')
+    let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url)
     let PaginatedPosts = PaginatedData?.flat()
 
     if (AccessToken!=null) {
@@ -159,12 +163,12 @@ const home = ({session}) => {
                         <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Top")}>Top</button>
                     </div>
                     <p className="mx-8 my-2">Today</p>
-                    {/* {console.log(posts)} */}
+                    {console.log(posts)}
                     {isDataFetched?
                         <div className="">
                             <InfiniteScroll dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
                                 {console.log(reachedEnd)}
-                                {PaginatedPosts?.map( (post) => <Card key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} /> )}
+                                {PaginatedPosts?.map( (post) => <Card key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
                             </InfiniteScroll>
                         </div>
                     :
