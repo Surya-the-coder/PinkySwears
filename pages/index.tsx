@@ -371,10 +371,10 @@ const Home = (pageProps) => {
 						</select>
 
 						<div className="  mt-3 flex w-full justify-center accent-[#FFBCD1]">							
-							<p className=" font-[Sarabun-SemiBold] text-xs font-semibold text-[#262626]">
+							<p className=" font-[Sarabun-SemiBold] text-[10px] font-semibold text-[#262626]">
 								By clicking Sign Up, you agree to our </p>
 								<Link href={'/termsandconditions'}>
-									<p className=" cursor-pointer font-[Sarabun-SemiBold] text-xs font-semibold text-[#FF848E]">&nbsp;Terms and Conditions&nbsp;</p>
+									<p className=" cursor-pointer font-[Sarabun-SemiBold] text-[10px] font-semibold text-[#FF848E]">&nbsp;Terms and Conditions&nbsp;</p>
 								</Link>
 						</div>
 						<button
