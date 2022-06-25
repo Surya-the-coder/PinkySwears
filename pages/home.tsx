@@ -9,6 +9,7 @@ import LoadingCard from "../components/LoadingCard";
 import { isAccessTokenValid, paginate } from '../components/CommonFunctions'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
+import TextField from "@mui/material/TextField";
 
 let redirectToHomePage = () => {
     const router = useRouter()
@@ -144,6 +145,18 @@ const home = ({session}) => {
                 break;
         }
     }
+    let inputHandler = async (e) => {
+        //convert input text to lower case
+        var lowerCase = e.target.value.toLowerCase();
+        console.log(lowerCase)
+        let searcUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/search/?q=Testing/`;
+        let response = await fetch(searcUrl);
+        let data = await response.json();
+        console.log(data)
+        setPosts(data);
+        setIsDataFetched(true);
+        setUrl('/api/post/search/?q=Testing/')
+      };
 
     let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url)
     let PaginatedPosts = PaginatedData?.flat()
@@ -156,6 +169,13 @@ const home = ({session}) => {
                 <div className="pb-5 overflow-y-auto overflow-hidden z-50 mb-[10vh] w-full max-w-md ">
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
+                    <TextField
+          id="outlined-basic"
+          variant="outlined"
+          fullWidth
+          label="Search"
+          onChange={inputHandler}
+        />
                     <div className="flex justify-around mx-10 top-24">
                         {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
                         <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Recent")}>Recent</button>
