@@ -177,7 +177,7 @@ const home = ({session}) => {
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
                     <div className="flex justify-between items-center mx-6 bg-white rounded-full mb-4 h-10 ">
-                        <input type="text" name="Search" id="Search" placeholder="Search here..." className="pl-4 outline-none font-thin text-xs px-2 bg-transparent" onChange={(e)=>searchStringOnChange(e.target.value)}/>
+                        <input type="text" name="Search" id="Search" placeholder="Search here..." className="pl-4 outline-none font-Sarabun text-sm px-2 bg-transparent" onChange={(e)=>searchStringOnChange(e.target.value)}/>
                         <button onClick={SearchHandler}> <Search className=" mr-4"/> </button>
                     </div>
                     <div className="flex justify-around mx-10 top-24">
