@@ -11,7 +11,7 @@ import { profilePicLoader } from './CommonFunctions'
 const TopBar = (props) => {
   
   return (
-    <div className="flex py-5 justify-between items-center z-[100] px-5">
+    <div className="flex pt-5 pb-4 justify-between items-center z-[100] px-5">
       <div className="flex justify-center items-center">
           {props.backButton?<Link href='/home'><BackButton className="mx-3"></BackButton></Link>:null}
           {props.displayPic?
@@ -27,7 +27,7 @@ const TopBar = (props) => {
       </div>
       <div className="flex">
           <BellIcon className="mx-2"/>
-          <Search className="mx-2"/>
+          {/* <Search className="mx-2"/> */}
       </div>
     </div>
   )

@@ -42,7 +42,7 @@ export const isAccessTokenValid = async (accessTokenLS, refreshTokenLS) => {
 }
 
 // Pagination
-export const paginate = (url) =>{
+export const paginate = (url,query=null) =>{
 	// let reachedEnd = false
 	console.log("==============================INSIDE PAGINATE==============================");
 	
@@ -64,6 +64,10 @@ export const paginate = (url) =>{
 		else{
 			console.log("==============================INSIDE RETURN KEY==============================");
 			console.log(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${url}?limit=${LIMIT}&offset=${offset}`);
+			if(query!=null)
+			{
+				return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${url}?q=${query}&limit=${LIMIT}&offset=${offset}`
+			}
 			return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${url}?limit=${LIMIT}&offset=${offset}`
 		}
     }

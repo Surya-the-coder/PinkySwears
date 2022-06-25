@@ -9,7 +9,7 @@ import LoadingCard from "../components/LoadingCard";
 import { isAccessTokenValid, paginate } from '../components/CommonFunctions'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
-import TextField from "@mui/material/TextField";
+import Search from '../assets/images/Search.svg';
 
 let redirectToHomePage = () => {
     const router = useRouter()
@@ -31,8 +31,9 @@ const home = ({session}) => {
     
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
-    const [url,setUrl]=useState<any>(`/api/post/`)
-    
+    const [url,setUrl] = useState<any>(`/api/post/`)
+    const [searchString,setSearchString] = useState<string>()
+    const [finalSearchString,setFinalSearchString] = useState<string>()
     const router = useRouter()
 
     useEffect(() => {
@@ -144,21 +145,27 @@ const home = ({session}) => {
             default:
                 break;
         }
+    }   
+    let SearchHandler=()=>{
+        if(searchString!=null){
+            setFinalSearchString(searchString)
+            setUrl(`/api/post/search/`)
+        }
     }
-    let inputHandler = async (e) => {
-        //convert input text to lower case
-        var lowerCase = e.target.value.toLowerCase();
-        console.log(lowerCase)
-        let searcUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/search/?q=Testing/`;
-        let response = await fetch(searcUrl);
-        let data = await response.json();
-        console.log(data)
-        setPosts(data);
-        setIsDataFetched(true);
-        setUrl('/api/post/search/?q=Testing/')
-      };
-
-    let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url)
+    let searchStringOnChange=(tempSearchString)=>{
+        console.log("Inside On change");      
+        console.log(tempSearchString);        
+        if(tempSearchString==""){           
+            setFinalSearchString(null)
+            setSearchString(null)
+            url==='/api/post/'?null:setUrl(`/api/post/`)
+        }
+        else
+        {
+            setSearchString(tempSearchString)
+        }
+    }
+    let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString)
     let PaginatedPosts = PaginatedData?.flat()
 
     if (AccessToken!=null) {
@@ -169,20 +176,17 @@ const home = ({session}) => {
                 <div className="pb-5 overflow-y-auto overflow-hidden z-50 mb-[10vh] w-full max-w-md ">
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
-                    <TextField
-          id="outlined-basic"
-          variant="outlined"
-          fullWidth
-          label="Search"
-          onChange={inputHandler}
-        />
+                    <div className="flex justify-between items-center mx-6 bg-white rounded-full mb-4 h-10 ">
+                        <input type="text" name="Search" id="Search" placeholder="Search here..." className="pl-4 outline-none font-thin text-xs px-2 bg-transparent" onChange={(e)=>searchStringOnChange(e.target.value)}/>
+                        <button onClick={SearchHandler}> <Search className=" mr-4"/> </button>
+                    </div>
                     <div className="flex justify-around mx-10 top-24">
                         {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
                         <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Recent")}>Recent</button>
                         <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Most")}>Most</button>
                         <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Top")}>Top</button>
                     </div>
-                    <p className="mx-8 my-2">Today</p>
+                    {finalSearchString?null:<p className="mx-8 my-2">Today</p>}
                     {console.log(posts)}
                     {isDataFetched?
                         <div className="">
