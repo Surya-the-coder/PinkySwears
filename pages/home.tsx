@@ -11,8 +11,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
 import { gsap } from "gsap";
-import { useScrollDirection } from 'react-use-scroll-direction'
-import {duration} from "@mui/material";
+
 
 let redirectToHomePage = () => {
     const router = useRouter()
