@@ -4,7 +4,7 @@ import Like from '../assets/images/Like.svg'
 import Love from '../assets/images/Love.svg'
 import Reply from '../assets/images/Reply.svg'
 import { profilePicLoader } from './CommonFunctions'
-
+import {forwardRef} from "react";
 const Card = (props) => {
 
   let likePost =async () => {
