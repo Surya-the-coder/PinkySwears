@@ -10,25 +10,105 @@ import { isAccessTokenValid, paginate } from '../components/CommonFunctions'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
+import { gsap } from "gsap";
+import { useScrollDirection } from 'react-use-scroll-direction'
+import {duration} from "@mui/material";
 
 let redirectToHomePage = () => {
     const router = useRouter()
     return router.push('/')
-  };
+};
+let completed_cards = []
+
+
+const animateCardsIn = (scrollTop,cardRef) => {
+    let t1 = gsap.timeline(),
+        startTime = 0;
+    let cardsCrossed = Math.floor(scrollTop % 100)
+    if (cardsCrossed < 3) {
+        cardsCrossed = 3
+    }
+    for (let i = 3; i < cardsCrossed; i++) {
+        try {
+            let currentElementTop = cardRef.current[i].getBoundingClientRect().top
+            if (currentElementTop < window.innerHeight ) {
+                console.log("Card " + i + " is at " + (currentElementTop ))
+                if (completed_cards.indexOf(i) === -1) {
+                    t1.from(cardRef.current[i], {x: 100,y:-20,duration:0.5});
+                    completed_cards.push(i)
+                    if (cardsCrossed > 3) {
+                        break
+                    }
+                }
+            }
+
+        }catch (e) {
+
+        }
+    }
+    t1.play()
+}
+
+//this is not used yet
+const animateCardsOut = (scrollTop,cardRef) => {
+    let t1 = gsap.timeline(),
+        startTime = 0;
+    let cardsCrossed = Math.floor(scrollTop % 100)
+    // if (cardsCrossed < 3) {
+    //     cardsCrossed = 3
+    // }
+    for (let i = 3; i < cardsCrossed; i++) {
+        try {
+            let currentElementTop = cardRef.current[i].getBoundingClientRect().top
+            if (currentElementTop < 0 ) {
+                console.log("Card " + i + " is at " + (currentElementTop ))
+                if (completed_cards.indexOf(i) !== -1) {
+                    t1.to(cardRef.current[i], {x: 100,y:-20,duration:0.5});
+                    completed_cards.shift()
+                    // if (cardsCrossed > 3) {
+                    //     break
+                    // }
+                }
+            }
+        }catch (e) {
+
+        }
+    }
+    t1.play()
+}
 
 const home = ({session}) => {
-    console.log('=============================HOME=============================')
+    // console.log('=============================HOME=============================')
 
     const ref = useRef();
+    const cardRef = useRef([]);
+
+    const [scrolling, setScrolling] = useState(false);
+    const [scrollTop, setScrollTop] = useState(0);
+    const [scrollDirection, setScrollDirection] = useState('down');
+    let oldScrollY = 0;
+
+
+    const onScroll = (e) => {
+        setScrollTop(e.target.documentElement.scrollTop);
+        setScrolling(e.target.documentElement.scrollTop > scrollTop);
+        if(window.scrollY > oldScrollY) {
+            setScrollDirection('down');
+        } else {
+            setScrollDirection('up');
+        }
+        oldScrollY = window.scrollY;
+
+    }
 
     let [All, setAll] = useState(false)
     let [Recent, setRecent] = useState(true)
     let [Most, setMost] = useState(false)
     let [Top, setTop] = useState(false)
-    
+
     const [AccessToken, setAccessToken] = useState<any>()
     const [RefreshToken, setRefreshToken] = useState<any>()
-    
+
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
     const [url,setUrl] = useState<any>(`/api/post/`)
@@ -36,14 +116,24 @@ const home = ({session}) => {
     const [finalSearchString,setFinalSearchString] = useState<string>()
     const router = useRouter()
 
+
+    useEffect(() => {
+        window.addEventListener('scroll', onScroll);
+    },[]);
+
+    useEffect(() => {
+        animateCardsIn(scrollTop,cardRef)
+        // animateCardsOut(scrollTop,cardRef)
+    }, [scrollTop]);
+
     useEffect(() => {
 
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
         let accessTokenValid = false
-        
+
         if (accessTokenLS == null) {
-            console.log('No Access Token')
+            // console.log('No Access Token')
             router.push('/')
         }
         else{
@@ -54,28 +144,34 @@ const home = ({session}) => {
                 setAccessToken(localStorage.getItem('access_token'))
             }
             if (accessTokenValid) {
-                getAllPosts();
-            }
+                getAllPosts()
+                    .then(res => {
+                    animateCardsIn(scrollTop,cardRef)
+                    })
+                    .catch(err => {}) ;
+
+                 }
             else{
                 router.push('/')
             }
         }
-    }, []);
+    },[]);
 
     let getAllPosts = async (option=null) => {
-        console.log('GET ALL POST')
-        console.log(option)
+        // console.log('GET ALL POST')
+        // console.log(option)
         switch(option){
             case "All":
-                console.log('========================INSIDE GETALL POST ALL===========================')
+                // console.log('========================INSIDE GETALL POST ALL===========================')
                 let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
                 let response = await fetch(postUrl);
                 let data = await response.json();
                 setPosts(data);
+
                 setIsDataFetched(true);
                 break;
             case "Recent":
-                console.log('========================INSIDE GETALL POST RECENT===========================')
+                // console.log('========================INSIDE GETALL POST RECENT===========================')
                 postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
                 response = await fetch(postUrl);
                 data = await response.json();
@@ -84,16 +180,16 @@ const home = ({session}) => {
                 setUrl('/api/post/')
                 break;
             case "Most":
-                console.log('========================INSIDE GETALL POST MOST===========================')
+                // console.log('========================INSIDE GETALL POST MOST===========================')
                 postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/mostliked/`;
                 response = await fetch(postUrl);
                 data = await response.json();
                 setPosts(data);
-                setIsDataFetched(true);  
-                setUrl('/api/post/mostliked/')             
+                setIsDataFetched(true);
+                setUrl('/api/post/mostliked/')
                 break;
             case "Top":
-                console.log('========================INSIDE GETALL POST TOP===========================')
+                // console.log('========================INSIDE GETALL POST TOP===========================')
                 postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/mostcommented/`;
                 response = await fetch(postUrl);
                 data = await response.json();
@@ -102,7 +198,7 @@ const home = ({session}) => {
                 setUrl('/api/post/mostcommented/')
                 break;
             default:
-                console.log('========================INSIDE GETALL POST===========================')
+                // console.log('========================INSIDE GETALL POST===========================')
                 postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
                 response = await fetch(postUrl);
                 data = await response.json();
@@ -118,7 +214,7 @@ const home = ({session}) => {
         setMost(false);
         setTop(false);
     }
-    
+
     let pageSelected = (pageName) => {
         switch (pageName) {
             case "All":
@@ -141,11 +237,11 @@ const home = ({session}) => {
                 setTop(true);
                 getAllPosts('Top')
                 break;
-                    
+
             default:
                 break;
         }
-    }   
+    }
     let SearchHandler=()=>{
         if(searchString!=null){
             setFinalSearchString(searchString)
@@ -153,9 +249,9 @@ const home = ({session}) => {
         }
     }
     let searchStringOnChange=(tempSearchString)=>{
-        console.log("Inside On change");      
-        console.log(tempSearchString);        
-        if(tempSearchString==""){           
+        // console.log("Inside On change");
+        // console.log(tempSearchString);
+        if(tempSearchString==""){
             setFinalSearchString(null)
             setSearchString(null)
             url==='/api/post/'?null:setUrl(`/api/post/`)
@@ -170,6 +266,7 @@ const home = ({session}) => {
 
     if (AccessToken!=null) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
+
         return (
             <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
@@ -187,15 +284,15 @@ const home = ({session}) => {
                         <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Top")}>Top</button>
                     </div>
                     {finalSearchString?null:<p className="mx-8 my-2">Today</p>}
-                    {console.log(posts)}
+                    {/*{console.log(posts)}*/}
                     {isDataFetched?
                         <div className="">
                             <InfiniteScroll dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
-                                {console.log(reachedEnd)}
-                                {PaginatedPosts?.map( (post) => <Card key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
+                                {/*{console.log(reachedEnd)}*/}
+                                {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
                             </InfiniteScroll>
                         </div>
-                    :
+                        :
                         <div className="">
                             <LoadingCard></LoadingCard>
                             <LoadingCard></LoadingCard>
@@ -210,6 +307,7 @@ const home = ({session}) => {
                 <NavBar page = {"Home"}/>
             </div>
         );
+
     }
     else{
         return null
