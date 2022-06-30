@@ -37,13 +37,13 @@ const addAnimations = (cardRef) => {
             }
         })
         gsap.from(cardRef.current[i], {
-            x: 0,y:10,
+            x: 0,y:20,
             scrollTrigger: {
                 trigger: cardRef.current[i],
-                toggleActions: "restart none none reset",
+                toggleActions: "restart none reverse reset",
                 start: "top 80%",
                 end: "top 70%",
-                // scrub:true,
+                scrub:2,
             }
         })
         //test - code below.

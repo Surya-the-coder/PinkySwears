@@ -79,7 +79,7 @@ const SinglePost = () => {
         console.log(postData)
         setSinglePostData(postData);
         setPostUserInfo(postData.user);
-        gsap.from(".single-post-card", {
+        gsap.from(".single-card", {
             y:30, rotationY:45,ease: "back.out(1.6)",opacity:0.6,
             // scrollTrigger: {
             //     trigger: cardRef.current[i],
