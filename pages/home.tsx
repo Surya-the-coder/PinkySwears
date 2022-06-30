@@ -32,7 +32,7 @@ const addAnimations = (cardRef) => {
                 trigger: cardRef.current[i],
                 toggleActions: "play pause reverse reset",
                 scrub:true,
-                start: "30% top",
+                start: "10% top",
                 end: "bottom",
             }
         })

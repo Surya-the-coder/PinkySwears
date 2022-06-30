@@ -79,22 +79,16 @@ const SinglePost = () => {
         console.log(postData)
         setSinglePostData(postData);
         setPostUserInfo(postData.user);
+        gsap.from("full-page", {y:10,duration: 0.5, opacity: 0.5, ease: "power3.out"})
         gsap.from(".single-card", {
             y:30, rotationY:45,ease: "back.out(1.6)",opacity:0.6,
-            // scrollTrigger: {
-            //     trigger: cardRef.current[i],
-            //     toggleActions: "restart none none reset",
-            //     start: "top 80%",
-            //     end: "top 70%",
-            //     // scrub:true,
-            // }
         })
         console.log('Setting is Data Fetched to true in getSinglePostData')
         setIsDataFetched(true);
     }
     if (accessToken!=null) {
         return (
-            <div className="single-card flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
+            <div className="full-page flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
             <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
             <div className="pb-8 overflow-y-auto overflow-hidden h-[92vh] z-50  w-full max-w-md">
                 <meta name='theme-color' content='#FFBCD1' />
@@ -110,7 +104,7 @@ const SinglePost = () => {
                 <div className="flex justify-around mx-10 top-24">
                 </div>
                 {isDataFetched?
-                    <div className="">
+                    <div className="single-card">
                         <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} />
                         {console.log("TEST",singlePostData.comments,typeof singlePostData.comments[0].id === 'undefined' , singlePostData.comments.user)}
                         {/* {singlePostData.comments.map( (comment) =>{comment.user?<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>:null})} */}
