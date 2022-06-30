@@ -80,11 +80,12 @@ const SinglePost = () => {
         setSinglePostData(postData);
         setPostUserInfo(postData.user);
         gsap.from(".full-page", {y:10,duration: 0.5, opacity: 0.5, ease: "power3.out"})
-        gsap.from(".single-card", {
-            y:30, rotationY:45,ease: "back.out(1.6)",opacity:0.6,duration:1,
-        })
+
         console.log('Setting is Data Fetched to true in getSinglePostData')
         setIsDataFetched(true);
+        gsap.from(".single-card", {
+            y:30, rotationY:45,ease: "back.out(1.6)",opacity:0.6,duration:3,
+        })
     }
     if (accessToken!=null) {
         return (
