@@ -43,7 +43,7 @@ const addAnimations = (cardRef) => {
                 toggleActions: "restart none reverse reset",
                 start: "top 80%",
                 end: "top 70%",
-                scrub:2,
+                scrub:1,
             }
         })
         //test - code below.
