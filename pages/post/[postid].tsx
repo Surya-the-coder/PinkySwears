@@ -10,7 +10,7 @@ import SearchGray from '../../assets/images/Search-Gray.svg'
 import SinglePostCard from "../../components/SinglePostCard";
 import CommentCard from '../../components/CommentCard';
 import { isAccessTokenValid } from '../../components/CommonFunctions'
-
+import { gsap } from "gsap";
 const SinglePost = () => {
     
     const [singlePostData, setSinglePostData] = useState<any>([]);
@@ -79,12 +79,22 @@ const SinglePost = () => {
         console.log(postData)
         setSinglePostData(postData);
         setPostUserInfo(postData.user);
+        gsap.from(".single-post-card", {
+            y:30, rotationY:45,ease: "back.out(1.6)",opacity:0.6,
+            // scrollTrigger: {
+            //     trigger: cardRef.current[i],
+            //     toggleActions: "restart none none reset",
+            //     start: "top 80%",
+            //     end: "top 70%",
+            //     // scrub:true,
+            // }
+        })
         console.log('Setting is Data Fetched to true in getSinglePostData')
         setIsDataFetched(true);
     }
     if (accessToken!=null) {
         return (
-            <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
+            <div className="single-card flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
             <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
             <div className="pb-8 overflow-y-auto overflow-hidden h-[92vh] z-50  w-full max-w-md">
                 <meta name='theme-color' content='#FFBCD1' />

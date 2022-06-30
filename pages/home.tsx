@@ -36,16 +36,28 @@ const addAnimations = (cardRef) => {
                 end: "bottom",
             }
         })
+        gsap.from(cardRef.current[i], {
+            x: 0,y:10,
+            scrollTrigger: {
+                trigger: cardRef.current[i],
+                toggleActions: "restart none none reset",
+                start: "top 80%",
+                end: "top 70%",
+                // scrub:true,
+            }
+        })
+        //test - code below.
         // gsap.from(cardRef.current[i], {
-        //     x: 0,y:0,duration:0.3,ease: "back.out(1.3)",opacity:0.6,xPercent:-10,
-        //     scrollTrigger: {
-        //         trigger: cardRef.current[i],
-        //         toggleActions: "restart none none reset",
-        //         start: "top 80%",
-        //         end: "top 70%",
-        //         // scrub:true,
-        //     }
-        // })
+        //     y:30, rotationY:45,ease: "back.out(1.6)",opacity:0.6,
+        //         scrollTrigger: {
+        //             trigger: cardRef.current[i],
+        //             toggleActions: "restart none none reset",
+        //             start: "top 80%",
+        //             end: "top 70%",
+        //             // scrub:true,
+        //         }
+        //     })
+
     }
     oldCardsCount = cardsCount
 }
