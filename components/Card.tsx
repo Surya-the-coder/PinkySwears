@@ -4,9 +4,9 @@ import Like from '../assets/images/Like.svg'
 import Love from '../assets/images/Love.svg'
 import Reply from '../assets/images/Reply.svg'
 import { profilePicLoader } from './CommonFunctions'
-import {forwardRef} from "react";
+import {forwardRef, PropsWithChildren} from "react";
 
-const Card = forwardRef((props,ref) => {
+const Card = forwardRef((props:PropsWithChildren<any>,ref:any) => {
 
   let likePost =async () => {
     console.log(props.accessToken)
