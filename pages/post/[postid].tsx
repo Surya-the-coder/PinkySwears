@@ -84,7 +84,7 @@ const SinglePost = () => {
         console.log('Setting is Data Fetched to true in getSinglePostData')
         setIsDataFetched(true);
         gsap.from(".single-card", {
-            y:30, scale:0.6, ease: "back.out(1.6)",opacity:0.6,duration:1.5,
+            y:30, scale:0.6, ease: "bounce.out",opacity:0.6,duration:1,
         })
     }
     if (accessToken!=null) {
