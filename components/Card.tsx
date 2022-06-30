@@ -4,8 +4,9 @@ import Like from '../assets/images/Like.svg'
 import Love from '../assets/images/Love.svg'
 import Reply from '../assets/images/Reply.svg'
 import { profilePicLoader } from './CommonFunctions'
+import {forwardRef} from "react";
 
-const Card = (props) => {
+const Card = forwardRef((props,ref) => {
 
   let likePost =async () => {
     console.log(props.accessToken)
@@ -25,7 +26,7 @@ const Card = (props) => {
 
   return (
     <Link href={`/post/${props.postid}`}>
-      <div className='flex mx-5 my-5 bg-white py-2 px-5 rounded-3xl shadow-card cursor-pointer'>
+      <div className='flex mx-5 my-5 bg-white py-2 px-5 rounded-3xl shadow-card cursor-pointer' ref={ref}>
         <div>
           <Link href={`/userinfo/${props.userid}`}>
             <div className='w-12 h-12 mt-5 mr-3'>
@@ -58,6 +59,6 @@ const Card = (props) => {
       </div>
     </Link>
   )
-}
+})
 
 export default Card

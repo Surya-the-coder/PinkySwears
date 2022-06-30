@@ -10,16 +10,53 @@ import { isAccessTokenValid, paginate } from '../components/CommonFunctions'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
+import { gsap } from "gsap";
+const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 
+
+gsap.registerPlugin(ScrollTrigger);
 let redirectToHomePage = () => {
     const router = useRouter()
     return router.push('/')
   };
 
+let oldCardsCount = 0
+const addAnimations = (cardRef) => {
+    let cardsCount = cardRef.current.length
+
+    console.log(cardsCount)
+    for (let i = oldCardsCount; i < cardsCount; i++) {
+        gsap.to(cardRef.current[i], {
+            x: 0, y:70,xPercent:10,scale:0.9,
+            scrollTrigger: {
+                trigger: cardRef.current[i],
+                toggleActions: "play pause reverse reset",
+                scrub:true,
+                start: "30% top",
+                end: "bottom",
+            }
+        })
+        gsap.from(cardRef.current[i], {
+            x: -70,y:0,duration:0.3,ease: "expo.out",
+            scrollTrigger: {
+                trigger: cardRef.current[i],
+                toggleActions: "restart none none reset",
+                start: "top 80%",
+                end: "top 70%",
+                // scrub:true,
+            }
+        })
+    }
+    oldCardsCount = cardsCount
+}
+
+
 const home = ({session}) => {
     console.log('=============================HOME=============================')
 
     const ref = useRef();
+    const cardRef = useRef([]);
+
 
     let [All, setAll] = useState(false)
     let [Recent, setRecent] = useState(true)
@@ -54,7 +91,12 @@ const home = ({session}) => {
                 setAccessToken(localStorage.getItem('access_token'))
             }
             if (accessTokenValid) {
-                getAllPosts();
+                getAllPosts()
+                    .then(res => {
+                        addAnimations(cardRef)
+                    })
+                    .catch(err => {}) ;
+
             }
             else{
                 router.push('/')
@@ -168,6 +210,10 @@ const home = ({session}) => {
     let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString)
     let PaginatedPosts = PaginatedData?.flat()
 
+    useEffect(() => {
+        addAnimations(cardRef)
+    }, [PaginatedData]);
+
     if (AccessToken!=null) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (
@@ -192,7 +238,7 @@ const home = ({session}) => {
                         <div className="">
                             <InfiniteScroll dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
                                 {console.log(reachedEnd)}
-                                {PaginatedPosts?.map( (post) => <Card key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
+                                {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
                             </InfiniteScroll>
                         </div>
                     :
