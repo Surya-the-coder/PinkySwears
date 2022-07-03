@@ -403,7 +403,7 @@ const Home = (pageProps) => {
 								<GoogleIcon32/>
 						</button>)}
 					    onSuccess={handleLogin}
-					    onFailure={handleLogin}
+					    // onFailure={handleLogin}
 					    cookiePolicy={'single_host_origin'}
 					/>
 				</div>
