@@ -47,7 +47,7 @@ const SinglePostCard = (props) => {
     let postComment = async () => {
         if (newCommentContent.trim() !== "") {
             console.log(props.postid)
-            let response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/all/post/${props.postid}/`, {
+            let response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/new/post/${props.postid}/`, {
 		    	method: "POST",
 		    	headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${props.accessToken}` },
 		    	body: JSON.stringify({'content' : newCommentContent}),
