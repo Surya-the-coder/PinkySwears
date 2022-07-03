@@ -5,12 +5,14 @@ import LovePink from '../assets/images/LovePink.svg'
 import { profilePicLoader } from './CommonFunctions'
 
 const CommentCard = (props) => {
+
     const [commentIsLiked, setCommentIsLiked] = useState(props.isLiked)
     const [commentLikes, setCommentLikes] = useState(props.commentLikes)
 
     useEffect(() => {
-        console.log(props); 
-    })
+        console.log(props);
+
+    },[])
     
 
     let likeComment = async () => {
@@ -52,6 +54,7 @@ const CommentCard = (props) => {
                 </div>
             </div>
         </div>
+        // <div>check</div>
     );
 }
 

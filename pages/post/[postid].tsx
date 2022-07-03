@@ -27,6 +27,29 @@ const SinglePost = () => {
     
     const router = useRouter();
 
+
+    useEffect(() => {
+
+        let accessTokenLS = localStorage.getItem('access_token')
+        let refreshTokenLS = localStorage.getItem('refresh_token')
+        let accessTokenValid = false
+
+        if (accessTokenLS == null) {
+            console.log('No Access Token')
+            router.push('/')
+        }
+        else{
+            setAccessToken(accessTokenLS)
+            setRefreshToken(refreshTokenLS)
+            if(isAccessTokenValid(accessTokenLS, refreshTokenLS)){
+                accessTokenValid = true
+                setAccessToken(localStorage.getItem('access_token'))
+            }
+
+        }
+    }, []);
+
+
     useEffect(() => {
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
@@ -50,13 +73,18 @@ const SinglePost = () => {
             if (accessTokenValid) {
                 if (router.isReady) {
                     getSinglePostData()
+                        .then(res =>
+                    {
+                        // returnFn()
+                        // setIsDataFetched(true);
+                    })
+                        .catch(err => {})
+                    // setIsDataFetched(true);
                 }
             }
             else{
                 router.push('/')
             }
-            
-
         }
     }, [router.isReady]);
 
@@ -81,12 +109,13 @@ const SinglePost = () => {
         setPostUserInfo(postData.user);
         gsap.from(".full-page", {y:10,duration: 0.5, opacity: 0.5, ease: "power3.out"})
 
-        console.log('Setting is Data Fetched to true in getSinglePostData')
+        // console.log('Setting is Data Fetched to true in getSinglePostData')
         setIsDataFetched(true);
         gsap.from(".single-card", {
             y:30, scale:0.6, ease: "bounce.out",opacity:0.6,duration:1,
         })
     }
+
     if (accessToken!=null) {
         return (
             <div className="full-page flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
@@ -107,10 +136,9 @@ const SinglePost = () => {
                 {isDataFetched?
                     <div className="single-card">
                         <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} />
-                        {console.log("TEST",singlePostData.comments,typeof singlePostData.comments[0].id === 'undefined' , singlePostData.comments.user)}
-                        {/* {singlePostData.comments.map( (comment) =>{comment.user?<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>:null})} */}
+                        {singlePostData.comments.map( (comment) => <CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>)}
                         {
-                            typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
+                            // typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
                         }
                     </div>
                 : //else

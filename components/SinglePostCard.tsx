@@ -7,6 +7,8 @@ import Share from '../assets/images/Share.svg'
 import Comment from '../assets/images/Reply.svg'
 import ThreeDots from '../assets/images/ThreeDots.svg'
 import { profilePicLoader } from './CommonFunctions'
+import {useRouter} from "next/router";
+
 
 const SinglePostCard = (props) => {
     
@@ -93,7 +95,6 @@ const SinglePostCard = (props) => {
                 </div>
             </div>
             <div className="flex mt-3 items-center">
-                {console.log(props.currentUserImage)}
                 <Image loading='lazy' loader={profilePicLoader} src={props.currentUserImage} width={24} height={24} className="rounded-full w-6 h-6" alt="UI"/>
                 <div className="flex rounded-full bg-gray-100 mx-2 w-96">
                     <input type="text" name="Comment" id="comment" placeholder="Write a comment..." className="pl-4 outline-none font-thin text-xs px-2 bg-transparent w-full" onChange={(e)=>setNewCommentContent(e.target.value)}/>
