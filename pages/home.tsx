@@ -217,6 +217,12 @@ const home = ({session}) => {
         searchRef.current.value=''
     }
 
+    let clearSearchFn= () => {
+        setShowSearch(!showSearch)
+        searchRef.current.value=''
+        pageSelected("Recent")
+    }
+
     let searchKeyHandler = (e) => {
         if (e.key === 'Enter') {
             SearchHandler()
@@ -260,10 +266,13 @@ const home = ({session}) => {
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
                     <div className={`flex justify-left items-center mx-6 bg-white rounded-full mb-4 h-10 w-${showSearch?100:10} `}>
                         <button onClick={showSearchFn} className="pl-2"> <Search className=" mr-4"/> </button>
-                        <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={showSearch ? "outline-none font-Sarabun text-sm px-2 bg-transparent":"pl-4 hidden outline-none font-Sarabun text-sm px-2 bg-transparent"} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler}/>
+                        <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-transparent ${showSearch?null:'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler}/>
 
                     </div>
-                    <div className="flex justify-around mx-10 top-24">
+                    <div className={`flex justify-around mx-10 top-24 ${showSearch?null:'hidden'}`}>
+                        <button className={`bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white`} onClick={clearSearchFn}>Clear Search</button>
+                    </div>
+                    <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
                         {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
                         <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Recent")}>Recent</button>
                         <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Most")}>Most</button>
