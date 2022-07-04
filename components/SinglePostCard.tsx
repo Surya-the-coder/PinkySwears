@@ -16,7 +16,7 @@ const SinglePostCard = (props) => {
     
     const [likes, setLikes] = useState(props.likes)
     const [isLiked, setisLiked] = useState(props.isLiked)
-    const inputRef = useRef()
+    const inputRef = useRef<any>()
 
     useEffect(() => {
         // let fetchSinglePostApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
@@ -55,7 +55,7 @@ const SinglePostCard = (props) => {
 		    });
 		    console.log(response)
             inputRef.current.value = ""
-            sendCommentToParent()
+            sendCommentToParent() //works without refresh
 
         }
         // window.location.reload();
