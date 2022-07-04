@@ -270,13 +270,13 @@ const home = ({session}) => {
 
                     </div>
                     <div className={`flex justify-around mx-10 top-24 ${showSearch?null:'hidden'}`}>
-                        <button className={`bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white`} onClick={clearSearchFn}>Clear Search</button>
+                        <button className={`bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights`} onClick={clearSearchFn}>Clear Search</button>
                     </div>
                     <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
                         {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
-                        <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Recent")}>Recent</button>
-                        <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Most")}>Most</button>
-                        <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Top")}>Top</button>
+                        <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("Recent")}>Recent</button>
+                        <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("Most")}>Most</button>
+                        <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("Top")}>Top</button>
                     </div>
                     {finalSearchString?null:<p className="mx-8 my-2">Today</p>}
                     {console.log(posts)}
