@@ -265,7 +265,7 @@ const home = ({session}) => {
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
                     <div className={`flex justify-left items-center mx-6 bg-white rounded-full mb-4 h-10 w-${showSearch?100:10} `}>
-                        <button onClick={showSearchFn} className="pl-2 outline-none focus:outline-none"> <Search className=" mr-4"/> </button>
+                        <button onClick={showSearchFn} className="pl-2 outline-none focus:outline-0"> <Search className=" mr-4"/> </button>
                         <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-transparent ${showSearch?null:'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler}/>
 
                     </div>
