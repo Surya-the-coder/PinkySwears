@@ -28,7 +28,7 @@
 	src:url('../assets/fonts/Sarabun-Regular.ttf');
 }
 
-no_highlights{
+.no_highlights{
 	-webkit-tap-highlight-color: transparent;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
