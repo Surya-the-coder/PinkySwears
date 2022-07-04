@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import {useEffect, useRef, useState} from 'react'
 import Send from '../assets/images/Send.svg'
 import Like from '../assets/images/Love.svg'
 import LikePink from '../assets/images/LovePink.svg'
@@ -16,6 +16,7 @@ const SinglePostCard = (props) => {
     
     const [likes, setLikes] = useState(props.likes)
     const [isLiked, setisLiked] = useState(props.isLiked)
+    const inputRef = useRef()
 
     useEffect(() => {
         // let fetchSinglePostApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
@@ -53,6 +54,9 @@ const SinglePostCard = (props) => {
 		    	body: JSON.stringify({'content' : newCommentContent}),
 		    });
 		    console.log(response)
+            inputRef.current.value = ""
+            sendCommentToParent()
+
         }
         // window.location.reload();
     }
@@ -97,7 +101,7 @@ const SinglePostCard = (props) => {
             <div className="flex mt-3 items-center">
                 <Image loading='lazy' loader={profilePicLoader} src={props.currentUserImage} width={24} height={24} className="rounded-full w-6 h-6" alt="UI"/>
                 <div className="flex rounded-full bg-gray-100 mx-2 w-96">
-                    <input type="text" name="Comment" id="comment" placeholder="Write a comment..." className="pl-4 outline-none font-thin text-xs px-2 bg-transparent w-full" onChange={(e)=>setNewCommentContent(e.target.value)}/>
+                    <input type="text" name="Comment" ref={inputRef} id="comment" placeholder="Write a comment..." className="pl-4 outline-none font-thin text-xs px-2 bg-transparent w-full" onChange={(e)=>setNewCommentContent(e.target.value)}/>
                     <button onClick={postComment}> <Send className="w-10 h-10 mr-2"/> </button>
                 </div>
             </div>         

@@ -49,6 +49,11 @@ const SinglePost = () => {
         }
     }, []);
 
+    useEffect(() => {
+        console.log('New comment added')
+        getSinglePostData()
+    }, [newComment])
+
 
     useEffect(() => {
         let accessTokenLS = localStorage.getItem('access_token')
@@ -107,13 +112,13 @@ const SinglePost = () => {
         console.log(postData)
         setSinglePostData(postData);
         setPostUserInfo(postData.user);
-        gsap.from(".full-page", {y:10,duration: 0.5, opacity: 0.5, ease: "power3.out"})
+        // gsap.from(".full-page", {y:10,duration: 0.5, opacity: 0.5, ease: "power3.out"})
 
         // console.log('Setting is Data Fetched to true in getSinglePostData')
         setIsDataFetched(true);
-        gsap.from(".single-card", {
-            y:30, scale:0.6, ease: "bounce.out",opacity:0.6,duration:1,
-        })
+        // gsap.from(".single-card", {
+        //     y:30, scale:0.6, ease: "bounce.out",opacity:0.6,duration:1,
+        // })
     }
 
     if (accessToken!=null) {
