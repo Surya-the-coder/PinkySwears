@@ -1,5 +1,7 @@
 import TopBar from "../components/TopBar";
 import { useState, useEffect, useRef } from 'react';
+// import { FC } from 'react';
+import { useScrollRestoration} from "./useScrollRestoration";
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
@@ -11,14 +13,15 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
 import { gsap } from "gsap";
+import {usePreserveScroll} from "./usePreserveScroll";
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 
 
 gsap.registerPlugin(ScrollTrigger);
-let redirectToHomePage = () => {
-    const router = useRouter()
-    return router.push('/')
-  };
+// let redirectToHomePage = () => {
+//     const router = useRouter()
+//     return router.push('/')
+//   };
 
 let oldCardsCount = 0
 const addAnimations = (cardRef) => {
@@ -64,6 +67,7 @@ const addAnimations = (cardRef) => {
 
 
 const home = ({session}) => {
+    usePreserveScroll()
     console.log('=============================HOME=============================')
 
     const ref = useRef();
@@ -86,6 +90,7 @@ const home = ({session}) => {
     const [showSearch,setShowSearch] = useState(false)
     const [showSearchResults,setShowSearchResults] = useState(false)
     const router = useRouter()
+    // useScrollRestoration(router)
     const searchRef = useRef<any>()
 
     useEffect(() => {
