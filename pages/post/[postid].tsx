@@ -1,6 +1,5 @@
 import dateFormat from 'dateformat';
 import { useRouter } from "next/router";
-import {useScrollRestoration} from "../../components/useScrollRestoration";
 import { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 import NavBar from "../../components/NavBar";
@@ -12,10 +11,10 @@ import SinglePostCard from "../../components/SinglePostCard";
 import CommentCard from '../../components/CommentCard';
 import { isAccessTokenValid } from '../../components/CommonFunctions'
 import { gsap } from "gsap";
-import {usePreserveScroll} from "../../components/usePreserveScroll";
+
 const SinglePost = () => {
 
-    usePreserveScroll()
+
     
     const [singlePostData, setSinglePostData] = useState<any>([]);
     const [PostUserInfo, setPostUserInfo] = useState<any>();
@@ -30,17 +29,18 @@ const SinglePost = () => {
     // let user = JSON.parse(localStorage.getItem('UserDetails'))
     
     const router = useRouter();
-    // useScrollRestoration(router);
+
 
 
     useEffect(() => {
+
 
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
         let accessTokenValid = false
 
         if (accessTokenLS == null) {
-            console.log('No Access Token')
+            // console.log('No Access Token')
             router.push('/')
         }
         else{
@@ -55,7 +55,7 @@ const SinglePost = () => {
     }, []);
 
     useEffect(() => {
-        console.log('New comment added')
+        // console.log('New comment added')
         getSinglePostData()
     }, [newComment])
 
@@ -66,7 +66,7 @@ const SinglePost = () => {
         let accessTokenValid = false
         
         if (accessTokenLS == null) {
-            console.log('No Access Token')
+            // console.log('No Access Token')
             router.push('/')
         }
         else{
@@ -74,7 +74,7 @@ const SinglePost = () => {
 
             setAccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
-            console.log('Setting UserData')
+            // console.log('Setting UserData')
             setUserData(userLS)
             if(isAccessTokenValid(accessTokenLS, refreshTokenLS)){
                 accessTokenValid = true
@@ -100,11 +100,11 @@ const SinglePost = () => {
 
     let getSinglePostData = async () => {
         let accessTokenLS = localStorage.getItem('access_token')
-        console.log('========================= IN GET SINGLE POST DATA =========================')
+        // console.log('========================= IN GET SINGLE POST DATA =========================')
         while(router.query.postid)
             break
         let fetchSinglePostApiUrl = await `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
-        console.log(fetchSinglePostApiUrl)
+        // console.log(fetchSinglePostApiUrl)
         let response = await fetch(fetchSinglePostApiUrl, {
 			method: "GET",
 			headers: {
@@ -112,9 +112,9 @@ const SinglePost = () => {
 				'Authorization': 'Bearer '+ accessTokenLS,
 			},
 		});
-        console.log(response)
+        // console.log(response)
         let postData = await response.json()
-        console.log(postData)
+        // console.log(postData)
         setSinglePostData(postData);
         setPostUserInfo(postData.user);
         // gsap.from(".full-page", {y:10,duration: 0.5, opacity: 0.5, ease: "power3.out"})

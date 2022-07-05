@@ -21,7 +21,7 @@ function restoreScrollPos(asPath: string) {
     }
 }
 
-export function useScrollRestoration(router: NextRouter) {
+export default function useScrollRestoration(router: NextRouter) {
     useEffect(() => {
         if (!('scrollRestoration' in window.history)) return
         let shouldScrollRestore = false

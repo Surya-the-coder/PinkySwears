@@ -10,7 +10,7 @@ const CommentCard = (props) => {
     const [commentLikes, setCommentLikes] = useState(props.commentLikes)
 
     useEffect(() => {
-        console.log(props);
+        // console.log(props);
 
     },[])
     
@@ -24,7 +24,7 @@ const CommentCard = (props) => {
 				'Authorization': 'Bearer '+props.accessToken,
 			},
 		});
-        console.log(response)
+        // console.log(response)
 
         if(commentIsLiked){
             setCommentIsLiked(false);

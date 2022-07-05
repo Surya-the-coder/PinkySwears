@@ -5,6 +5,7 @@ import { SessionProvider } from 'next-auth/react'
 import {usePreserveScroll} from "../components/usePreserveScroll";
 
 function MyApp({ Component, pageProps }: AppProps) {
+
   return (
     <SessionProvider session={pageProps.session}>
       <>

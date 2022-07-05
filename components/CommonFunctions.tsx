@@ -13,11 +13,11 @@ export const isAccessTokenValid = async (accessTokenLS, refreshTokenLS) => {
 	})
 	
 	if (response.status === 200) {
-		console.log('========================ACCESS TOKEN VALID===========================')
+		// console.log('========================ACCESS TOKEN VALID===========================')
 		return true
 	}
 	else{
-		console.log('========================REFRESHING ACCESS TOKEN===========================')
+		// console.log('========================REFRESHING ACCESS TOKEN===========================')
 		let refreshTokenAPI = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/refresh/`
 		let response = await fetch(refreshTokenAPI, {
 			method: 'POST',
@@ -30,11 +30,11 @@ export const isAccessTokenValid = async (accessTokenLS, refreshTokenLS) => {
 		if (response.status === 200) {
 			// setAccessToken(tokens.access)
 			localStorage.setItem('access_token', tokens.access)
-			console.log('========================ACCESS TOKEN REFRESHED===========================')
+			// console.log('========================ACCESS TOKEN REFRESHED===========================')
 			return true
 		}
 		else {
-			console.log('========================UNABLE TO REFRESH SIGNING OUT===========================')
+			// console.log('========================UNABLE TO REFRESH SIGNING OUT===========================')
 			localStorage.clear()
 			return false
 		}
@@ -44,26 +44,26 @@ export const isAccessTokenValid = async (accessTokenLS, refreshTokenLS) => {
 // Pagination
 export const paginate = (url,query=null) =>{
 	// let reachedEnd = false
-	console.log("==============================INSIDE PAGINATE==============================");
+	// console.log("==============================INSIDE PAGINATE==============================");
 	
 	const LIMIT = 10
 	let offset = 0
 	const getKey = (pageIndex, previousPageData) => {
-		console.log("==============================INSIDE GETKEY==============================");
-		console.log({pageIndex, offset});
+		// console.log("==============================INSIDE GETKEY==============================");
+		// console.log({pageIndex, offset});
         if (pageIndex>0) {
-			console.log("==============================INSIDE SET OFFSET==============================");
+			// console.log("==============================INSIDE SET OFFSET==============================");
             offset = pageIndex * 10
         }
-		console.log({pageIndex, offset});
+		// console.log({pageIndex, offset});
 		
         if (previousPageData && previousPageData.length <= 0) {
-			console.log('INSIDE NULL CONDITION',pageIndex,offset);
+			// console.log('INSIDE NULL CONDITION',pageIndex,offset);
 			return null
 		}
 		else{
-			console.log("==============================INSIDE RETURN KEY==============================");
-			console.log(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${url}?limit=${LIMIT}&offset=${offset}`);
+			// console.log("==============================INSIDE RETURN KEY==============================");
+			// console.log(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${url}?limit=${LIMIT}&offset=${offset}`);
 			if(query!=null)
 			{
 				return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${url}?q=${query}&limit=${LIMIT}&offset=${offset}`
@@ -77,7 +77,7 @@ export const paginate = (url,query=null) =>{
 	const isLoading = PaginatedData && typeof PaginatedData[size - 1] === "undefined"
 	
 	const reachedEnd = PaginatedData && PaginatedData[PaginatedData.length - 1]?.length < LIMIT
-	console.log({isLoading, reachedEnd, PaginatedData, size});
+	// console.log({isLoading, reachedEnd, PaginatedData, size});
 	
 	return({
 		isLoading,
@@ -101,11 +101,11 @@ export const profilePicLoader = ({ src, width, quality }) => {
 
 // To get current user's followings
 export const getFollowing = async (userLS) => {
-	console.log(userLS)
+	// console.log(userLS)
 	let fetchFollowingApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followings/${userLS}/`;
 	let response = await fetch(fetchFollowingApiUrl);
 	let followinginfo = await response.json() 
-	console.log(followinginfo)      
+	// console.log(followinginfo)
 	return followinginfo
 }
 
@@ -114,6 +114,6 @@ export const getFollowers = async (userLS) => {
 	let fetchFollowerApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followers/${userLS}/`;
 	let response = await fetch(fetchFollowerApiUrl);
 	let followerinfo = await response.json()    
-	console.log(followerinfo)  
+	// console.log(followerinfo)
 	return followerinfo		
 }

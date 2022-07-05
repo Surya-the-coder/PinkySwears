@@ -34,7 +34,7 @@ const SinglePostCard = (props) => {
 				'Authorization': 'Bearer '+props.accessToken,
 			},
 		});
-        console.log(response)
+        // console.log(response)
         if (isLiked) {
             setisLiked(false)
             setLikes(likes-1)
@@ -47,13 +47,13 @@ const SinglePostCard = (props) => {
 
     let postComment = async () => {
         if (newCommentContent.trim() !== "") {
-            console.log(props.postid)
+            // console.log(props.postid)
             let response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/new/post/${props.postid}/`, {
 		    	method: "POST",
 		    	headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${props.accessToken}` },
 		    	body: JSON.stringify({'content' : newCommentContent}),
 		    });
-		    console.log(response)
+		    // console.log(response)
             inputRef.current.value = ""
             sendCommentToParent() //works without refresh
 

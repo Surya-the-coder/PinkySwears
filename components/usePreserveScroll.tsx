@@ -8,18 +8,24 @@ export const usePreserveScroll = () => {
     const isBack = useRef(false)
 
     useEffect(() => {
+
         router.beforePopState(() => {
             isBack.current = true
             return true
         })
 
         const onRouteChangeStart = () => {
+
             const url = router.pathname
             scrollPositions.current[url] = window.scrollY
+            console.log(scrollPositions.current)
         }
 
         const onRouteChangeComplete = (url: any) => {
+
             if (isBack.current && scrollPositions.current[url]) {
+                console.log('scrollinggg')
+                console.log(scrollPositions.current[url])
                 window.scroll({
                     top: scrollPositions.current[url],
                     behavior: "auto",
