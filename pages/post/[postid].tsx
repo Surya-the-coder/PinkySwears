@@ -1,6 +1,6 @@
 import dateFormat from 'dateformat';
 import { useRouter } from "next/router";
-import {useScrollRestoration} from "../useScrollRestoration";
+import {useScrollRestoration} from "../../components/useScrollRestoration";
 import { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 import NavBar from "../../components/NavBar";
@@ -12,7 +12,7 @@ import SinglePostCard from "../../components/SinglePostCard";
 import CommentCard from '../../components/CommentCard';
 import { isAccessTokenValid } from '../../components/CommonFunctions'
 import { gsap } from "gsap";
-import {usePreserveScroll} from "../usePreserveScroll";
+import {usePreserveScroll} from "../../components/usePreserveScroll";
 const SinglePost = () => {
 
     usePreserveScroll()

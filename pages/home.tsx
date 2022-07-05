@@ -1,7 +1,7 @@
 import TopBar from "../components/TopBar";
 import { useState, useEffect, useRef } from 'react';
 // import { FC } from 'react';
-import { useScrollRestoration} from "./useScrollRestoration";
+import { useScrollRestoration} from "../components/useScrollRestoration";
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
@@ -13,7 +13,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
 import { gsap } from "gsap";
-import {usePreserveScroll} from "./usePreserveScroll";
+import {usePreserveScroll} from "../components/usePreserveScroll";
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 
 
