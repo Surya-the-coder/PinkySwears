@@ -1,6 +1,6 @@
 import TopBar from "../components/TopBar";
 import { useState, useEffect, useRef } from 'react';
-// import { FC } from 'react';
+
 import useScrollRestoration from "../components/useScrollRestoration";
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
@@ -13,21 +13,30 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
 import { gsap } from "gsap";
-// import {usePreserveScroll} from "../components/usePreserveScroll";
-import scrollRestoration from '../components/useScrollRestoration';
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
+const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollToPlugin);
 // let redirectToHomePage = () => {
 //     const router = useRouter()
 //     return router.push('/')
 //   };
 
 let oldCardsCount = 0
-const addAnimations = (cardRef) => {
-    let cardsCount = cardRef.current.length
 
+const scrollToCard = () => {
+    const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
+    console.log("Name is ", scrollDiv)
+    gsap.to(window, {scrollTo:`#card-${sessionStorage.getItem('clickedCard')}`})
+    sessionStorage.setItem('clickedCard', '')
+}
+
+
+const addAnimations = (cardRef) => {
+
+    let cardsCount = cardRef.current.length
     console.log(cardsCount)
     for (let i = oldCardsCount; i < cardsCount; i++) {
         gsap.to(cardRef.current[i], {
@@ -69,7 +78,7 @@ const addAnimations = (cardRef) => {
 
 
 const home = ({session}) => {
-    // usePreserveScroll()
+
     console.log('=============================HOME=============================')
 
     const ref = useRef();
@@ -80,10 +89,10 @@ const home = ({session}) => {
     let [Recent, setRecent] = useState(true)
     let [Most, setMost] = useState(false)
     let [Top, setTop] = useState(false)
-    
+
     const [AccessToken, setAccessToken] = useState<any>()
     const [RefreshToken, setRefreshToken] = useState<any>()
-    
+
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
     const [url,setUrl] = useState<any>(`/api/post/`)
@@ -91,16 +100,18 @@ const home = ({session}) => {
     const [finalSearchString,setFinalSearchString] = useState<string>()
     const [showSearch,setShowSearch] = useState(false)
     const [showSearchResults,setShowSearchResults] = useState(false)
+    const [clickedCard,setClickedCard] = useState<any>()
     const router = useRouter()
     useScrollRestoration(router)
     const searchRef = useRef<any>()
 
     useEffect(() => {
+        console.log(sessionStorage.getItem('clickedCard'))
 
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
         let accessTokenValid = false
-        
+
         if (accessTokenLS == null) {
             console.log('No Access Token')
             router.push('/')
@@ -116,6 +127,7 @@ const home = ({session}) => {
                 getAllPosts()
                     .then(res => {
                         addAnimations(cardRef)
+                        scrollToCard()
                     })
                     .catch(err => {}) ;
 
@@ -153,8 +165,8 @@ const home = ({session}) => {
                 response = await fetch(postUrl);
                 data = await response.json();
                 setPosts(data);
-                setIsDataFetched(true);  
-                setUrl('/api/post/mostliked/')             
+                setIsDataFetched(true);
+                setUrl('/api/post/mostliked/')
                 break;
             case "Top":
                 console.log('========================INSIDE GETALL POST TOP===========================')
@@ -182,7 +194,7 @@ const home = ({session}) => {
         setMost(false);
         setTop(false);
     }
-    
+
     let pageSelected = (pageName) => {
         switch (pageName) {
             case "All":
@@ -213,7 +225,7 @@ const home = ({session}) => {
                 setShowSearchResults(false)
                 setShowSearch(false)
                 break;
-                    
+
             default:
                 break;
         }
@@ -244,9 +256,9 @@ const home = ({session}) => {
         }
     }
     let searchStringOnChange=(tempSearchString)=>{
-        console.log("Inside On change");      
-        console.log(tempSearchString);        
-        if(tempSearchString==""){           
+        console.log("Inside On change");
+        console.log(tempSearchString);
+        if(tempSearchString==""){
             setFinalSearchString(null)
             setSearchString(null)
             url==='/api/post/'?null:setUrl(`/api/post/`)
@@ -292,10 +304,10 @@ const home = ({session}) => {
                             <div className={`flex flex-wrap justify-around items-center mx-10 mt-5 ${showSearchResults?null:'hidden'}`}>Showing Search results for '{finalSearchString}'</div>
                             <InfiniteScroll dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
                                 {console.log(reachedEnd)}
-                                {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
+                                {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} setClickedCard = {setClickedCard} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
                             </InfiniteScroll>
                         </div>
-                    :
+                        :
                         <div className="">
                             <LoadingCard></LoadingCard>
                             <LoadingCard></LoadingCard>
