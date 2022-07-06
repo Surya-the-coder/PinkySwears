@@ -28,17 +28,17 @@ let oldCardsCount = 0
 
 const scrollToCard = () => {
     const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
-    console.log("Name is ", scrollDiv)
+    // console.log("Name is ", scrollDiv)
     gsap.to(window, {scrollTo:`#card-${sessionStorage.getItem('clickedCard')}`})
     sessionStorage.setItem('clickedCard', '')
 }
 
 
 const addAnimations = (cardRef) => {
-
+    console.log('In Animations')
     let cardsCount = cardRef.current.length
-    console.log(cardsCount)
-    for (let i = oldCardsCount; i < cardsCount; i++) {
+    // console.log(cardsCount)
+    for (let i = 0; i < cardsCount; i++) {
         gsap.to(cardRef.current[i], {
             x: 0, y:70,xPercent:10,scale:0.9,
             scrollTrigger: {
@@ -72,14 +72,14 @@ const addAnimations = (cardRef) => {
         //     })
 
     }
-    oldCardsCount = cardsCount
+    // oldCardsCount = cardsCount
 }
 
 
 
 const home = ({session}) => {
 
-    console.log('=============================HOME=============================')
+    // console.log('=============================HOME=============================')
 
     const ref = useRef();
     const cardRef = useRef([]);
@@ -102,7 +102,7 @@ const home = ({session}) => {
     const [showSearchResults,setShowSearchResults] = useState(false)
     const [clickedCard,setClickedCard] = useState<any>()
     const router = useRouter()
-    useScrollRestoration(router)
+    // useScrollRestoration(router)
     const searchRef = useRef<any>()
 
     useEffect(() => {
@@ -124,12 +124,28 @@ const home = ({session}) => {
                 setAccessToken(localStorage.getItem('access_token'))
             }
             if (accessTokenValid) {
-                getAllPosts()
-                    .then(res => {
-                        addAnimations(cardRef)
-                        scrollToCard()
-                    })
-                    .catch(err => {}) ;
+                let currentTab = sessionStorage.getItem('clickedTab')
+                switch (currentTab) {
+                    case 'recent':
+                        pageSelected('recent')
+                        break;
+                    case 'likes':
+                        pageSelected('likes')
+                        break;
+                    case 'comments':
+                        pageSelected('comments')
+                        break;
+                    default:
+                        pageSelected('recent')
+                        break;
+                }
+                // getAllPosts()
+                //     .then(res => {
+                //         addAnimations(cardRef)
+                //         scrollToCard()
+                //         sessionStorage.setItem('clickedTab','recent')
+                //     })
+                //     .catch(err => {}) ;
 
             }
             else{
@@ -139,19 +155,22 @@ const home = ({session}) => {
     }, []);
 
     let getAllPosts = async (option=null) => {
-        console.log('GET ALL POST')
-        console.log(option)
+        // console.log('GET ALL POST')
+        // console.log(option)
+        let postUrl
+        let response
+        let data
         switch(option){
-            case "All":
-                console.log('========================INSIDE GETALL POST ALL===========================')
-                let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
-                let response = await fetch(postUrl);
-                let data = await response.json();
-                setPosts(data);
-                setIsDataFetched(true);
-                break;
-            case "Recent":
-                console.log('========================INSIDE GETALL POST RECENT===========================')
+            // case "All":
+            //     console.log('========================INSIDE GETALL POST ALL===========================')
+            //     let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+            //     let response = await fetch(postUrl);
+            //     let data = await response.json();
+            //     setPosts(data);
+            //     setIsDataFetched(true);
+            //     break;
+            case "recent":
+                // console.log('========================INSIDE GETALL POST RECENT===========================')
                 postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
                 response = await fetch(postUrl);
                 data = await response.json();
@@ -159,8 +178,8 @@ const home = ({session}) => {
                 setIsDataFetched(true);
                 setUrl('/api/post/')
                 break;
-            case "Most":
-                console.log('========================INSIDE GETALL POST MOST===========================')
+            case "likes":
+                // console.log('========================INSIDE GETALL POST MOST===========================')
                 postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/mostliked/`;
                 response = await fetch(postUrl);
                 data = await response.json();
@@ -168,8 +187,8 @@ const home = ({session}) => {
                 setIsDataFetched(true);
                 setUrl('/api/post/mostliked/')
                 break;
-            case "Top":
-                console.log('========================INSIDE GETALL POST TOP===========================')
+            case "comments":
+                // console.log('========================INSIDE GETALL POST TOP===========================')
                 postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/mostcommented/`;
                 response = await fetch(postUrl);
                 data = await response.json();
@@ -178,12 +197,12 @@ const home = ({session}) => {
                 setUrl('/api/post/mostcommented/')
                 break;
             default:
-                console.log('========================INSIDE GETALL POST===========================')
-                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
-                response = await fetch(postUrl);
-                data = await response.json();
-                setPosts(data);
-                setIsDataFetched(true);
+                // console.log('========================INSIDE GETALL POST===========================')
+                // postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                // response = await fetch(postUrl);
+                // data = await response.json();
+                // setPosts(data);
+                // setIsDataFetched(true);
                 break;
         }
     }
@@ -197,36 +216,60 @@ const home = ({session}) => {
 
     let pageSelected = (pageName) => {
         switch (pageName) {
-            case "All":
-                setAllFalse();
-                setAll(true);
-                getAllPosts('All')
-                setShowSearchResults(false)
-                setShowSearch(false)
-                break;
-            case "Recent":
+            // case "All":
+            //     setAllFalse();
+            //     setAll(true);
+            //     getAllPosts('All')
+            //     setShowSearchResults(false)
+            //     setShowSearch(false)
+            //     break;
+            case "recent":
                 setAllFalse();
                 setRecent(true);
-                getAllPosts('Recent')
                 setShowSearchResults(false)
                 setShowSearch(false)
+                getAllPosts('recent').then(res => {
+                    addAnimations(cardRef)
+                    scrollToCard()
+                    sessionStorage.setItem('clickedTab','recent')
+                })
+                    .catch(err => {})
                 break;
-            case "Most":
+            case "likes":
                 setAllFalse();
                 setMost(true);
-                getAllPosts('Most')
                 setShowSearchResults(false)
                 setShowSearch(false)
+                getAllPosts('likes').then(res => {
+                    addAnimations(cardRef)
+                    scrollToCard()
+                    sessionStorage.setItem('clickedTab','likes')
+                })
+                    .catch(err => {}) ;
                 break;
-            case "Top":
+            case "comments":
                 setAllFalse();
                 setTop(true);
-                getAllPosts('Top')
                 setShowSearchResults(false)
                 setShowSearch(false)
+                getAllPosts('comments').then(res => {
+                    addAnimations(cardRef)
+                    scrollToCard()
+                    sessionStorage.setItem('clickedTab','comments')
+                })
+                    .catch(err => {}) ;
                 break;
-
             default:
+                // setAllFalse();
+                // setRecent(true);
+                // getAllPosts('recent').then(res => {
+                //     addAnimations(cardRef)
+                //     scrollToCard()
+                //     sessionStorage.setItem('clickedTab','recent')
+                // })
+                //     .catch(err => {}) ;
+                // setShowSearchResults(false)
+                // setShowSearch(false)
                 break;
         }
     }
@@ -273,7 +316,7 @@ const home = ({session}) => {
 
     useEffect(() => {
         addAnimations(cardRef)
-    }, [PaginatedData]);
+    }, [isLoading]);
 
     if (AccessToken!=null) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
@@ -293,18 +336,38 @@ const home = ({session}) => {
                     </div>
                     <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
                         {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
-                        <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("Recent")}>Recent</button>
-                        <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("Most")}>Most</button>
-                        <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("Top")}>Top</button>
+                        <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("recent")}>Recent</button>
+                        <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("likes")}>By likes</button>
+                        <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("comments")}>By comments</button>
+
+                        {/*<button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => getAllPosts("recent").then(res => {*/}
+                        {/*    addAnimations(cardRef)*/}
+                        {/*    scrollToCard()*/}
+                        {/*    sessionStorage.setItem('clickedTab','recent')*/}
+                        {/*})*/}
+                        {/*    .catch(err => {})}>Recent</button>*/}
+                        {/*<button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() =>  getAllPosts("likes").then(res => {*/}
+                        {/*    addAnimations(cardRef)*/}
+                        {/*    scrollToCard()*/}
+                        {/*    sessionStorage.setItem('clickedTab','likes')*/}
+                        {/*})*/}
+                        {/*    .catch(err => {})}>By likes</button>*/}
+                        {/*<button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() =>  getAllPosts("comments").then(res => {*/}
+                        {/*    addAnimations(cardRef)*/}
+                        {/*    scrollToCard()*/}
+                        {/*    sessionStorage.setItem('clickedTab','comments')*/}
+                        {/*})*/}
+                        {/*    .catch(err => {})}>By comments</button>*/}
+
                     </div>
                     {finalSearchString?null:<p className="mx-8 my-2">Today</p>}
-                    {console.log(posts)}
+                    {/*{console.log(posts)}*/}
                     {isDataFetched?
                         <div className="">
                             <div className={`flex flex-wrap justify-around items-center mx-10 mt-5 ${showSearchResults?null:'hidden'}`}>Showing Search results for '{finalSearchString}'</div>
                             <InfiniteScroll dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
-                                {console.log(reachedEnd)}
-                                {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} setClickedCard = {setClickedCard} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
+                                {/*{console.log(reachedEnd)}*/}
+                                {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id /*+ sessionStorage.getItem('clickedTab')*/} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} setClickedCard = {setClickedCard} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
                             </InfiniteScroll>
                         </div>
                         :
