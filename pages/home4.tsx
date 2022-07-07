@@ -1,8 +1,5 @@
 import TopBar from "../components/TopBar";
 import { useState, useEffect, useRef } from 'react';
-import { getSession } from "next-auth/react";
-import { useSession} from "next-auth/react";
-import useScrollRestoration from "../components/useScrollRestoration";
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
@@ -36,7 +33,7 @@ const addAnimations = (cardRef) => {
     console.log('In Animations')
     let cardsCount = cardRef.current.length
     // console.log(cardsCount)
-    for (let i = 0; i < cardsCount; i++) {
+    for (let i = oldCardsCount; i < cardsCount; i++) {
         gsap.to(cardRef.current[i], {
             x: 0, y:70,xPercent:10,scale:0.9,
             scrollTrigger: {
@@ -70,7 +67,7 @@ const addAnimations = (cardRef) => {
         //     })
 
     }
-    // oldCardsCount = cardsCount
+    oldCardsCount = cardsCount
 }
 
 const home = ({}) => {
@@ -84,16 +81,6 @@ const home = ({}) => {
     const ref = useRef();
     const cardRef = useRef([]);
     let accessToken
-
-
-    // let [All, setAll] = useState(false)
-    // let [Recent, setRecent] = useState(true)
-    // let [Most, setMost] = useState(false)
-    // let [Top, setTop] = useState(false)
-
-    // const [AccessToken, setAccessToken] = useState<any>()
-    // const [RefreshToken, setRefreshToken] = useState<any>()
-
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
     const [url,setUrl] = useState<any>(`/api/post/`)
@@ -102,18 +89,16 @@ const home = ({}) => {
     const [showSearch,setShowSearch] = useState(false)
     const [showSearchResults,setShowSearchResults] = useState(false)
     const [clickedCard,setClickedCard] = useState<any>()
+    const searchRef = useRef<any>()
     let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
     let response
     let data
 
-    // useScrollRestoration(router)
-    const searchRef = useRef<any>()
 
     useEffect(() => {
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
         let accessToken = null
-
         if (accessTokenLS == null) {
             console.log('No Access Token')
             router.push('/')
@@ -131,13 +116,6 @@ const home = ({}) => {
                 setShowSearchResults(false)
                 setShowSearch(false)
                 setCanAccess(true)
-                // if (canAccess){
-                //
-                // }
-                // else {
-                //
-                //     setCanAccess(true)
-                // }
             }
             else {
                 console.log('No Access Token')
@@ -147,26 +125,11 @@ const home = ({}) => {
 
     }, []);
 
-    useEffect(() => {
-        console.log('In useEffect 2')
-        if (canAccess) {
-            // let currentTab = sessionStorage.getItem('clickedTab')
-            // getAllPosts('recent').then(res => {
-            //     addAnimations(cardRef)
-            //     scrollToCard()
-            //     sessionStorage.setItem('clickedTab','recent')
-            // })
-            //     .catch(err => {})
-            // setShowSearchResults(false)
-            // setShowSearch(false)
-        }
-    }, [canAccess]);
 
     let getAllPosts = async (option=null) => {
         // console.log('GET ALL POST')
         // console.log(option)
         console.log('getting posts')
-
         response = await fetch(postUrl);
         data = await response.json();
         setPosts(data);
@@ -174,13 +137,6 @@ const home = ({}) => {
         setUrl('/api/post/')
 
     }
-
-    // let setAllFalse = () =>{
-    //     setAll(false);
-    //     setRecent(false);
-    //     setMost(false);
-    //     setTop(false);
-    // }
 
 
 
@@ -192,7 +148,6 @@ const home = ({}) => {
     let clearSearchFn= () => {
         setShowSearch(!showSearch)
         searchRef.current.value=''
-        // pageSelected("Recent")
     }
 
     let searchKeyHandler = (e) => {
@@ -255,7 +210,7 @@ const home = ({}) => {
 
 
         </div>
-        {/*{finalSearchString?null:<p className="mx-8 my-2">Today</p>}*/}
+
             {/*{console.log(posts)}*/}
             {isDataFetched?
                 <div className="">
