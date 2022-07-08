@@ -242,56 +242,56 @@ const home = ({}) => {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (
             <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
-            <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
-            <div className="pb-5 overflow-y-auto overflow-hidden z-50 mb-[10vh] w-full max-w-md ">
-            <meta name='theme-color' content='#FFBCD1' />
-        <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
-        <div className={`flex justify-left items-center mx-6 bg-white rounded-full mb-4 h-10 w-${showSearch?100:10} `}>
-        <button onClick={showSearchFn} className="pl-2 no-highlights"> <Search className=" mr-4"/> </button>
-            <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-transparent ${showSearch?null:'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler} />
+                <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
+                <div className="pb-5 overflow-y-auto overflow-hidden z-50 mb-[10vh] w-full max-w-md ">
+                    <meta name='theme-color' content='#FFBCD1' />
+                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
+                    <div className={`flex justify-left items-center mx-6 bg-white rounded-full mb-4 h-10 w-${showSearch?100:10} `}>
+                        <button onClick={showSearchFn} className="pl-2 no-highlights"> <Search className=" mr-4"/> </button>
+                        <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-transparent ${showSearch?null:'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler} />
 
-        </div>
-        <div className={`flex justify-around mx-10 top-24 ${showSearch?null:'hidden'}`}>
-        <button className={`bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights`} onClick={clearSearchFn}>Clear Search</button>
-        </div>
-        <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
-        {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
-        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights text-sm" onClick={loadRecentPage}>Recent</button>
-        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadCommentsPage}>By likes</button>
-        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadLikesPage}>By comments</button>
+                    </div>
+                    <div className={`flex justify-around mx-10 top-24 ${showSearch?null:'hidden'}`}>
+                        <button className={`bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights`} onClick={clearSearchFn}>Clear Search</button>
+                    </div>
+                    <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
+                        {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
+                        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights text-sm" onClick={loadRecentPage}>Recent</button>
+                        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadLikesPage}>By likes</button>
+                        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadCommentsPage}>By comments</button>
 
 
 
-        </div>
+                    </div>
 
-            {/*{console.log(posts)}*/}
-            {isDataFetched?
-                <div className="">
-                <div className={`flex flex-wrap justify-around items-center mx-10 mt-5 ${showSearchResults?null:'hidden'}`}>Showing Search results for '{finalSearchString}'</div>
-                <InfiniteScroll dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
-                {/*{console.log(reachedEnd)}*/}
-                {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id /*+ sessionStorage.getItem('clickedTab')*/} accessToken = {accessToken} postid = {post.id} userid={post.user.id} setClickedCard = {setClickedCard} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
-                </InfiniteScroll>
-                </div>
-                :
-                    <div className="">
-                        <LoadingCard></LoadingCard>
-                        <LoadingCard></LoadingCard>
-                        <LoadingCard></LoadingCard>
-                        <LoadingCard></LoadingCard>
+                    {/*{console.log(posts)}*/}
+                    {isDataFetched?
+                        <div className="">
+                            <div className={`flex flex-wrap justify-around items-center mx-10 mt-5 ${showSearchResults?null:'hidden'}`}>Showing Search results for '{finalSearchString}'</div>
+                            <InfiniteScroll dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
+                                {/*{console.log(reachedEnd)}*/}
+                                {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id /*+ sessionStorage.getItem('clickedTab')*/} accessToken = {accessToken} postid = {post.id} userid={post.user.id} setClickedCard = {setClickedCard} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
+                            </InfiniteScroll>
                         </div>
-                }
-                {/* <div className="flex justify-center items-center mb-10">
+                        :
+                        <div className="">
+                            <LoadingCard></LoadingCard>
+                            <LoadingCard></LoadingCard>
+                            <LoadingCard></LoadingCard>
+                            <LoadingCard></LoadingCard>
+                        </div>
+                    }
+                    {/* <div className="flex justify-center items-center mb-10">
                         <button onClick={()=>setSize(size+1)}>Load More...</button>
                     </div> */}
                 </div>
                 <NavBar page = {"Home"}/>
             </div>
-            );
-            }
-        else{
-            return null
-        }
-        }
+        );
+    }
+    else{
+        return null
+    }
+}
 
-        export default home;
+export default home;
