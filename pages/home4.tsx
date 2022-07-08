@@ -11,6 +11,8 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
 import { gsap } from "gsap";
+import {Simulate} from "react-dom/test-utils";
+import seeked = Simulate.seeked;
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
@@ -33,7 +35,7 @@ const addAnimations = (cardRef) => {
     console.log('In Animations')
     let cardsCount = cardRef.current.length
     // console.log(cardsCount)
-    for (let i = oldCardsCount; i < cardsCount; i++) {
+    for (let i = 0; i < cardsCount; i++) {
         gsap.to(cardRef.current[i], {
             x: 0, y:70,xPercent:10,scale:0.9,
             scrollTrigger: {
@@ -89,6 +91,7 @@ const home = ({}) => {
     const [showSearch,setShowSearch] = useState(false)
     const [showSearchResults,setShowSearchResults] = useState(false)
     const [clickedCard,setClickedCard] = useState<any>()
+    const [renderComplete,setRenderComplete] = useState(false)
     const searchRef = useRef<any>()
     let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
     let response
@@ -107,15 +110,31 @@ const home = ({}) => {
             if (isAccessTokenValid(accessTokenLS, refreshTokenLS)) {
                 accessToken = localStorage.getItem('access_token')
                 let currentTab = sessionStorage.getItem('clickedTab')
-                getAllPosts('recent').then(res => {
+                if (sessionStorage.getItem('searchClicked') == 'true') {
+                    setFinalSearchString(sessionStorage.getItem('searchString'))
+                    console.log("search string is ", searchString)
+                    setShowSearch(!showSearch)
+                    setUrl(`/api/post/search/`)
+                    setShowSearchResults(true)
+                    setCanAccess(true)
+                    console.log("all set")
+                    setIsDataFetched(true)
                     addAnimations(cardRef)
                     scrollToCard()
-                    sessionStorage.setItem('clickedTab','recent')
-                })
-                    .catch(err => {})
-                setShowSearchResults(false)
-                setShowSearch(false)
-                setCanAccess(true)
+
+                }
+                else {
+                    getAllPosts('recent').then(res => {
+                        addAnimations(cardRef)
+                        scrollToCard()
+                        sessionStorage.setItem('clickedTab', 'recent')
+                    })
+                        .catch(err => {
+                        })
+                    setShowSearchResults(false)
+                    setShowSearch(false)
+                    setCanAccess(true)
+                }
             }
             else {
                 console.log('No Access Token')
@@ -123,7 +142,18 @@ const home = ({}) => {
             }
         }
 
+        setRenderComplete(true)
+
     }, []);
+
+    useEffect(() => {
+        if (renderComplete) {
+            let searchBox = document.getElementById("Search") as HTMLInputElement
+            searchBox.value = sessionStorage.getItem('searchString')
+            // addAnimations(cardRef)
+            // scrollToCard()
+        }
+    }, [renderComplete])
 
 
     let getAllPosts = async (option=null) => {
@@ -148,6 +178,10 @@ const home = ({}) => {
     let clearSearchFn= () => {
         setShowSearch(!showSearch)
         searchRef.current.value=''
+        setUrl(`/api/post/`)
+        setShowSearchResults(false)
+        sessionStorage.setItem('searchClicked','false')
+        sessionStorage.setItem('searchString','')
     }
 
     let searchKeyHandler = (e) => {
@@ -161,6 +195,9 @@ const home = ({}) => {
             setFinalSearchString(searchString)
             setUrl(`/api/post/search/`)
             setShowSearchResults(true)
+            sessionStorage.setItem('searchClicked','true')
+            sessionStorage.setItem('searchString',searchString)
+
         }
     }
 
@@ -180,11 +217,6 @@ const home = ({}) => {
 
     let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString)
     let PaginatedPosts = PaginatedData?.flat()
-
-    // useEffect(() => {
-    //     addAnimations(cardRef)
-    // }, [isLoading]);
-
     if (canAccess) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (
@@ -195,7 +227,7 @@ const home = ({}) => {
         <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
         <div className={`flex justify-left items-center mx-6 bg-white rounded-full mb-4 h-10 w-${showSearch?100:10} `}>
         <button onClick={showSearchFn} className="pl-2 no-highlights"> <Search className=" mr-4"/> </button>
-            <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-transparent ${showSearch?null:'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler}/>
+            <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-transparent ${showSearch?null:'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler} />
 
         </div>
         <div className={`flex justify-around mx-10 top-24 ${showSearch?null:'hidden'}`}>
@@ -203,9 +235,9 @@ const home = ({}) => {
         </div>
         <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
         {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
-        {/*<button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("recent")}>Recent</button>*/}
-        {/*<button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("likes")}>By likes</button>*/}
-        {/*<button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("comments")}>By comments</button>*/}
+        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" onClick={() => {}}>Recent</button>
+        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => {}}>By likes</button>
+        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => {}}>By comments</button>
 
 
 
