@@ -235,9 +235,9 @@ const home = ({}) => {
         </div>
         <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
         {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
-        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" onClick={() => {}}>Recent</button>
-        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => {}}>By likes</button>
-        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => {}}>By comments</button>
+        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights text-sm" onClick={() => {}}>Recent</button>
+        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={() => {}}>By likes</button>
+        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={() => {}}>By comments</button>
 
 
 
