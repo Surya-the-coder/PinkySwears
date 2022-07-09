@@ -11,6 +11,7 @@ import {useRouter} from "next/router";
 
 
 const SinglePostCard = (props) => {
+    // console.log(props.hashTags)
     
     const [newCommentContent, setNewCommentContent] = useState<any>()
     
@@ -82,6 +83,11 @@ const SinglePostCard = (props) => {
                         <h1 className='font-Sarabun-Medium text-base tracking-[0.2px] font-medium'>{props.postUserName}</h1>
                         <h3 className='text-xs text-purple-500 font-Sarabun'>{props.postCreatedDate}</h3>
                         <p className='text-sm text-gray-500 mt-2'>{props.postContent}</p>
+                        <hr className={"mt-3"}/>
+                        <span className="text-sm text-blue-500 mt-2">{props.hashTags?.map((hashtag, index) =>
+                            <button key={index}>{hashtag} &nbsp; </button>
+                        )
+                        }</span>
                         <div className="flex mt-3 w-full justify-between pr-14">
                             <button className='flex items-center text-xs text-pink-400' onClick={likePost}>
                                 {isLiked ? <LikePink/> :<Like/>}
