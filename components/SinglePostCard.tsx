@@ -8,6 +8,7 @@ import Comment from '../assets/images/Reply.svg'
 import ThreeDots from '../assets/images/ThreeDots.svg'
 import { profilePicLoader } from './CommonFunctions'
 import {useRouter} from "next/router";
+import {router} from "next/client";
 
 
 const SinglePostCard = (props) => {
@@ -18,6 +19,8 @@ const SinglePostCard = (props) => {
     const [likes, setLikes] = useState(props.likes)
     const [isLiked, setisLiked] = useState(props.isLiked)
     const inputRef = useRef<any>()
+
+
 
     useEffect(() => {
         // let fetchSinglePostApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
@@ -72,6 +75,15 @@ const SinglePostCard = (props) => {
         }
     }
 
+    let hashClick = (e) => {
+        let hashValue = e.target.value
+        console.log("Hash value is " + hashValue)
+        sessionStorage.setItem('searchClicked','true')
+        sessionStorage.setItem('searchString',hashValue)
+        sessionStorage.setItem('searchType','hashtag')
+        router.push(`/home-recent/`)
+    }
+
     return (
         <div className="flex flex-col bg-white rounded-2xl mx-5 px-3 py-5">
             <div className="flex justify-between mx-1">
@@ -85,7 +97,7 @@ const SinglePostCard = (props) => {
                         <p className='text-sm text-gray-500 mt-2'>{props.postContent}</p>
                         <hr className={"mt-3"}/>
                         <span className="text-sm text-blue-500 mt-2">{props.hashTags?.map((hashtag, index) =>
-                            <button key={index}>{hashtag} &nbsp; </button>
+                            <button key={index} onClick={hashClick} value={hashtag}>{hashtag} &nbsp; </button>
                         )
                         }</span>
                         <div className="flex mt-3 w-full justify-between pr-14">
