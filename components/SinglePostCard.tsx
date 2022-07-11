@@ -8,12 +8,12 @@ import Comment from '../assets/images/Reply.svg'
 import ThreeDots from '../assets/images/ThreeDots.svg'
 import { profilePicLoader } from './CommonFunctions'
 import {useRouter} from "next/router";
-import {router} from "next/client";
+
 
 
 const SinglePostCard = (props) => {
     // console.log(props.hashTags)
-    
+    const router = useRouter()
     const [newCommentContent, setNewCommentContent] = useState<any>()
     
     const [likes, setLikes] = useState(props.likes)
