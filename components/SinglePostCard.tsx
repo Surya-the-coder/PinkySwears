@@ -85,7 +85,7 @@ const SinglePostCard = (props) => {
     }
 
     return (
-        <div className="flex flex-col bg-white rounded-2xl mx-5 px-3 py-5">
+        <div className="flex flex-col bg-white rounded-2xl mx-5 px-3 py-5 post-content">
             <div className="flex justify-between mx-1">
                 <div className='flex w-full'>
                     <div className="mr-2 w-14">

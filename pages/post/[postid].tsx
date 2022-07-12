@@ -85,6 +85,12 @@ const SinglePost = () => {
                     getSinglePostData()
                         .then(res =>
                     {
+                        gsap.from(".post-content", {
+                            y:-30, duration:0.5,ease:"bounce.out"
+                        })
+                        gsap.from(".comment-cards", {
+                            y:30, duration:0.5,ease:"bounce.out"
+                        })
                         // returnFn()
                         // setIsDataFetched(true);
                     })
@@ -121,8 +127,11 @@ const SinglePost = () => {
 
         // console.log('Setting is Data Fetched to true in getSinglePostData')
         setIsDataFetched(true);
-        // gsap.from(".single-card", {
-        //     y:30, scale:0.6, ease: "bounce.out",opacity:0.6,duration:1,
+        // gsap.from(".post-content", {
+        //     y:-30, x:-30, duration:0.5,
+        // })
+        // gsap.from(".comment-cards", {
+        //     y:30, x:30,duration:0.5
         // })
     }
 
@@ -146,7 +155,7 @@ const SinglePost = () => {
                 {isDataFetched?
                     <div className="single-card">
                         <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} />
-                        {singlePostData.comments.map( (comment) => <CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>)}
+                        {singlePostData.comments.map( (comment) => <CommentCard accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>)}
                         {
                             // typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
                         }
