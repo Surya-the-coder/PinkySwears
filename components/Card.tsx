@@ -26,9 +26,9 @@ const Card = forwardRef((props:PropsWithChildren<any>,ref:any) => {
 
 
     function cardClickedFn() {
-        console.log("Card Clicked")
-
-        console.log(props.postid)
+        // console.log("Card Clicked")
+        //
+        // console.log(props.postid)
         props.setClickedCard(props.postid)
         sessionStorage.setItem("clickedCard", props.postid)
     }

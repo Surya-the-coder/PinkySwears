@@ -32,7 +32,7 @@ const scrollToCard = () => {
 
 
 const addAnimations = (cardRef) => {
-    console.log('In Animations')
+    // console.log('In Animations')
     let cardsCount = cardRef.current.length
     // console.log(cardsCount)
     for (let i = 0; i < cardsCount; i++) {
@@ -83,9 +83,11 @@ const home = ({}) => {
     const ref = useRef();
     const cardRef = useRef([]);
     let accessToken
+
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
-    const [url,setUrl] = useState<any>(`/api/post/mostliked/`)
+    const [url,setUrl] = useState<any>(`/api/post/`)
+    const [searchType,setSearchType] = useState('all')
     const [searchString,setSearchString] = useState<string>()
     const [finalSearchString,setFinalSearchString] = useState<string>()
     const [showSearch,setShowSearch] = useState(false)
@@ -93,7 +95,7 @@ const home = ({}) => {
     const [clickedCard,setClickedCard] = useState<any>()
     const [renderComplete,setRenderComplete] = useState(false)
     const searchRef = useRef<any>()
-    let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/mostliked/`;
+    let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
     let response
     let data
 
@@ -110,11 +112,13 @@ const home = ({}) => {
             if (isAccessTokenValid(accessTokenLS, refreshTokenLS)) {
                 accessToken = localStorage.getItem('access_token')
                 let currentTab = sessionStorage.getItem('clickedTab')
-                if (sessionStorage.getItem('searchClicked') == 'true') {
+                if (sessionStorage.getItem('hashClicked') == 'true') {
                     setFinalSearchString(sessionStorage.getItem('searchString'))
                     console.log("search string is ", searchString)
                     setShowSearch(!showSearch)
                     setUrl(`/api/post/search/`)
+                    setSearchType(sessionStorage.getItem('searchType'))
+                    sessionStorage.setItem('searchType', 'all')
                     setShowSearchResults(true)
                     setCanAccess(true)
                     console.log("all set")
@@ -148,10 +152,10 @@ const home = ({}) => {
 
     useEffect(() => {
         if (renderComplete) {
-            // let searchBox = document.getElementById("Search") as HTMLInputElement
-            // searchBox.value = sessionStorage.getItem('searchString')
-            // // addAnimations(cardRef)
-            // // scrollToCard()
+            let searchBox = document.getElementById("Search") as HTMLInputElement
+            searchBox.value = sessionStorage.getItem('searchString')
+            // addAnimations(cardRef)
+            // scrollToCard()
         }
     }, [renderComplete])
 
@@ -164,7 +168,7 @@ const home = ({}) => {
         data = await response.json();
         setPosts(data);
         setIsDataFetched(true);
-        setUrl('/api/post/mostliked/')
+        setUrl('/api/post/')
 
     }
 
@@ -178,7 +182,7 @@ const home = ({}) => {
     let clearSearchFn= () => {
         setShowSearch(!showSearch)
         searchRef.current.value=''
-        setUrl(`/api/post/mostliked/`)
+        setUrl(`/api/post/`)
         setShowSearchResults(false)
         sessionStorage.setItem('searchClicked','false')
         sessionStorage.setItem('searchString','')
@@ -197,6 +201,7 @@ const home = ({}) => {
             setShowSearchResults(true)
             sessionStorage.setItem('searchClicked','true')
             sessionStorage.setItem('searchString',searchString)
+            setSearchType('all')
 
         }
     }
@@ -228,7 +233,7 @@ const home = ({}) => {
         if(tempSearchString==""){
             setFinalSearchString(null)
             setSearchString(null)
-            url==='/api/post/mostliked/'?null:setUrl(`/api/post/mostliked/`)
+            url==='/api/post/'?null:setUrl(`/api/post/`)
         }
         else
         {
@@ -236,7 +241,7 @@ const home = ({}) => {
         }
     }
 
-    let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString)
+    let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString,searchType)
     let PaginatedPosts = PaginatedData?.flat()
     if (canAccess) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
@@ -256,8 +261,8 @@ const home = ({}) => {
                     </div>
                     <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
                         {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
-                        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadRecentPage}>Recent</button>
-                        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights text-sm" onClick={loadLikesPage}>By likes</button>
+                        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights text-sm" onClick={loadRecentPage}>Recent</button>
+                        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadLikesPage}>By likes</button>
                         <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadCommentsPage}>By comments</button>
 
 

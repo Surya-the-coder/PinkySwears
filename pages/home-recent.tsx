@@ -32,7 +32,7 @@ const scrollToCard = () => {
 
 
 const addAnimations = (cardRef) => {
-    console.log('In Animations')
+    // console.log('In Animations')
     let cardsCount = cardRef.current.length
     // console.log(cardsCount)
     for (let i = 0; i < cardsCount; i++) {
@@ -83,6 +83,7 @@ const home = ({}) => {
     const ref = useRef();
     const cardRef = useRef([]);
     let accessToken
+
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
     const [url,setUrl] = useState<any>(`/api/post/`)
@@ -125,8 +126,7 @@ const home = ({}) => {
                     addAnimations(cardRef)
                     scrollToCard()
 
-                }
-                else {
+                } else {
                     getAllPosts('recent').then(res => {
                         addAnimations(cardRef)
                         scrollToCard()
@@ -137,6 +137,7 @@ const home = ({}) => {
                     setShowSearchResults(false)
                     setShowSearch(false)
                     setCanAccess(true)
+
                 }
             }
             else {
@@ -153,8 +154,8 @@ const home = ({}) => {
         if (renderComplete) {
             let searchBox = document.getElementById("Search") as HTMLInputElement
             searchBox.value = sessionStorage.getItem('searchString')
-            // addAnimations(cardRef)
-            // scrollToCard()
+            // // addAnimations(cardRef)
+            // // scrollToCard()
         }
     }, [renderComplete])
 
