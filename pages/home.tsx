@@ -37,7 +37,8 @@ const addAnimations = (cardRef) => {
     // console.log(cardsCount)
     for (let i = 0; i < cardsCount; i++) {
         gsap.to(cardRef.current[i], {
-            x: 0, y:70,xPercent:10,scale:0.9,
+            x: 0, y:70,xPercent:10,
+            // x: 0, y:-50,
             scrollTrigger: {
                 trigger: cardRef.current[i],
                 toggleActions: "play pause reverse reset",
@@ -46,17 +47,17 @@ const addAnimations = (cardRef) => {
                 end: "bottom",
             }
         })
-        gsap.from(cardRef.current[i], {
-            x: 0,y:20,
-            scrollTrigger: {
-                trigger: cardRef.current[i],
-                toggleActions: "restart none reverse reset",
-                start: "top 80%",
-                end: "top 70%",
-                scrub:1,
-
-            }
-        })
+        // gsap.from(cardRef.current[i], {
+        //     x: 0,y:20,
+        //     scrollTrigger: {
+        //         trigger: cardRef.current[i],
+        //         toggleActions: "restart none reverse reset",
+        //         start: "top 80%",
+        //         end: "top 70%",
+        //         scrub:1,
+        //
+        //     }
+        // })
         //test - code below.
         // gsap.from(cardRef.current[i], {
         //     y:30, rotationY:45,ease: "back.out(1.6)",opacity:0.6,
@@ -151,6 +152,8 @@ const home = ({}) => {
 
     }, []);
 
+
+
     useEffect(() => {
         if (renderComplete) {
             let searchBox = document.getElementById("Search") as HTMLInputElement
@@ -244,6 +247,10 @@ const home = ({}) => {
 
     let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString,searchType)
     let PaginatedPosts = PaginatedData?.flat()
+    useEffect(() => {
+        addAnimations(cardRef)
+    }, [PaginatedData])
+
     if (canAccess) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (

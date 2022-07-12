@@ -29,7 +29,7 @@ const addAnimations = (commentCardRef) => {
             x:50,y:20,
             scrollTrigger: {
                 trigger: commentCardRef.current[i],
-                toggleActions: "restart none reverse reset",
+                toggleActions: "restart none reverse none",
                 start: "top 90%",
                 end: "top 80%",
                 // markers: true,
@@ -113,10 +113,10 @@ const SinglePost = () => {
                         .then(res =>
                     {
                         gsap.from(".post-content", {
-                            y:-30, duration:0.5,ease:"bounce.out"
+                            y:-30, duration:1,ease:"bounce.out",
                         })
                         gsap.from(".comment-cards", {
-                            y:30, duration:0.5,ease:"bounce.out"
+                            y:30, duration:1,ease:"bounce.out",
                         }).then(() => {
                             addAnimations(commentCardRef)
                         })
@@ -172,7 +172,7 @@ const SinglePost = () => {
             <div className="full-page flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
             <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
             {/*<div className="pb-8 overflow-y-visible overflow-visible h-[92vh] z-50  w-full max-w-md">*/}
-            <div className="pb-20 overflow-y-visible overflow-x-hidden z-50  w-full max-w-md">
+            <div className="pb-28 overflow-y-visible overflow-x-hidden z-50  w-full max-w-md">
                 <meta name='theme-color' content='#FFBCD1' />
                 <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {userData.profileImg}/>
                 {/* <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
