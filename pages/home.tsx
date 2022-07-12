@@ -11,8 +11,6 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
 import { gsap } from "gsap";
-// import {Simulate} from "react-dom/test-utils";
-// import seeked = Simulate.seeked;
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
@@ -24,21 +22,18 @@ gsap.registerPlugin(ScrollToPlugin);
 let oldCardsCount = 0
 
 const scrollToCard = () => {
+    console.log('Scrolling to card')
     const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
-    // console.log("Name is ", scrollDiv)
     gsap.to(window, {scrollTo:`#card-${sessionStorage.getItem('clickedCard')}`})
     sessionStorage.setItem('clickedCard', '')
 }
 
 
 const addAnimations = (cardRef) => {
-    // console.log('In Animations')
     let cardsCount = cardRef.current.length
-    // console.log(cardsCount)
     for (let i = 0; i < cardsCount; i++) {
         gsap.to(cardRef.current[i], {
             x: 0, y:70,xPercent:10,
-            // x: 0, y:-50,
             scrollTrigger: {
                 trigger: cardRef.current[i],
                 toggleActions: "play pause reverse reset",
@@ -47,41 +42,15 @@ const addAnimations = (cardRef) => {
                 end: "bottom",
             }
         })
-        // gsap.from(cardRef.current[i], {
-        //     x: 0,y:20,
-        //     scrollTrigger: {
-        //         trigger: cardRef.current[i],
-        //         toggleActions: "restart none reverse reset",
-        //         start: "top 80%",
-        //         end: "top 70%",
-        //         scrub:1,
-        //
-        //     }
-        // })
-        //test - code below.
-        // gsap.from(cardRef.current[i], {
-        //     y:30, rotationY:45,ease: "back.out(1.6)",opacity:0.6,
-        //         scrollTrigger: {
-        //             trigger: cardRef.current[i],
-        //             toggleActions: "restart none none reset",
-        //             start: "top 80%",
-        //             end: "top 70%",
-        //             // scrub:true,
-        //         }
-        //     })
-
     }
     oldCardsCount = cardsCount
 }
 
 const home = ({}) => {
 
-
     const [canAccess,setCanAccess] = useState(false)
     const router = useRouter()
-
     // console.log('=============================HOME=============================')
-
     const ref = useRef();
     const cardRef = useRef([]);
     let accessToken
@@ -158,22 +127,19 @@ const home = ({}) => {
         if (renderComplete) {
             let searchBox = document.getElementById("Search") as HTMLInputElement
             searchBox.value = sessionStorage.getItem('searchString')
-            addAnimations(cardRef)
-            scrollToCard()
+            // addAnimations(cardRef)
+            // scrollToCard()
         }
     }, [renderComplete])
 
 
     let getAllPosts = async (option=null) => {
-        // console.log('GET ALL POST')
-        // console.log(option)
         console.log('getting posts')
         response = await fetch(postUrl);
         data = await response.json();
         setPosts(data);
         setIsDataFetched(true);
         setUrl('/api/post/')
-
     }
 
 
@@ -206,7 +172,6 @@ const home = ({}) => {
             sessionStorage.setItem('searchClicked','true')
             sessionStorage.setItem('searchString',searchString)
             setSearchType('all')
-
         }
     }
 
@@ -247,6 +212,7 @@ const home = ({}) => {
 
     let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString,searchType)
     let PaginatedPosts = PaginatedData?.flat()
+
     useEffect(() => {
         addAnimations(cardRef)
     }, [PaginatedData])

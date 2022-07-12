@@ -9,11 +9,6 @@ const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
 
     const [commentIsLiked, setCommentIsLiked] = useState(props.isLiked)
     const [commentLikes, setCommentLikes] = useState(props.commentLikes)
-
-    useEffect(() => {
-        // console.log(props);
-
-    },[])
     
 
     let likeComment = async () => {

@@ -14,16 +14,11 @@ import { gsap } from "gsap";
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
-
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(ScrollToPlugin);
 
-
-
 const addAnimations = (commentCardRef) => {
-    console.log('In Animations')
     let cardsCount = commentCardRef.current.length
-    // console.log(cardsCount)
     for (let i = 6; i < cardsCount; i++) {
         gsap.from(commentCardRef.current[i], {
             x:50,y:20,
@@ -31,10 +26,7 @@ const addAnimations = (commentCardRef) => {
                 trigger: commentCardRef.current[i],
                 toggleActions: "restart none reverse none",
                 start: "top 90%",
-                end: "top 80%",
-                // markers: true,
-                // scrub:1,
-
+                end: "top 80%"
             }
         })
     }
@@ -46,10 +38,8 @@ const SinglePost = () => {
     const [singlePostData, setSinglePostData] = useState<any>([]);
     const [PostUserInfo, setPostUserInfo] = useState<any>();
     const [isDataFetched, setIsDataFetched] = useState(false)
-
     const [accessToken, setAccessToken] = useState<any>()
     const [refreshToken, setRefreshToken] = useState<any>()
-    
     const [userData, setUserData] = useState<any>()
     const [newComment, setNewComment] = useState<any>(null)
 
@@ -57,11 +47,7 @@ const SinglePost = () => {
     
     const router = useRouter();
 
-
-
     useEffect(() => {
-
-
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
         let accessTokenValid = false
@@ -82,7 +68,6 @@ const SinglePost = () => {
     }, []);
 
     useEffect(() => {
-        // console.log('New comment added')
         getSinglePostData()
     }, [newComment])
 
@@ -120,14 +105,8 @@ const SinglePost = () => {
                         }).then(() => {
                             addAnimations(commentCardRef)
                         })
-
-
-
-                        // returnFn()
-                        // setIsDataFetched(true);
                     })
                         .catch(err => {})
-                    // setIsDataFetched(true);
                 }
             }
             else{
@@ -155,16 +134,9 @@ const SinglePost = () => {
         // console.log(postData)
         setSinglePostData(postData);
         setPostUserInfo(postData.user);
-        // gsap.from(".full-page", {y:10,duration: 0.5, opacity: 0.5, ease: "power3.out"})
-
         // console.log('Setting is Data Fetched to true in getSinglePostData')
         setIsDataFetched(true);
-        // gsap.from(".post-content", {
-        //     y:-30, x:-30, duration:0.5,
-        // })
-        // gsap.from(".comment-cards", {
-        //     y:30, x:30,duration:0.5
-        // })
+
     }
 
     if (accessToken!=null) {
