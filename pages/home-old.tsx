@@ -1,5 +1,7 @@
 import TopBar from "../components/TopBar";
 import { useState, useEffect, useRef } from 'react';
+
+import useScrollRestoration from "../components/useScrollRestoration";
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
@@ -11,31 +13,32 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
 import { gsap } from "gsap";
-import {Simulate} from "react-dom/test-utils";
-import seeked = Simulate.seeked;
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(ScrollToPlugin);
-
+// let redirectToHomePage = () => {
+//     const router = useRouter()
+//     return router.push('/')
+//   };
 
 let oldCardsCount = 0
 
 const scrollToCard = () => {
     const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
-    // console.log("Name is ", scrollDiv)
+    console.log("Name is ", scrollDiv)
     gsap.to(window, {scrollTo:`#card-${sessionStorage.getItem('clickedCard')}`})
     sessionStorage.setItem('clickedCard', '')
 }
 
 
 const addAnimations = (cardRef) => {
-    // console.log('In Animations')
+
     let cardsCount = cardRef.current.length
-    // console.log(cardsCount)
-    for (let i = 0; i < cardsCount; i++) {
+    console.log(cardsCount)
+    for (let i = oldCardsCount; i < cardsCount; i++) {
         gsap.to(cardRef.current[i], {
             x: 0, y:70,xPercent:10,scale:0.9,
             scrollTrigger: {
@@ -72,107 +75,161 @@ const addAnimations = (cardRef) => {
     oldCardsCount = cardsCount
 }
 
-const home = ({}) => {
 
 
-    const [canAccess,setCanAccess] = useState(false)
-    const router = useRouter()
+const homeOld = ({session}) => {
 
-    // console.log('=============================HOME=============================')
+    console.log('=============================HOME=============================')
 
     const ref = useRef();
     const cardRef = useRef([]);
-    let accessToken
+
+
+    let [All, setAll] = useState(false)
+    let [Recent, setRecent] = useState(true)
+    let [Most, setMost] = useState(false)
+    let [Top, setTop] = useState(false)
+
+    const [AccessToken, setAccessToken] = useState<any>()
+    const [RefreshToken, setRefreshToken] = useState<any>()
 
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
     const [url,setUrl] = useState<any>(`/api/post/`)
-    const [searchType,setSearchType] = useState('all')
     const [searchString,setSearchString] = useState<string>()
     const [finalSearchString,setFinalSearchString] = useState<string>()
     const [showSearch,setShowSearch] = useState(false)
     const [showSearchResults,setShowSearchResults] = useState(false)
     const [clickedCard,setClickedCard] = useState<any>()
-    const [renderComplete,setRenderComplete] = useState(false)
+    const router = useRouter()
+    useScrollRestoration(router)
     const searchRef = useRef<any>()
-    let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
-    let response
-    let data
-
 
     useEffect(() => {
+        console.log(sessionStorage.getItem('clickedCard'))
+
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
-        let accessToken = null
+        let accessTokenValid = false
+
         if (accessTokenLS == null) {
             console.log('No Access Token')
             router.push('/')
         }
-        else {
-            if (isAccessTokenValid(accessTokenLS, refreshTokenLS)) {
-                accessToken = localStorage.getItem('access_token')
-                let currentTab = sessionStorage.getItem('clickedTab')
-                if (sessionStorage.getItem('searchClicked') == 'true') {
-                    setFinalSearchString(sessionStorage.getItem('searchString'))
-                    console.log("search string is ", searchString)
-                    setShowSearch(!showSearch)
-                    setUrl(`/api/post/search/`)
-                    setSearchType(sessionStorage.getItem('searchType'))
-                    sessionStorage.setItem('searchType', 'all')
-                    setShowSearchResults(true)
-                    setCanAccess(true)
-                    console.log("all set")
-                    setIsDataFetched(true)
-                    addAnimations(cardRef)
-                    scrollToCard()
-
-                } else {
-                    getAllPosts('recent').then(res => {
+        else{
+            setAccessToken(accessTokenLS)
+            setRefreshToken(refreshTokenLS)
+            if(isAccessTokenValid(accessTokenLS, refreshTokenLS)){
+                accessTokenValid = true
+                setAccessToken(localStorage.getItem('access_token'))
+            }
+            if (accessTokenValid) {
+                getAllPosts()
+                    .then(res => {
                         addAnimations(cardRef)
                         scrollToCard()
-                        sessionStorage.setItem('clickedTab', 'recent')
                     })
-                        .catch(err => {
-                        })
-                    setShowSearchResults(false)
-                    setShowSearch(false)
-                    setCanAccess(true)
+                    .catch(err => {}) ;
 
-                }
             }
-            else {
-                console.log('No Access Token')
+            else{
                 router.push('/')
             }
         }
-
-        setRenderComplete(true)
-
     }, []);
 
-    useEffect(() => {
-        if (renderComplete) {
-            let searchBox = document.getElementById("Search") as HTMLInputElement
-            searchBox.value = sessionStorage.getItem('searchString')
-            // // addAnimations(cardRef)
-            // // scrollToCard()
-        }
-    }, [renderComplete])
-
-
     let getAllPosts = async (option=null) => {
-        // console.log('GET ALL POST')
-        // console.log(option)
-        console.log('getting posts')
-        response = await fetch(postUrl);
-        data = await response.json();
-        setPosts(data);
-        setIsDataFetched(true);
-        setUrl('/api/post/')
-
+        console.log('GET ALL POST')
+        console.log(option)
+        switch(option){
+            case "All":
+                console.log('========================INSIDE GETALL POST ALL===========================')
+                let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                let response = await fetch(postUrl);
+                let data = await response.json();
+                setPosts(data);
+                setIsDataFetched(true);
+                break;
+            case "Recent":
+                console.log('========================INSIDE GETALL POST RECENT===========================')
+                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                response = await fetch(postUrl);
+                data = await response.json();
+                setPosts(data);
+                setIsDataFetched(true);
+                setUrl('/api/post/')
+                break;
+            case "Most":
+                console.log('========================INSIDE GETALL POST MOST===========================')
+                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/mostliked/`;
+                response = await fetch(postUrl);
+                data = await response.json();
+                setPosts(data);
+                setIsDataFetched(true);
+                setUrl('/api/post/mostliked/')
+                break;
+            case "Top":
+                console.log('========================INSIDE GETALL POST TOP===========================')
+                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/mostcommented/`;
+                response = await fetch(postUrl);
+                data = await response.json();
+                setPosts(data);
+                setIsDataFetched(true);
+                setUrl('/api/post/mostcommented/')
+                break;
+            default:
+                console.log('========================INSIDE GETALL POST===========================')
+                postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+                response = await fetch(postUrl);
+                data = await response.json();
+                setPosts(data);
+                setIsDataFetched(true);
+                break;
+        }
     }
 
+    let setAllFalse = () =>{
+        setAll(false);
+        setRecent(false);
+        setMost(false);
+        setTop(false);
+    }
 
+    let pageSelected = (pageName) => {
+        switch (pageName) {
+            case "All":
+                setAllFalse();
+                setAll(true);
+                getAllPosts('All')
+                setShowSearchResults(false)
+                setShowSearch(false)
+                break;
+            case "Recent":
+                setAllFalse();
+                setRecent(true);
+                getAllPosts('Recent')
+                setShowSearchResults(false)
+                setShowSearch(false)
+                break;
+            case "Most":
+                setAllFalse();
+                setMost(true);
+                getAllPosts('Most')
+                setShowSearchResults(false)
+                setShowSearch(false)
+                break;
+            case "Top":
+                setAllFalse();
+                setTop(true);
+                getAllPosts('Top')
+                setShowSearchResults(false)
+                setShowSearch(false)
+                break;
+
+            default:
+                break;
+        }
+    }
 
     let showSearchFn = () => {
         setShowSearch(!showSearch)
@@ -182,10 +239,7 @@ const home = ({}) => {
     let clearSearchFn= () => {
         setShowSearch(!showSearch)
         searchRef.current.value=''
-        setUrl(`/api/post/`)
-        setShowSearchResults(false)
-        sessionStorage.setItem('searchClicked','false')
-        sessionStorage.setItem('searchString','')
+        pageSelected("Recent")
     }
 
     let searchKeyHandler = (e) => {
@@ -199,34 +253,8 @@ const home = ({}) => {
             setFinalSearchString(searchString)
             setUrl(`/api/post/search/`)
             setShowSearchResults(true)
-            sessionStorage.setItem('searchClicked','true')
-            sessionStorage.setItem('searchString',searchString)
-            setSearchType('all')
-
         }
     }
-
-    let loadRecentPage = () =>{
-        sessionStorage.setItem('searchClicked','false')
-        sessionStorage.setItem('searchString','')
-        sessionStorage.setItem('clickedTab','recent')
-        router.push('/home-recent/')
-    }
-
-    let loadLikesPage = () =>{
-        sessionStorage.setItem('searchClicked','false')
-        sessionStorage.setItem('searchString','')
-        sessionStorage.setItem('clickedTab','likes')
-        router.push('/home-likes/')
-    }
-
-    let loadCommentsPage = () =>{
-        sessionStorage.setItem('searchClicked','false')
-        sessionStorage.setItem('searchString','')
-        sessionStorage.setItem('clickedTab','comments')
-        router.push('/home-comments/')
-    }
-
     let searchStringOnChange=(tempSearchString)=>{
         console.log("Inside On change");
         console.log(tempSearchString);
@@ -240,10 +268,14 @@ const home = ({}) => {
             setSearchString(tempSearchString)
         }
     }
-
-    let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString,searchType)
+    let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString)
     let PaginatedPosts = PaginatedData?.flat()
-    if (canAccess) {
+
+    useEffect(() => {
+        addAnimations(cardRef)
+    }, [PaginatedData]);
+
+    if (AccessToken!=null) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (
             <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
@@ -253,7 +285,7 @@ const home = ({}) => {
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
                     <div className={`flex justify-left items-center mx-6 bg-white rounded-full mb-4 h-10 w-${showSearch?100:10} `}>
                         <button onClick={showSearchFn} className="pl-2 no-highlights"> <Search className=" mr-4"/> </button>
-                        <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-transparent ${showSearch?null:'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler} />
+                        <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-transparent ${showSearch?null:'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler}/>
 
                     </div>
                     <div className={`flex justify-around mx-10 top-24 ${showSearch?null:'hidden'}`}>
@@ -261,21 +293,18 @@ const home = ({}) => {
                     </div>
                     <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
                         {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
-                        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights text-sm" onClick={loadRecentPage}>Recent</button>
-                        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadLikesPage}>By likes</button>
-                        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadCommentsPage}>By comments</button>
-
-
-
+                        <button className={Recent?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("Recent")}>Recent</button>
+                        <button className={Most?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("Most")}>Most</button>
+                        <button className={Top?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights"} onClick={() => pageSelected("Top")}>Top</button>
                     </div>
-
-                    {/*{console.log(posts)}*/}
+                    {finalSearchString?null:<p className="mx-8 my-2">Today</p>}
+                    {console.log(posts)}
                     {isDataFetched?
                         <div className="">
                             <div className={`flex flex-wrap justify-around items-center mx-10 mt-5 ${showSearchResults?null:'hidden'}`}>Showing Search results for '{finalSearchString}'</div>
                             <InfiniteScroll dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
-                                {/*{console.log(reachedEnd)}*/}
-                                {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id /*+ sessionStorage.getItem('clickedTab')*/} accessToken = {accessToken} postid = {post.id} userid={post.user.id} setClickedCard = {setClickedCard} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
+                                {console.log(reachedEnd)}
+                                {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id} accessToken = {AccessToken} postid = {post.id} userid={post.user.id} setClickedCard = {setClickedCard} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
                             </InfiniteScroll>
                         </div>
                         :
@@ -299,4 +328,4 @@ const home = ({}) => {
     }
 }
 
-export default home;
+export default homeOld;

@@ -205,7 +205,7 @@ const home = ({}) => {
         sessionStorage.setItem('searchClicked','false')
         sessionStorage.setItem('searchString','')
         sessionStorage.setItem('clickedTab','recent')
-        router.push('/home-recent/')
+        router.push('/home/')
     }
 
     let loadLikesPage = () =>{
