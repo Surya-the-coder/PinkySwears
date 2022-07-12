@@ -11,8 +11,8 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
 import { gsap } from "gsap";
-import {Simulate} from "react-dom/test-utils";
-import seeked = Simulate.seeked;
+// import {Simulate} from "react-dom/test-utils";
+// import seeked = Simulate.seeked;
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 

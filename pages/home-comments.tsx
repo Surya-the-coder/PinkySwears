@@ -11,8 +11,8 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Search from '../assets/images/Search.svg';
 import { gsap } from "gsap";
-import {Simulate} from "react-dom/test-utils";
-import seeked = Simulate.seeked;
+// import {Simulate} from "react-dom/test-utils";
+// import seeked = Simulate.seeked;
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
@@ -32,7 +32,7 @@ const scrollToCard = () => {
 
 
 const addAnimations = (cardRef) => {
-    console.log('In Animations')
+    // console.log('In Animations')
     let cardsCount = cardRef.current.length
     // console.log(cardsCount)
     for (let i = 0; i < cardsCount; i++) {
@@ -86,6 +86,7 @@ const home = ({}) => {
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
     const [url,setUrl] = useState<any>(`/api/post/mostcommented/`)
+    const [searchType,setSearchType] = useState('all')
     const [searchString,setSearchString] = useState<string>()
     const [finalSearchString,setFinalSearchString] = useState<string>()
     const [showSearch,setShowSearch] = useState(false)
@@ -115,6 +116,8 @@ const home = ({}) => {
                     console.log("search string is ", searchString)
                     setShowSearch(!showSearch)
                     setUrl(`/api/post/search/`)
+                    setSearchType(sessionStorage.getItem('searchType'))
+                    sessionStorage.setItem('searchType', 'all')
                     setShowSearchResults(true)
                     setCanAccess(true)
                     console.log("all set")
@@ -197,6 +200,7 @@ const home = ({}) => {
             setShowSearchResults(true)
             sessionStorage.setItem('searchClicked','true')
             sessionStorage.setItem('searchString',searchString)
+            setSearchType('all')
 
         }
     }
@@ -236,7 +240,7 @@ const home = ({}) => {
         }
     }
 
-    let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString)
+    let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString,searchType)
     let PaginatedPosts = PaginatedData?.flat()
     if (canAccess) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
