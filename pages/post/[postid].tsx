@@ -1,6 +1,6 @@
 import dateFormat from 'dateformat';
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { getSession } from "next-auth/react";
 import NavBar from "../../components/NavBar";
 import TopBar from "../../components/TopBar";
@@ -11,10 +11,35 @@ import SinglePostCard from "../../components/SinglePostCard";
 import CommentCard from '../../components/CommentCard';
 import { isAccessTokenValid } from '../../components/CommonFunctions'
 import { gsap } from "gsap";
+const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
+const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
+
+gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollToPlugin);
+
+
+
+const addAnimations = (commentCardRef) => {
+    console.log('In Animations')
+    let cardsCount = commentCardRef.current.length
+    // console.log(cardsCount)
+    for (let i = 5; i < cardsCount; i++) {
+        gsap.from(commentCardRef.current[i], {
+            x: 0,y:20,
+            scrollTrigger: {
+                trigger: commentCardRef.current[i],
+                toggleActions: "restart none reverse reset",
+                start: "top 80%",
+                end: "top 70%",
+                scrub:1,
+            }
+        })
+    }
+}
 const SinglePost = () => {
 
-
+    const commentCardRef = useRef([]);
     
     const [singlePostData, setSinglePostData] = useState<any>([]);
     const [PostUserInfo, setPostUserInfo] = useState<any>();
@@ -90,7 +115,11 @@ const SinglePost = () => {
                         })
                         gsap.from(".comment-cards", {
                             y:30, duration:0.5,ease:"bounce.out"
+                        }).then(() => {
+                            // addAnimations(commentCardRef)
                         })
+
+
                         // returnFn()
                         // setIsDataFetched(true);
                     })
@@ -155,7 +184,7 @@ const SinglePost = () => {
                 {isDataFetched?
                     <div className="single-card">
                         <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} />
-                        {singlePostData.comments.map( (comment) => <CommentCard accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>)}
+                        {singlePostData.comments.map( (comment,i) => <CommentCard ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>)}
                         {
                             // typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
                         }

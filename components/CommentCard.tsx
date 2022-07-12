@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react'
 import Love from '../assets/images/Love.svg'
 import LovePink from '../assets/images/LovePink.svg'
 import { profilePicLoader } from './CommonFunctions'
+import {forwardRef, PropsWithChildren} from "react";
 
-const CommentCard = (props) => {
+const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
 
     const [commentIsLiked, setCommentIsLiked] = useState(props.isLiked)
     const [commentLikes, setCommentLikes] = useState(props.commentLikes)
@@ -37,7 +38,7 @@ const CommentCard = (props) => {
     }
     
     return (
-        <div className="flex items-center mx-10 my-2 w-80 comment-cards">
+        <div className="flex items-center mx-10 my-2 w-80 comment-cards" ref={ref}>
             <div className=''>
                 <Image loading='lazy' loader={profilePicLoader} src={props.commentUserProfilePic} alt="" width={48} height={48} className="w-8 h-8 rounded-full" />
             </div>
@@ -56,6 +57,6 @@ const CommentCard = (props) => {
         </div>
         // <div>check</div>
     );
-}
+})
 
 export default CommentCard;
