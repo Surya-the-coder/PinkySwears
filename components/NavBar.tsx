@@ -23,7 +23,7 @@ const NavBar = (props) => {
 	const ref = useRef();
 
 	return (
-		<div className="fixed flex items-center bottom-0 my-3 w-full max-w-md rounded-2xl bg-white py-6 shadow-navbar z-[100] h-[11vh]">
+		<div className="fixed flex items-center bottom-0 my-0 w-full max-w-md rounded-2xl bg-white py-0 shadow-navbar z-[100] h-[11vh]">
 			<nav className='flex items-center w-full'>
 				<ul className="flex w-full justify-around items-center">
 					<li className="">

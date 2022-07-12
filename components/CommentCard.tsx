@@ -38,7 +38,7 @@ const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
     }
     
     return (
-        <div className="flex items-center mx-10 my-2 w-80 comment-cards" ref={ref}>
+        <div id={props.id} className="flex items-center mx-10 my-2 w-80 comment-cards" ref={ref}>
             <div className=''>
                 <Image loading='lazy' loader={profilePicLoader} src={props.commentUserProfilePic} alt="" width={48} height={48} className="w-8 h-8 rounded-full" />
             </div>

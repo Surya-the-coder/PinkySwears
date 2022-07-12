@@ -54,6 +54,7 @@ const addAnimations = (cardRef) => {
                 start: "top 80%",
                 end: "top 70%",
                 scrub:1,
+
             }
         })
         //test - code below.

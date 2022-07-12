@@ -24,15 +24,17 @@ const addAnimations = (commentCardRef) => {
     console.log('In Animations')
     let cardsCount = commentCardRef.current.length
     // console.log(cardsCount)
-    for (let i = 5; i < cardsCount; i++) {
+    for (let i = 6; i < cardsCount; i++) {
         gsap.from(commentCardRef.current[i], {
-            x: 0,y:20,
+            x:50,y:20,
             scrollTrigger: {
                 trigger: commentCardRef.current[i],
                 toggleActions: "restart none reverse reset",
-                start: "top 80%",
-                end: "top 70%",
-                scrub:1,
+                start: "top 90%",
+                end: "top 80%",
+                // markers: true,
+                // scrub:1,
+
             }
         })
     }
@@ -116,8 +118,9 @@ const SinglePost = () => {
                         gsap.from(".comment-cards", {
                             y:30, duration:0.5,ease:"bounce.out"
                         }).then(() => {
-                            // addAnimations(commentCardRef)
+                            addAnimations(commentCardRef)
                         })
+
 
 
                         // returnFn()
@@ -168,7 +171,8 @@ const SinglePost = () => {
         return (
             <div className="full-page flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
             <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
-            <div className="pb-8 overflow-y-auto overflow-hidden h-[92vh] z-50  w-full max-w-md">
+            {/*<div className="pb-8 overflow-y-visible overflow-visible h-[92vh] z-50  w-full max-w-md">*/}
+            <div className="pb-20 overflow-y-visible overflow-x-hidden z-50  w-full max-w-md">
                 <meta name='theme-color' content='#FFBCD1' />
                 <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {userData.profileImg}/>
                 {/* <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
@@ -184,7 +188,7 @@ const SinglePost = () => {
                 {isDataFetched?
                     <div className="single-card">
                         <SinglePostCard postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} />
-                        {singlePostData.comments.map( (comment,i) => <CommentCard ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>)}
+                        {singlePostData.comments.map( (comment,i) => <CommentCard id={`commentCard${i}`} ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>)}
                         {
                             // typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
                         }
