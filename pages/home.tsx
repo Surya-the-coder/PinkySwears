@@ -158,8 +158,8 @@ const home = ({}) => {
         if (renderComplete) {
             let searchBox = document.getElementById("Search") as HTMLInputElement
             searchBox.value = sessionStorage.getItem('searchString')
-            // // addAnimations(cardRef)
-            // // scrollToCard()
+            addAnimations(cardRef)
+            scrollToCard()
         }
     }, [renderComplete])
 
