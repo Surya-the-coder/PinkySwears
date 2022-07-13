@@ -55,7 +55,7 @@ const userinterest = ({session}) => {
 	const[followerInfo,setFollowerInfo]=useState([])
     const[postsInfo,setPostsInfo]=useState([])
     let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/user/`;
-    
+
     const router = useRouter()
 
     useEffect(() => {
@@ -76,7 +76,6 @@ const userinterest = ({session}) => {
 			console.log(userLS) 
             getPostsCreatedByUser(userLS).then(res => {scrollToCard()})
             callCommonFunctions(userLS.id)
-            setUrl(`/api/post/user/${userLS.id}/`)
             if(isAccessTokenValid(accessTokenLS, refreshTokenLS)){
                 accessTokenValid = true
                 setAccessToken(localStorage.getItem('access_token'))
@@ -85,7 +84,7 @@ const userinterest = ({session}) => {
                 router.push('/')
             }
         }
-
+    // console.log(PaginatedData)
 
     }, []);
         let callCommonFunctions =async(userLS)=>
@@ -98,12 +97,12 @@ const userinterest = ({session}) => {
         }
     let getPostsCreatedByUser = async(userLS) =>
     {
-        // let getPostsCreatedByUserURL  = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/user/${userLS.id}/`;
-        let response = await fetch(postUrl + `${userLS.id}/`);
+        let response = await fetch(postUrl + `${userLS.id}/?limit=10&offset=0`);
         let postinfo = await response.json()  
 		console.log(postinfo)      
 		setPostsInfo(postinfo);
 		setIsDataFetched(true)
+        setUrl(`/api/post/user/${userLS.id}/`)
     }
 	
     let setAllFalse = () =>{
@@ -142,10 +141,10 @@ const userinterest = ({session}) => {
 
     if (AccessToken!=null) {
         return (
-            <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
+            <div  className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
                 {/*<div className="mb-6 overflow-y-auto overflow-hidden h-[95vh] z-50  w-full max-w-md">*/}
-                    <div className="mb-6 overflow-y-auto overflow-hidden z-50  w-full max-w-md">
+                    <div id="temp" className="mb-6 overflow-y-auto overflow-hidden z-50  w-full max-w-md">
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
                     <div className="flex justify-around mx-5 top-24">
