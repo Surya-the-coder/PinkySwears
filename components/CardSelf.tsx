@@ -42,8 +42,9 @@ const CardSelf = forwardRef((props:PropsWithChildren<any>,ref:any) => {
                      className='flex mx-5 my-5 mb-5 bg-white py-2 px-5 rounded-3xl shadow-card cursor-pointer' ref={ref}
                      onClick={cardClickedFn}>
                     <div className=' pt-0 pl-2'>
-                        <div className='flex my-2 text-xs text-blue-500'>Created new post</div>
-                        <p className='text-xs text-purple-500 font-Sarabun'>{props.createdData}</p>
+                            <div className='flex my-2 text-xs text-blue-500'>Created post on - <span className='text-xs text-purple-500 font-Sarabun'>&nbsp; {props.createdData}</span></div>
+
+                        {/*<p className='text-xs text-purple-500 font-Sarabun'>{props.createdData}</p>*/}
                         <p className='text-sm text-gray-500 mt-2'>{props.content}</p>
                         <div className='mt-3 flex items-center'>
                             <Love/>
