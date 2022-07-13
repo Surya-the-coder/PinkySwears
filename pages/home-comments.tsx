@@ -21,8 +21,11 @@ gsap.registerPlugin(ScrollToPlugin);
 let oldCardsCount = 0
 
 const scrollToCard = () => {
+    console.log('Scrolling to card')
     const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
-    gsap.to(window, {scrollTo:`#card-${sessionStorage.getItem('clickedCard')}`})
+    gsap.to(window, {scrollTo:scrollDiv}).then(()=>{
+        gsap.from(scrollDiv, {duration: 1, backgroundColor:"yellow" })
+    })
     sessionStorage.setItem('clickedCard', '')
 }
 

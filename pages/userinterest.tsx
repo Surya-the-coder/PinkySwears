@@ -14,6 +14,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import LoadingSpinner from "../components/LoadingSpinner";
 import CardSelf from "../components/CardSelf";
 import { gsap } from "gsap";
+import {yellow} from "@mui/material/colors";
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
@@ -29,9 +30,12 @@ const scrollToCard = () => {
     let cardId = sessionStorage.getItem("userClickedCard")
     let clickedTab = sessionStorage.getItem("userClickedTab")
     if(cardId!=null && clickedTab == "Activity"){
-        gsap.to(window, {scrollTo: "#card-"+cardId})
+        gsap.to(window, {scrollTo: "#card-"+cardId}).then(()=>{
+            gsap.from("#card-"+cardId, {duration: 1, backgroundColor:"yellow" })
+        })
             sessionStorage.setItem('userClickedCard', '')
     }
+
 }
 
 const userinterest = ({session}) => {
