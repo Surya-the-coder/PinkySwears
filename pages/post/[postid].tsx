@@ -24,10 +24,9 @@ const addAnimations = (commentCardRef) => {
             x:50,y:20,
             scrollTrigger: {
                 trigger: commentCardRef.current[i],
-                toggleActions: "restart none reverse none",
+                toggleActions: "restart none none reset",
                 start: "top bottom",
                 end: "top 90%",
-                // end: "top 80%"
             }
         })
     }
