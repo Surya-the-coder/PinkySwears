@@ -1,5 +1,5 @@
 import TopBar from "../components/TopBar";
-import {useState, useEffect, useRef, PropsWithChildren} from 'react';
+import React, {useState, useEffect, useRef, PropsWithChildren} from 'react';
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
@@ -220,8 +220,11 @@ const homecomments = (props:PropsWithChildren<any>) => {
     if (canAccess) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (
-            <>
-                    <meta name='theme-color' content='#FFBCD1' />
+            <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
+                <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
+                <div className="pb-5 overflow-y-auto overflow-hidden z-50 mb-[10vh] w-full max-w-md ">
+
+                <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
                     <div className={`flex justify-left items-center mx-6 bg-white rounded-full mb-4 h-10 w-${showSearch?100:10} `}>
                         <button onClick={showSearchFn} className="pl-2 no-highlights"> <Search className=" mr-4"/> </button>
@@ -261,7 +264,9 @@ const homecomments = (props:PropsWithChildren<any>) => {
                     {/* <div className="flex justify-center items-center mb-10">
                         <button onClick={()=>setSize(size+1)}>Load More...</button>
                     </div> */}
-            </>
+                </div>
+                <NavBar page = {"Home"}/>
+            </div>
 
         );
     }

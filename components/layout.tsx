@@ -12,6 +12,7 @@ export default function Layout ({ children }: LayoutProps) {
           <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
           <div className="pb-5 overflow-y-auto overflow-hidden z-50 mb-[10vh] w-full max-w-md ">
               {children}
+
           </div>
           <NavBar page = {"Home"}/>
       </div>
