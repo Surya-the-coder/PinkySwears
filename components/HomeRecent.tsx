@@ -22,13 +22,14 @@ gsap.registerPlugin(ScrollToPlugin);
 let oldCardsCount = 0
 
 const scrollToCard = () => {
+    if (sessionStorage.currentPage === "HomeRecent")
+    {
     console.log('Scrolling to card')
     const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
     gsap.to(window, {scrollTo:scrollDiv}).then(()=>{
         gsap.from(scrollDiv, {duration: 1, backgroundColor:"yellow" })
     })
-    if (sessionStorage.currentPage === "HomeRecent")
-    {
+
         sessionStorage.setItem('clickedCard', '')
     }
     // sessionStorage.setItem('clickedCard', '')
