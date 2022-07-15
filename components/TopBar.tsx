@@ -13,7 +13,7 @@ const TopBar = (props) => {
   return (
     <div className="flex pt-5 pb-4 justify-between items-center z-[100] px-5">
       <div className="flex justify-center items-center">
-          {/*{props.backButton?<Link href='/home'><BackButton className="mx-3"></BackButton></Link>:null}*/}
+          {props.backButton?<Link href='/home'><BackButton className="mx-3"></BackButton></Link>:null}
           {props.displayPic?
             <Link href={`/userinfo/${props.userid}`}>
               <Image loader={profilePicLoader} src={`${props.loggedInUserProfilePic}`} width={64} height={64} className = "rounded-full w-16 h-16"/>

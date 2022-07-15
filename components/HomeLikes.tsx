@@ -1,5 +1,5 @@
 import TopBar from "../components/TopBar";
-import { useState, useEffect, useRef } from 'react';
+import {useState, useEffect, useRef, PropsWithChildren} from 'react';
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
@@ -14,7 +14,6 @@ import { gsap } from "gsap";
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
-
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -27,7 +26,11 @@ const scrollToCard = () => {
     gsap.to(window, {scrollTo:scrollDiv}).then(()=>{
         gsap.from(scrollDiv, {duration: 1, backgroundColor:"yellow" })
     })
-    sessionStorage.setItem('clickedCard', '')
+    if (sessionStorage.currentPage === "HomeLikes")
+    {
+        sessionStorage.setItem('clickedCard', '')
+    }
+    // sessionStorage.setItem('clickedCard', '')
 }
 
 
@@ -35,7 +38,7 @@ const addAnimations = (cardRef) => {
     let cardsCount = cardRef.current.length
     for (let i = 0; i < cardsCount; i++) {
         gsap.to(cardRef.current[i], {
-            x: 0, y:70,xPercent:10,
+            x: 0, y:70,xPercent:10,scale:0.9,
             scrollTrigger: {
                 trigger: cardRef.current[i],
                 toggleActions: "play pause reverse reset",
@@ -48,18 +51,19 @@ const addAnimations = (cardRef) => {
     oldCardsCount = cardsCount
 }
 
-const home = ({}) => {
+const homelikes = (props:PropsWithChildren<any>) => {
 
     const [canAccess,setCanAccess] = useState(false)
     const router = useRouter()
+
     // console.log('=============================HOME=============================')
+
     const ref = useRef();
     const cardRef = useRef([]);
     let accessToken
-
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [posts, setPosts] = useState([])
-    const [url,setUrl] = useState<any>(`/api/post/`)
+    const [url,setUrl] = useState<any>(`/api/post/mostliked/`)
     const [searchType,setSearchType] = useState('all')
     const [searchString,setSearchString] = useState<string>()
     const [finalSearchString,setFinalSearchString] = useState<string>()
@@ -68,7 +72,7 @@ const home = ({}) => {
     const [clickedCard,setClickedCard] = useState<any>()
     const [renderComplete,setRenderComplete] = useState(false)
     const searchRef = useRef<any>()
-    let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+    let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/mostliked/`;
     let response
     let data
 
@@ -99,18 +103,15 @@ const home = ({}) => {
                     addAnimations(cardRef)
                     scrollToCard()
 
-                } else {
-                    getAllPosts('recent').then(res => {
+                }
+                else {
+                    getAllPosts().then(res => {
                         addAnimations(cardRef)
                         scrollToCard()
-                        sessionStorage.setItem('clickedTab', 'recent')
                     })
-                        .catch(err => {
-                        })
                     setShowSearchResults(false)
                     setShowSearch(false)
                     setCanAccess(true)
-
                 }
             }
             else {
@@ -122,8 +123,6 @@ const home = ({}) => {
         setRenderComplete(true)
 
     }, []);
-
-
 
     useEffect(() => {
         if (renderComplete) {
@@ -141,7 +140,7 @@ const home = ({}) => {
         data = await response.json();
         setPosts(data);
         setIsDataFetched(true);
-        setUrl('/api/post/')
+        setUrl('/api/post/mostliked/')
     }
 
 
@@ -154,7 +153,7 @@ const home = ({}) => {
     let clearSearchFn= () => {
         setShowSearch(!showSearch)
         searchRef.current.value=''
-        setUrl(`/api/post/`)
+        setUrl(`/api/post/mostliked/`)
         setShowSearchResults(false)
         sessionStorage.setItem('searchClicked','false')
         sessionStorage.setItem('searchString','')
@@ -174,28 +173,29 @@ const home = ({}) => {
             sessionStorage.setItem('searchClicked','true')
             sessionStorage.setItem('searchString',searchString)
             setSearchType('all')
+
         }
     }
 
     let loadRecentPage = () =>{
         sessionStorage.setItem('searchClicked','false')
         sessionStorage.setItem('searchString','')
-        sessionStorage.setItem('clickedTab','recent')
-        router.push('/home/')
+        sessionStorage.setItem('currentPage','HomeRecent')
+        props.setCurrentPage('HomeRecent')
     }
 
     let loadLikesPage = () =>{
         sessionStorage.setItem('searchClicked','false')
         sessionStorage.setItem('searchString','')
-        sessionStorage.setItem('clickedTab','likes')
-        router.push('/home-likes/')
+        sessionStorage.setItem('currentPage','HomeLikes')
+        props.setCurrentPage('HomeLikes')
     }
 
     let loadCommentsPage = () =>{
         sessionStorage.setItem('searchClicked','false')
         sessionStorage.setItem('searchString','')
-        sessionStorage.setItem('clickedTab','comments')
-        router.push('/home-comments/')
+        sessionStorage.setItem('currentPage','HomeComments')
+        props.setCurrentPage('HomeComments')
     }
 
     let searchStringOnChange=(tempSearchString)=>{
@@ -204,7 +204,7 @@ const home = ({}) => {
         if(tempSearchString==""){
             setFinalSearchString(null)
             setSearchString(null)
-            url==='/api/post/'?null:setUrl(`/api/post/`)
+            url==='/api/post/mostliked/'?null:setUrl(`/api/post/mostliked/`)
         }
         else
         {
@@ -222,9 +222,7 @@ const home = ({}) => {
     if (canAccess) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (
-            <div className="flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
-                <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
-                <div className="pb-5 overflow-y-auto overflow-hidden z-50 mb-[10vh] w-full max-w-md ">
+            <>
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
                     <div className={`flex justify-left items-center mx-6 bg-white rounded-full mb-4 h-10 w-${showSearch?100:10} `}>
@@ -237,8 +235,8 @@ const home = ({}) => {
                     </div>
                     <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
                         {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
-                        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights text-sm" onClick={loadRecentPage}>Recent</button>
-                        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadLikesPage}>By likes</button>
+                        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadRecentPage}>Recent</button>
+                        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights text-sm" onClick={loadLikesPage}>By likes</button>
                         <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadCommentsPage}>By comments</button>
 
 
@@ -265,9 +263,7 @@ const home = ({}) => {
                     {/* <div className="flex justify-center items-center mb-10">
                         <button onClick={()=>setSize(size+1)}>Load More...</button>
                     </div> */}
-                </div>
-                <NavBar page = {"Home"}/>
-            </div>
+            </>
         );
     }
     else{
@@ -275,4 +271,4 @@ const home = ({}) => {
     }
 }
 
-export default home;
+export default homelikes;
