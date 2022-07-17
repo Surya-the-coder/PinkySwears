@@ -79,7 +79,7 @@ const home = ({}) => {
     return (
         <>
         {isHomeRecent?
-                <HomeRecent setCurrentPage = {setCurrentPage}/>:null
+            <HomeRecent setCurrentPage = {setCurrentPage}/>:null
         }
         {isHomeLikes?
             <HomeLikes setCurrentPage = {setCurrentPage}/>:null
@@ -88,8 +88,6 @@ const home = ({}) => {
             <HomeComments setCurrentPage = {setCurrentPage}/>:null
         }
         </>
-
-
     )
 }
 
