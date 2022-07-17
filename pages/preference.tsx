@@ -140,21 +140,24 @@ const preference = () => {
                 {console.log(process.env.NEXT_PUBLIC_BACKEND_BASE_URL+user.profileImg)}
 			    <div className="flex flex-col w-full max-w-md z-50">
                     <div className='flex flex-col items-center w-full max-w-md pb-5 h-[91vh] overflow-y-auto px-2 '>
-                        <div className='pt-4 flex flex-col justify-center items-center'>
+                        <div className='pt-2 flex justify-center items-center'>
                             <input type="file" name="profilePic" id="profilePic" className="hidden" ref={inputFileRef} onChange={(e) => {updateProfilePic(e)}}/>
                             <button className="rounded-full w-16 h-16" onClick={() => inputFileRef.current.click()}>
                                 <Image loader={profilePicLoader} src={`${user.profileImg}`} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
                             </button>
-        	            	<h4 className='mx-2 mt-4 text-[#A268AC] font-[Sarabun-SemiBold] font-semibold text-'>{user.username}</h4>       
+                            <div className="flex flex-col">
+                                <h4 className='mx-4 text-[#A268AC] font-[Sarabun-SemiBold] font-semibold mt-2'>Username</h4>
+                                <h4 className='mx-4 text-[#6E6E6E] font-[Sarabun-SemiBold] font-semibold '>{user.username}</h4>
+                            </div>
 			            </div>
                         {/* <AccountDetailsTopBar profileImg = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+user.profileImg} username = {user.username}/> */}
 			            <form autoComplete='on' className='flex flex-col justify-center w-full' action='' method="POST">
-                            <label className="mt-10 mx-7 text-[#6e6e6e] text-sm font-semibold">First Name</label>
+                            <label className="mt-3 mx-7 text-[#6e6e6e] text-sm font-semibold">First Name</label>
 			            	<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-1  rounded-2xl border h-[56px] mx-3 font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:text-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={user.first_name} placeholder="First Name" autoComplete='on' onChange={(e) => {user.first_name = e.target.value}}/>
                             <label className="mt-3 mx-7 text-[#6e6e6e] text-sm font-semibold">Last Name</label>
 			            	<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-1  rounded-2xl border h-[56px] mx-3 font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:text-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="lastname" id="lastname" defaultValue={user.last_name} placeholder="Last Name" autoComplete='on' onChange={(e) => {user.last_name = e.target.value}}/>
 			            	
-                            <div className='mx-2 mt-4 flex justify-between'>
+                            <div className='mx-2 mt-3 flex justify-between'>
                                 <div className="mx-1">
                                     <label className="mt-3 mx-5 text-[#6e6e6e] text-sm font-semibold">Gender</label>
 			            		    <select className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]' name="gender" id="gender" defaultValue={user.gender} onChange={(e) => {user.gender = e.target.value}} >
@@ -174,7 +177,7 @@ const preference = () => {
                                 </div>
 			            	</div>
 			            	
-                            <label className="mt-4 mx-7 text-[#6e6e6e] text-sm font-semibold">Years in Relationship</label>
+                            <label className="mt-3 mx-7 text-[#6e6e6e] text-sm font-semibold">Years in Relationship</label>
                             <select className='pl-6 mx-3 mt-1 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] h-[56px] '  name="rel" id="rel" placeholder='rel' defaultValue={user.years_in_relationShip} onChange={(e) => {user.years_in_relationShip = e.target.value}}>
 			            		{/* <option value={user.years_in_relationShip} disabled hidden>{user.years_in_relationShip}</option> */}
                           		<option value="1">1</option>
@@ -183,13 +186,13 @@ const preference = () => {
                           		<option value="4">4</option>
           	            	</select>
 			            	
-                            <div className='mt-5 w-full flex justify-center'>
+                            <div className=' w-full flex justify-center'>
 			            		<Link href="/changepassword">
-			            			<button className='mx-3 mt-4 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-full h-[56px] cursor-pointer'>Click here to change password</button>  
+			            			<button className='mx-3 mt-3 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-full h-[53px] cursor-pointer'>Click here to change password</button>  
 			            		</Link>
 			            	</div>
 			            	
-                            <div className='flex mt-10 mb-6 mx-3 justify-between'>
+                            <div className='flex mt-3 mb-6 mx-3 justify-between'>
                                 <div className="flex justify-center">
                                     <GoogleLogout clientId={process.env.NEXT_PUBLIC_GOOGLE_ID} onLogoutSuccess={logout} render={ renderProps => (<button type="button" className="h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl cursor-pointer" onClick={renderProps.onClick} disabled = {renderProps.disabled}> Sign Out </button>)}/>
                                 </div>
