@@ -34,7 +34,7 @@ const Card = forwardRef((props:PropsWithChildren<any>,ref:any) => {
     }
 
   return (
-    <Link href={`/post/${props.postid}`}  >
+    <Link href={`/post/${props.postid}`}>
       <div id={`card-${props.postid}`} className='flex mx-5 my-5 bg-white py-2 px-5 rounded-3xl shadow-card cursor-pointer' ref={ref} onClick={cardClickedFn}>
         <div>
           <Link href={`/userinfo/${props.userid}`}>
@@ -48,20 +48,10 @@ const Card = forwardRef((props:PropsWithChildren<any>,ref:any) => {
           <p className='text-xs text-purple-500 font-Sarabun'>{props.createdData}</p>
           <p className='text-sm text-gray-500 mt-2'>{props.content}</p>
           <div className='mt-3 flex items-center'>
-            {/* <Link href={'#'}> */}
-              {/* <button className='flex items-center text-xs z-50' onClick={likePost}> */}
                 <Love/>
                 <p className='mx-2 text-xs text-gray-400'>{props.numberOfLikes==null?0:props.numberOfLikes}</p>
                 <Reply/>
                 <p className='mx-2 text-xs text-gray-400'>{props.commentsCount>0?props.commentsCount:0}</p>
-              {/* </button> */}
-            {/* </Link> */}
-            {/* <Link href={'#'}>
-              <div className='flex items-center text-xs text-gray-400'>
-                <Reply/>
-                <p className='mx-1'>{props.numberOfLikes>0?props.numberOfLikes:0}</p>
-              </div>
-            </Link> */}
           </div>
         </div>
       </div>

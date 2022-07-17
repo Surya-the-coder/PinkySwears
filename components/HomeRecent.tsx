@@ -146,8 +146,6 @@ const homerecent = (props:PropsWithChildren<any>) => {
         setUrl('/api/post/')
     }
 
-
-
     let showSearchFn = () => {
         setShowSearch(!showSearch)
         searchRef.current.value=''

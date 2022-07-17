@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import TopBar from "../../components/TopBar";
 import AccountCard  from "../../components/AccountCard";
+import Card  from "../../components/Card";
 import dateFormat from 'dateformat';
 import LoadingSpinner from "../../components/LoadingSpinner";
 import {getFollowing,getFollowers} from '../../components/CommonFunctions'
@@ -19,9 +20,9 @@ const userdet = () => {
 	const [isDataFetched, setIsDataFetched] = useState(false)
 	const [isFollowing,setFollow]=useState<any>()
 	const [selfView, setSelfView] = useState(false)
+	const [clickedCard,setClickedCard] = useState<any>()
 	
     useEffect(() => {
-		
 		let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
 		let userID = JSON.parse(localStorage.getItem('UserDetails')).id
@@ -134,7 +135,7 @@ const userdet = () => {
 					<div className="  ml-[40px] mt-[13px] flex flex-col  justify-center">
 						<p className=" font-[Sarabun-Medium] font-semibold text-[#939090] text-sm">@{PostUserInfo.username}</p>
 						<h5 className="font-[Sarabun-Medium] font-semibold text-black text-sm  mt-[3px]">{PostUserInfo.first_name} {PostUserInfo.last_name}</h5>
-						<h6 className=" font-[Sarabun-Medium] font-semibold text-black text-xs mt-[7px]">Programmer, developer, designer...</h6>
+						{/* <h6 className=" font-[Sarabun-Medium] font-semibold text-black text-xs mt-[7px]">Programmer, developer, designer...</h6> */}
 					</div>
 					{selfView?
 						null
@@ -144,7 +145,9 @@ const userdet = () => {
 						</div>
 					}
 					<div className="">
-    	        		{PostsData.map( (post) => <AccountCard numberOfLikesCheck={true} postid = {post.id} userid={post.user.id} username = {post.user.username} profileImage = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+PostUserInfo.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} accessToken={accessToken}/> )}
+    	        		{PostsData.map( (post) => 
+							<Card key={post.id} accessToken = {accessToken} postid = {post.id} userid={post.user.id} setClickedCard = {setClickedCard} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} />
+						)}
     	        	</div>
 				</div>
 				:
