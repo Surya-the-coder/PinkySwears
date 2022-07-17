@@ -40,7 +40,6 @@ const Card = forwardRef((props:PropsWithChildren<any>,ref:any) => {
           <Link href={`/userinfo/${props.userid}`}>
             <div className='w-12 h-12 mt-5 mr-3'>
               <Image loader={profilePicLoader} src={`${props.profileImage}`} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
-              {/* <img src={props.profileImage} className='w-full h-full rounded-full'/> */}
             </div>
           </Link>
         </div>

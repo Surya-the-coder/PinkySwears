@@ -10,6 +10,7 @@ import PinkTrash from '../assets/images/PinkTrash.svg'
 import PinkBlockIcon from '../assets/images/PinkBlockIcon.svg'
 import { profilePicLoader } from './CommonFunctions'
 import {useRouter} from "next/router";
+import Link from 'next/link'
 
 
 
@@ -116,11 +117,15 @@ const SinglePostCard = (props) => {
         <div className="flex flex-col bg-white rounded-2xl mx-5 px-3 py-5 post-content">
             <div className="flex justify-between mx-1">
                 <div className='flex w-full'>
-                    <div className="mr-2 w-14">
-                        <Image loading='lazy' loader={profilePicLoader} src={props.postUserImage} width={48} height={48} className="rounded-full w-12 h-12" alt="PI" />
-                    </div>
+                    <Link href={`/userinfo/${props.userid}`}>
+                        <div className="mr-2 w-14">
+                            <Image loading='lazy' loader={profilePicLoader} src={props.postUserImage} width={48} height={48} className="rounded-full w-12 h-12" alt="PI" />
+                        </div>
+                    </Link>
                     <div className="flex flex-col w-full">
-                        <h1 className='font-Sarabun-Medium text-base tracking-[0.2px] font-medium'>{props.postUserName}</h1>
+                        <Link href={`/userinfo/${props.userid}`}>
+                            <h1 className='font-Sarabun-Medium text-base tracking-[0.2px] font-medium'>{props.postUserName}</h1>
+                        </Link>
                         <h3 className='text-xs text-purple-500 font-Sarabun'>{props.postCreatedDate}</h3>
                         <p className='text-sm text-gray-500 mt-2'>{props.postContent}</p>
                         <hr className={"mt-3"}/>
