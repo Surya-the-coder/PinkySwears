@@ -6,6 +6,8 @@ import LikePink from '../assets/images/LovePink.svg'
 import Share from '../assets/images/Share.svg'
 import Comment from '../assets/images/Reply.svg'
 import ThreeDots from '../assets/images/ThreeDots.svg'
+import PinkTrash from '../assets/images/PinkTrash.svg'
+import PinkBlockIcon from '../assets/images/PinkBlockIcon.svg'
 import { profilePicLoader } from './CommonFunctions'
 import {useRouter} from "next/router";
 
@@ -28,6 +30,8 @@ const SinglePostCard = (props) => {
         // .then(response => response.json())
         // .then((postData) => {console.log(postData); setSinglePostData(postData); setPostUserInfo(postData.user);setIsDataFetched(true)})
         // getSinglePostData()
+        console.log(props);
+        
     }, [])
 
     let likePost =async () => {
@@ -117,9 +121,9 @@ const SinglePostCard = (props) => {
                     </div>
                 </div>
                 <div>
-                    <div className="">
-                        <ThreeDots/>
-                    </div>
+                    <button>
+                        {props.isSameUserPost ? <PinkTrash/> : <PinkBlockIcon/>}
+                    </button>
                 </div>
             </div>
             <div className="flex mt-3 items-center">
