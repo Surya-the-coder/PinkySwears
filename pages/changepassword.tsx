@@ -101,29 +101,29 @@ const changepassword = () => {
 	if (accessToken!=null) {
 		const user = JSON.parse(localStorage.getItem('UserDetails'))
 		return (
-			<div className="flex flex-col justify-center min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] items-center">
+			<div className="flex flex-col justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
 				<Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
 				<Head>
 					<meta name='theme-color' content='#FFBCD1' />
 					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 				</Head>
-				<AccountDetailsTopBar username={user.username}/>
+				<AccountDetailsTopBar username={user.username} profileImg = {user.profileImg}/>
 				{isDataFetched?
-					<div className=" flex flex-col w-full max-w-md">
+					<div className="flex flex-col w-full max-w-md justify-center">
 						<div className='flex justify-center'>
 							<p className=' mt-[40px] items-center text-[#F67A95] font-[Sarabun-Bold] font-bold text-xl'> Change Password</p>
 						</div>
 						<div className='px-5 w-full'>
-							<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-[40px]  rounded-2xl border w-full h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="password" name="password" id="password" autoComplete='on' placeholder="Current Password" onChange={(e) => {setOldPassword(e.target.value)}} />
+							<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-[40px] rounded-2xl border w-full h-[56px] font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="password" name="password" id="password" autoComplete='on' placeholder="Current Password" onChange={(e) => {setOldPassword(e.target.value)}} />
 							{currentPasswordCheck ? (
 									<p className="pt-2 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-red-500"> Current Password field does not match </p>
 								) : null}
 						</div>
 						<div className='px-5 w-full'>
-							<input className={ passwordMismatch?" text-[#FF848E] focus-welcome-field-shadowfocus pl-6 mt-5 rounded-2xl border w-full h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-red-500 focus:outline-none placeholder:text-[#FF848E]":" text-[#FF848E] focus-welcome-field-shadowfocus pl-6 mt-5 rounded-2xl border w-full h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none placeholder:text-[#FF848E]"} type="password" name="password" id="password" placeholder="New Password"  autoComplete='on' onChange={(e) => {setNewPassword(e.target.value)}}/>
+							<input className={ passwordMismatch?" text-[#FF848E] focus-welcome-field-shadowfocus pl-6 mt-5 rounded-2xl border w-full h-[56px] font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-red-500 focus:outline-none placeholder:text-[#FF848E]":" text-[#FF848E] focus-welcome-field-shadowfocus pl-6 mt-5 rounded-2xl border w-full h-[56px] font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none placeholder:text-[#FF848E]"} type="password" name="password" id="password" placeholder="New Password"  autoComplete='on' onChange={(e) => {setNewPassword(e.target.value)}}/>
 						</div>
 						<div className='px-5 w-full'>
-							<input className={ passwordMismatch?" text-[#FF848E] focus-welcome-field-shadowfocus pl-6 mt-5  rounded-2xl border w-full h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-red-500 focus:outline-none placeholder:text-[#FF848E]" :" text-[#FF848E] focus-welcome-field-shadowfocus pl-6 mt-5 w-full rounded-2xl border h-[56px] mx-3 font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none placeholder:text-[#FF848E]"} type="password" name="password" id="password" placeholder="Confirm New Password" autoComplete='on'  onChange={(e) => {setReEnterNewPassword(e.target.value)}}/>						
+							<input className={ passwordMismatch?" text-[#FF848E] focus-welcome-field-shadowfocus pl-6 mt-5  rounded-2xl border w-full h-[56px] font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-red-500 focus:outline-none placeholder:text-[#FF848E]" :" text-[#FF848E] focus-welcome-field-shadowfocus pl-6 mt-5 w-full rounded-2xl border h-[56px] font-[Sarabun-SemiBold] text-xs font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none placeholder:text-[#FF848E]"} type="password" name="password" id="password" placeholder="Confirm New Password" autoComplete='on'  onChange={(e) => {setReEnterNewPassword(e.target.value)}}/>						
 							{passwordMismatch ? ( <p className="pt-1 text-center font-[Sarabun-SemiBold] text-xs font-semibold text-red-500">Password fields does not match</p> ) : null}
 						</div>
 						<div className='flex mt-[90px] mb-8 px-5 justify-between'>	
