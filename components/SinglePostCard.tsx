@@ -69,6 +69,30 @@ const SinglePostCard = (props) => {
         // window.location.reload();
     }
     
+    let reportDeletePostHandler = () => {
+        props.isSameUserPost ? deletePost() : reportPost()
+    }
+
+    let deletePost = async () => {
+        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${props.postid}/`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				'Authorization': 'Bearer '+props.accessToken,
+			},
+		});
+    }
+
+    let reportPost = async () => {
+        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/report/post/${props.postid}/`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				'Authorization': 'Bearer '+props.accessToken,
+			},
+		});
+    }
+
     let sendCommentToParent = () => {
         props.setNewComment(newCommentContent)
     }
@@ -121,7 +145,7 @@ const SinglePostCard = (props) => {
                     </div>
                 </div>
                 <div>
-                    <button>
+                    <button onClick={reportDeletePostHandler}>
                         {props.isSameUserPost ? <PinkTrash/> : <PinkBlockIcon/>}
                     </button>
                 </div>
