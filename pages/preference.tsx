@@ -157,16 +157,15 @@ const preference = () => {
                             <div className='mx-2 mt-4 flex justify-between'>
                                 <div className="mx-1">
                                     <label className="mt-3 mx-5 text-[#6e6e6e] text-sm font-semibold">Gender</label>
-			            		    <select className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]' name="gender" id="gender" onChange={(e) => {user.gender = e.target.value}} >
-                          		    	<option value={user.gender} disabled hidden>{user.gender}</option>
+			            		    <select className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]' name="gender" id="gender" defaultValue={user.gender} onChange={(e) => {user.gender = e.target.value}} >
                           		    	<option value="Female">Female</option>
                           		    	<option value="Male">Male</option>
           	            		    </select>
                                 </div>
                                 <div className="mx-1">
                                     <label className="mt-3 mx-5 text-[#6e6e6e] text-sm font-semibold">Culture</label>
-			            		    <select className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]'  name="culture" id="culture" onChange={(e) => {user.culture = e.target.value}}>
-                          		    	<option value={user.culture} disabled hidden>{user.culture}</option>
+			            		    <select className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]'  name="culture" id="culture" defaultValue={user.culture} onChange={(e) => {user.culture = e.target.value}}>
+                          		    	{/* <option value={user.culture} disabled hidden>{user.culture}</option> */}
                           		    	<option value="South Indian">South Indian</option>
                           		    	<option value="North Indian">North Indian</option>
                           		    	<option value="East Indian">East Indian</option>
@@ -176,8 +175,8 @@ const preference = () => {
 			            	</div>
 			            	
                             <label className="mt-4 mx-7 text-[#6e6e6e] text-sm font-semibold">Years in Relationship</label>
-                            <select className='pl-6 mx-3 mt-1 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] h-[56px] '  name="rel" id="rel" placeholder='rel' onChange={(e) => {user.years_in_relationShip = e.target.value}}>
-			            		<option value={user.years_in_relationShip} disabled hidden>{user.years_in_relationShip}</option>
+                            <select className='pl-6 mx-3 mt-1 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] h-[56px] '  name="rel" id="rel" placeholder='rel' defaultValue={user.years_in_relationShip} onChange={(e) => {user.years_in_relationShip = e.target.value}}>
+			            		{/* <option value={user.years_in_relationShip} disabled hidden>{user.years_in_relationShip}</option> */}
                           		<option value="1">1</option>
                           		<option value="2">2</option>
                           		<option value="3">3</option>
