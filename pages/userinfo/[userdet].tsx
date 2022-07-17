@@ -123,7 +123,7 @@ const userdet = () => {
 						</div>
 						<div className="ml-[16px] flex flex-col">
 							<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Following</p>
-							<p className=" text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{FollowingCount}</p>
+							<p className=" text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{FollowingCount?FollowingCount:0}</p>
 						</div>
 						<div className=" ml-[16px] flex flex-col">
 							<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Followers</p>
