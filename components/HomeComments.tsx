@@ -258,7 +258,7 @@ const homecomments = (props:PropsWithChildren<any>) => {
                     {isDataFetched?
                         <div className="">
                             <div className={`flex flex-wrap justify-around items-center mx-10 mt-5 ${showSearchResults?null:'hidden'}`}>Showing Search results for '{finalSearchString}'</div>
-                            <InfiniteScroll dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
+                            <InfiniteScroll className="!overflow-x-hidden" dataLength={PaginatedPosts?.length ?? 0} next={()=>setSize(size+1)} hasMore={!reachedEnd} loader={<LoadingSpinner/>} endMessage={<div className="flex justify-center items-center mb-10 text-gray-400"><p>No more posts to show</p></div>}>
                                 {/*{console.log(reachedEnd)}*/}
                                 {PaginatedPosts?.map( (post,i) => <Card ref={el => cardRef.current[i] = el} key={post.id /*+ sessionStorage.getItem('clickedTab')*/} accessToken = {accessToken} postid = {post.id} userid={post.user.id} setClickedCard = {setClickedCard} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.likes} commentsCount={post.comments_count} /> )}
                             </InfiniteScroll>
