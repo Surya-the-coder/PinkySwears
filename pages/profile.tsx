@@ -1,7 +1,7 @@
 import Head from "next/head";
 import NavBar from "../components/NavBar";
 import TopBar from "../components/TopBar";
-import { getSession } from "next-auth/react";
+// import { getSession } from "next-auth/react";
 import Ellipse from '../assets/images/Ellipse.svg'
 
 const profile = () => {

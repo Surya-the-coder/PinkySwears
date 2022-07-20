@@ -9,7 +9,7 @@ import { redirect } from 'next/dist/server/api-utils';
 import { profilePicLoader } from './CommonFunctions'
 
 const TopBar = (props) => {
-  let backPage = sessionStorage.getItem('previosPage')
+  // let backPage = sessionStorage.getItem('previosPage')
   return (
     <div className="flex pt-5 pb-4 justify-between items-center z-[100] px-5">
       <div className="flex justify-center items-center">
