@@ -78,8 +78,22 @@ const SinglePostCard = (props) => {
         props.isSameUserPost ? deletePost() : reportPost()
     }
 
+    let deleteAPI = async() => {
+        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${props.postid}/`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer '+props.accessToken,
+            },
+        });
+    }
+
+
     let deleteAfterConfimation = async () => {
         console.log("deleting post")
+        deleteAPI().then(() => {
+          router.back()
+        })
 
     }
 
@@ -88,13 +102,7 @@ const SinglePostCard = (props) => {
         console.log(props.postid)
         setConfirmOpen(true)
 
-        // let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${props.postid}/`, {
-		// 	method: "DELETE",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 		'Authorization': 'Bearer '+props.accessToken,
-		// 	},
-		// });
+
     }
 
     let reportPost = async () => {
