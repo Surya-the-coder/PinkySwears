@@ -220,6 +220,23 @@ const homelikes = (props:PropsWithChildren<any>) => {
         addAnimations(cardRef)
     }, [PaginatedData])
 
+    useEffect(() => {
+        router.beforePopState(({ as }) => {
+            if (as !== router.asPath) {
+                if (sessionStorage.getItem('searchClicked') == 'true') {
+                    sessionStorage.setItem('searchClicked', 'false')
+                }
+                // Will run when leaving the current page; on back/forward actions
+                // Add your logic here, like toggling the modal state
+            }
+            return true;
+        });
+        return () => {
+            router.beforePopState(() => true);
+        };
+    }, [router]);
+
+
     if (canAccess) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (

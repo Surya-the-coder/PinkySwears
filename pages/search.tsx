@@ -1,5 +1,5 @@
 import TopBar from "../components/TopBar";
-import { useState, useEffect, useRef } from 'react';
+import {useState, useEffect, useRef, PropsWithChildren} from 'react';
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import Ellipse from '../assets/images/Ellipse.svg'
@@ -25,19 +25,18 @@ let oldCardsCount = 0
 
 const scrollToCard = () => {
     const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
-    // console.log("Name is ", scrollDiv)
-    gsap.to(window, {scrollTo:`#card-${sessionStorage.getItem('clickedCard')}`})
+    gsap.to(window, {scrollTo:scrollDiv}).then(()=> {
+        gsap.from(scrollDiv, {duration: 1, backgroundColor: "yellow"})
+    })
     sessionStorage.setItem('clickedCard', '')
 }
 
 
 const addAnimations = (cardRef) => {
-    // console.log('In Animations')
     let cardsCount = cardRef.current.length
-    // console.log(cardsCount)
     for (let i = 0; i < cardsCount; i++) {
         gsap.to(cardRef.current[i], {
-            x: 0, y:70,xPercent:10,scale:0.9,
+            x: 0, y:70,xPercent:10,
             scrollTrigger: {
                 trigger: cardRef.current[i],
                 toggleActions: "play pause reverse reset",
@@ -46,33 +45,11 @@ const addAnimations = (cardRef) => {
                 end: "bottom",
             }
         })
-        gsap.from(cardRef.current[i], {
-            x: 0,y:20,
-            scrollTrigger: {
-                trigger: cardRef.current[i],
-                toggleActions: "restart none reverse reset",
-                start: "top 80%",
-                end: "top 70%",
-                scrub:1,
-            }
-        })
-        //test - code below.
-        // gsap.from(cardRef.current[i], {
-        //     y:30, rotationY:45,ease: "back.out(1.6)",opacity:0.6,
-        //         scrollTrigger: {
-        //             trigger: cardRef.current[i],
-        //             toggleActions: "restart none none reset",
-        //             start: "top 80%",
-        //             end: "top 70%",
-        //             // scrub:true,
-        //         }
-        //     })
-
     }
     oldCardsCount = cardsCount
 }
 
-const home = ({}) => {
+const home = (props:PropsWithChildren<any>) => {
 
 
     const [canAccess,setCanAccess] = useState(false)
@@ -128,13 +105,10 @@ const home = ({}) => {
 
                 }
                 else {
-                    getAllPosts('recent').then(res => {
+                    getAllPosts().then(res => {
                         addAnimations(cardRef)
                         scrollToCard()
-                        sessionStorage.setItem('clickedTab', 'recent')
                     })
-                        .catch(err => {
-                        })
                     setShowSearchResults(false)
                     setShowSearch(false)
                     setCanAccess(true)
@@ -161,8 +135,6 @@ const home = ({}) => {
 
 
     let getAllPosts = async (option=null) => {
-        // console.log('GET ALL POST')
-        // console.log(option)
         console.log('getting posts')
         response = await fetch(postUrl);
         data = await response.json();
@@ -171,8 +143,6 @@ const home = ({}) => {
         setUrl('/api/post/')
 
     }
-
-
 
     let showSearchFn = () => {
         setShowSearch(!showSearch)
@@ -209,22 +179,22 @@ const home = ({}) => {
     let loadRecentPage = () =>{
         sessionStorage.setItem('searchClicked','false')
         sessionStorage.setItem('searchString','')
-        sessionStorage.setItem('clickedTab','recent')
-        router.push('/home/')
+        sessionStorage.setItem('currentPage','HomeRecent')
+        props.setCurrentPage('HomeRecent')
     }
 
     let loadLikesPage = () =>{
         sessionStorage.setItem('searchClicked','false')
         sessionStorage.setItem('searchString','')
-        sessionStorage.setItem('clickedTab','likes')
-        router.push('/home-likes/')
+        sessionStorage.setItem('currentPage','HomeLikes')
+        props.setCurrentPage('HomeLikes')
     }
 
     let loadCommentsPage = () =>{
         sessionStorage.setItem('searchClicked','false')
         sessionStorage.setItem('searchString','')
-        sessionStorage.setItem('clickedTab','comments')
-        router.push('/home-comments/')
+        sessionStorage.setItem('currentPage','HomeComments')
+        props.setCurrentPage('HomeComments')
     }
 
     let searchStringOnChange=(tempSearchString)=>{
@@ -243,6 +213,11 @@ const home = ({}) => {
 
     let {isLoading, PaginatedData, error, isValidating, mutate, size, setSize, reachedEnd} = paginate(url,finalSearchString,searchType)
     let PaginatedPosts = PaginatedData?.flat()
+
+    useEffect(() => {
+        addAnimations(cardRef)
+    }, [PaginatedData])
+
     if (canAccess) {
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         return (
@@ -251,22 +226,15 @@ const home = ({}) => {
                 <div className="pb-5 overflow-y-auto overflow-hidden z-50 mb-[10vh] w-full max-w-md ">
                     <meta name='theme-color' content='#FFBCD1' />
                     <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
-                    <div className={`flex justify-left items-center mx-6 bg-white rounded-full mb-4 h-10 w-${showSearch?100:10} `}>
-                        <button onClick={showSearchFn} className="pl-2 no-highlights"> <Search className=" mr-4"/> </button>
-                        <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-transparent ${showSearch?null:'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler} />
 
-                    </div>
-                    <div className={`flex justify-around mx-10 top-24 ${showSearch?null:'hidden'}`}>
-                        <button className={`bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights`} onClick={clearSearchFn}>Clear Search</button>
-                    </div>
-                    <div className={`flex justify-around mx-10 top-24 ${showSearch?'hidden':null}`}>
-                        {/* <button className={All?"bg-[#F67A95] text-white px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("All")}>All</button> */}
-                        <button className="bg-[#F67A95] text-white px-5 py-1 rounded-2xl no-highlights text-sm" onClick={loadRecentPage}>Recent</button>
-                        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadLikesPage}>By likes</button>
-                        <button className={" bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm"} onClick={loadCommentsPage}>By comments</button>
+                    <div className={`flex justify-around mx-5 top-24 ${showSearch?'':null}`}>
+                        <button onClick={showSearchFn} className={`bg-white rounded-full px-4 no-highlights ${showSearch?'hidden':null}`}> <Search className=""/> </button>
+                        <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-white rounded-2xl w-full text-[#FF848E] ${showSearch ? '':'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler} />
+                        <button className={`bg-white text-[#FF848E] px-4 py-2 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights ${showSearch ? '' :'hidden'} ml-1`} onClick={clearSearchFn}>Clear</button>
 
-
-
+                        <button className={`bg-[#F67A95] text-white px-4 py-2 rounded-2xl no-highlights text-sm ${showSearch?'hidden':null} `} onClick={loadRecentPage}>Recent</button>
+                        <button className={`bg-white text-[#FF848E] px-4 py-2 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm ${showSearch?'hidden':null} `} onClick={loadLikesPage}>By likes</button>
+                        <button className={`bg-white text-[#FF848E] px-4 py-2 rounded-2xl focus:bg-[#F67A95] focus:text-white no-highlights text-sm ${showSearch?'hidden':null} `} onClick={loadCommentsPage}>By comments</button>
                     </div>
 
                     {/*{console.log(posts)}*/}

@@ -104,13 +104,14 @@ const SinglePostCard = (props) => {
         }
     }
 
+
     let hashClick = (e) => {
         let hashValue = e.target.value
         console.log("Hash value is " + hashValue)
-        sessionStorage.setItem('hashClicked','true')
+        sessionStorage.setItem('searchClicked','true')
         sessionStorage.setItem('searchString',hashValue)
         sessionStorage.setItem('searchType','hashtag')
-        router.push(`/search/`)
+        router.push(`/home/`)
     }
 
     return (
