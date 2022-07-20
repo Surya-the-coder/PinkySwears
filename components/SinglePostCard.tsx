@@ -11,6 +11,8 @@ import PinkBlockIcon from '../assets/images/PinkBlockIcon.svg'
 import { profilePicLoader } from './CommonFunctions'
 import {useRouter} from "next/router";
 import Link from 'next/link'
+import ConfirmDialog from "./ConfirmDialog";
+
 
 
 
@@ -21,6 +23,7 @@ const SinglePostCard = (props) => {
     
     const [likes, setLikes] = useState(props.likes)
     const [isLiked, setisLiked] = useState(props.isLiked)
+    const [confirmOpen, setConfirmOpen] = useState(false)
     const inputRef = useRef<any>()
 
 
@@ -54,6 +57,7 @@ const SinglePostCard = (props) => {
         }
     }
 
+
     let postComment = async () => {
         if (newCommentContent.trim() !== "") {
             // console.log(props.postid)
@@ -74,14 +78,23 @@ const SinglePostCard = (props) => {
         props.isSameUserPost ? deletePost() : reportPost()
     }
 
-    let deletePost = async () => {
-        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${props.postid}/`, {
-			method: "DELETE",
-			headers: {
-				"Content-Type": "application/json",
-				'Authorization': 'Bearer '+props.accessToken,
-			},
-		});
+    let deleteAfterConfimation = async () => {
+        console.log("deleting post")
+
+    }
+
+    let deletePost =  () => {
+
+        console.log(props.postid)
+        setConfirmOpen(true)
+
+        // let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${props.postid}/`, {
+		// 	method: "DELETE",
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 		'Authorization': 'Bearer '+props.accessToken,
+		// 	},
+		// });
     }
 
     let reportPost = async () => {
@@ -115,7 +128,7 @@ const SinglePostCard = (props) => {
     }
 
     return (
-        <div className="flex flex-col bg-white rounded-2xl mx-5 px-3 py-5 post-content">
+        <div className="flex flex-col bg-white rounded-2xl mx-5 px-3 py-5 post-content relative">
             <div className="flex justify-between mx-1">
                 <div className='flex w-full'>
                     <Link href={`/userinfo/${props.userid}`}>
@@ -151,6 +164,8 @@ const SinglePostCard = (props) => {
                     </div>
                 </div>
                 <div>
+
+
                     <button onClick={reportDeletePostHandler}>
                         {props.isSameUserPost ? <PinkTrash/> : <PinkBlockIcon/>}
                     </button>
@@ -162,7 +177,15 @@ const SinglePostCard = (props) => {
                     <input type="text" name="Comment" ref={inputRef} id="comment" placeholder="Write a comment..." className="pl-4 outline-none font-thin text-xs px-2 bg-transparent w-full" onChange={(e)=> setNewCommentContent(e.target.value)} onKeyUp={keyHandler}/>
                     <button onClick={postComment}> <Send className="w-10 h-10 mr-2"/> </button>
                 </div>
-            </div>         
+            </div>
+            <ConfirmDialog
+                title="Delete Post?"
+                open={confirmOpen}
+                onClose={() => setConfirmOpen(false)}
+                onConfirm={deleteAfterConfimation}
+            >
+                Are you sure you want to delete this post?
+            </ConfirmDialog>
         </div>
     );
 }
