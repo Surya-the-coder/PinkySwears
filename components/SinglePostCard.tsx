@@ -173,8 +173,6 @@ const SinglePostCard = (props) => {
                     </div>
                 </div>
                 <div>
-
-
                     <button onClick={reportDeletePostHandler}>
                         {props.isSameUserPost ? <PinkTrash/> : <PinkBlockIcon/>}
                     </button>

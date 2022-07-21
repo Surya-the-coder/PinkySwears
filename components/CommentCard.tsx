@@ -4,6 +4,8 @@ import Love from '../assets/images/Love.svg'
 import LovePink from '../assets/images/LovePink.svg'
 import { profilePicLoader } from './CommonFunctions'
 import {forwardRef, PropsWithChildren} from "react";
+import PinkTrashSmall from "../assets/images/PinkTrashSmall.svg";
+import PinkBlockIconSmall from "../assets/images/PinkBlockIconSmall.svg";
 
 const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
 
@@ -42,12 +44,20 @@ const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
                     <h1 className='font-Sarabun-Medium text-xs tracking-[0.2px] font-medium'>{props.commentUsername}</h1>
                     <p className='text-xs text-gray-400 mt-1'>{props.commentContent}</p>
                 </div>
-                <div className='flex'>
+                <div className='flex flex-col'>
                     <button className='flex items-center text-xs text-pink-400' onClick={likeComment}>
                         {commentIsLiked ? <LovePink/> :<Love/>}
                         {commentIsLiked ? <p className='mx-2 text-xs text-[#FF848E]'>{commentLikes} </p> :<p className='mx-2 text-xs text-gray-400'> {commentLikes} </p>}
                     </button>
+
                 </div>
+
+
+            </div>
+            <div className="flex bg-white rounded-xl p-1 items-center justify-between ">
+            <button className="flex justify-end">
+                {props.isSameUserComment ? <PinkTrashSmall/> : <PinkBlockIconSmall/>}
+            </button>
             </div>
         </div>
         // <div>check</div>
