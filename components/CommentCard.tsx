@@ -22,7 +22,6 @@ const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
 				'Authorization': 'Bearer '+props.accessToken,
 			},
 		});
-        // console.log(response)
 
         if(commentIsLiked){
             setCommentIsLiked(false);
@@ -32,6 +31,26 @@ const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
             setCommentIsLiked(true);
             setCommentLikes(commentLikes+1);
         }
+    }
+
+    let deleteComment =  () => {
+        // console.log(props.postid)
+        props.setConfirmCommentOpen(true)
+        props.setCommentForDelete(props.commentID)
+    }
+
+    let reportComment = async () => {
+        // let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/report/post/${props.postid}/`, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         'Authorization': 'Bearer '+props.accessToken,
+        //     },
+        // });
+    }
+
+    let reportDeleteCommentHandler = () => {
+        props.isSameUserComment ? deleteComment() : reportComment()
     }
     
     return (
@@ -49,18 +68,14 @@ const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
                         {commentIsLiked ? <LovePink/> :<Love/>}
                         {commentIsLiked ? <p className='mx-2 text-xs text-[#FF848E]'>{commentLikes} </p> :<p className='mx-2 text-xs text-gray-400'> {commentLikes} </p>}
                     </button>
-
                 </div>
-
-
             </div>
             <div className="flex bg-white rounded-xl p-1 items-center justify-between ">
-            <button className="flex justify-end">
-                {props.isSameUserComment ? <PinkTrashSmall/> : <PinkBlockIconSmall/>}
-            </button>
+                <button className="flex justify-end" onClick={reportDeleteCommentHandler}>
+                    {props.isSameUserComment ? <PinkTrashSmall/> : <PinkBlockIconSmall/>}
+                </button>
             </div>
         </div>
-        // <div>check</div>
     );
 })
 

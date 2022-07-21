@@ -44,6 +44,8 @@ const SinglePost = () => {
     const [userData, setUserData] = useState<any>()
     const [newComment, setNewComment] = useState<any>(null)
     const [confirmOpen, setConfirmOpen] = useState(false)
+    const [confirmCommentOpen, setConfirmCommentOpen] = useState(false)
+    const [commentForDelete, setCommentForDelete] = useState<any>(null)
 
     // let user = JSON.parse(localStorage.getItem('UserDetails'))
     
@@ -151,10 +153,28 @@ const SinglePost = () => {
         });
     }
 
+    let deleteCommentAPI = async() => {
+        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/delete/${commentForDelete}/`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer '+ accessToken,
+            },
+        });
+    }
+
     let deleteAfterConfimation = async () => {
         console.log("deleting post")
         deleteAPI().then(() => {
             router.back()
+        })
+
+    }
+
+    let deleteCommentAfterConfirmation = async () => {
+        console.log("deleting comment")
+        deleteCommentAPI().then(() => {
+            getSinglePostData()
         })
 
     }
@@ -180,7 +200,7 @@ const SinglePost = () => {
                 {isDataFetched?
                     <div className="single-card">
                         <SinglePostCard userid = {PostUserInfo.id} setConfirmOpen = {setConfirmOpen} postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} isSameUserPost = {PostUserInfo.id == userData.id}/>
-                        {singlePostData.comments.map( (comment,i) => <CommentCard id={`commentCard${i}`} ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked} isSameUserComment = {comment.user.id == userData.id} />)}
+                        {singlePostData.comments.map( (comment,i) => <CommentCard setCommentForDelete={setCommentForDelete} setConfirmCommentOpen={setConfirmCommentOpen} id={`commentCard${i}`} ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked} isSameUserComment = {comment.user.id == userData.id} />)}
                         {
                             // typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
                         }
@@ -199,6 +219,14 @@ const SinglePost = () => {
                     onConfirm={deleteAfterConfimation}
                 >
                     Are you sure you want to delete this post?
+                </ConfirmDialog>
+                <ConfirmDialog
+                    title="Delete Comment?"
+                    open={confirmCommentOpen}
+                    onClose={() => setConfirmCommentOpen(false)}
+                    onConfirm={deleteCommentAfterConfirmation}
+                >
+                    Are you sure you want to delete this Comment?
                 </ConfirmDialog>
         </div>
         );

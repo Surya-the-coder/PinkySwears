@@ -11,7 +11,7 @@ import PinkBlockIcon from '../assets/images/PinkBlockIcon.svg'
 import { profilePicLoader } from './CommonFunctions'
 import {useRouter} from "next/router";
 import Link from 'next/link'
-import ConfirmDialog from "./ConfirmDialog";
+
 
 
 
@@ -61,12 +61,13 @@ const SinglePostCard = (props) => {
     let postComment = async () => {
         if (newCommentContent.trim() !== "") {
             // console.log(props.postid)
+            console.log(newCommentContent)
             let response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/new/post/${props.postid}/`, {
 		    	method: "POST",
 		    	headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${props.accessToken}` },
 		    	body: JSON.stringify({'content' : newCommentContent}),
 		    });
-		    // console.log(response)
+		    console.log(response)
             inputRef.current.value = ""
             sendCommentToParent() //works without refresh
 
@@ -78,31 +79,9 @@ const SinglePostCard = (props) => {
         props.isSameUserPost ? deletePost() : reportPost()
     }
 
-    // let deleteAPI = async() => {
-    //     let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${props.postid}/`, {
-    //         method: "DELETE",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             'Authorization': 'Bearer '+props.accessToken,
-    //         },
-    //     });
-    // }
-
-
-    // let deleteAfterConfimation = async () => {
-    //     console.log("deleting post")
-    //     deleteAPI().then(() => {
-    //       router.back()
-    //     })
-    //
-    // }
-
     let deletePost =  () => {
-
         console.log(props.postid)
         props.setConfirmOpen(true)
-
-
     }
 
     let reportPost = async () => {
@@ -116,6 +95,7 @@ const SinglePostCard = (props) => {
     }
 
     let sendCommentToParent = () => {
+        console.log('setting new comment')
         props.setNewComment(newCommentContent)
     }
 
@@ -136,7 +116,6 @@ const SinglePostCard = (props) => {
     }
 
     return (
-
         <div className="flex flex-col bg-white rounded-2xl mx-5 px-3 py-5 post-content relative">
             <div className="flex justify-between mx-1">
                 <div className='flex w-full'>
