@@ -11,6 +11,7 @@ import SinglePostCard from "../../components/SinglePostCard";
 import CommentCard from '../../components/CommentCard';
 import { isAccessTokenValid } from '../../components/CommonFunctions'
 import { gsap } from "gsap";
+import ConfirmDialog from "../../components/ConfirmDialog";
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
@@ -42,6 +43,7 @@ const SinglePost = () => {
     const [refreshToken, setRefreshToken] = useState<any>()
     const [userData, setUserData] = useState<any>()
     const [newComment, setNewComment] = useState<any>(null)
+    const [confirmOpen, setConfirmOpen] = useState(false)
 
     // let user = JSON.parse(localStorage.getItem('UserDetails'))
     
@@ -139,6 +141,24 @@ const SinglePost = () => {
 
     }
 
+    let deleteAPI = async() => {
+        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer '+ accessToken,
+            },
+        });
+    }
+
+    let deleteAfterConfimation = async () => {
+        console.log("deleting post")
+        deleteAPI().then(() => {
+            router.back()
+        })
+
+    }
+
     if (accessToken!=null) {
         return (
             <div className="full-page flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
@@ -159,7 +179,7 @@ const SinglePost = () => {
                 </div>
                 {isDataFetched?
                     <div className="single-card">
-                        <SinglePostCard userid = {PostUserInfo.id} postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} isSameUserPost = {PostUserInfo.id == userData.id}/>
+                        <SinglePostCard userid = {PostUserInfo.id} setConfirmOpen = {setConfirmOpen} postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} isSameUserPost = {PostUserInfo.id == userData.id}/>
                         {singlePostData.comments.map( (comment,i) => <CommentCard id={`commentCard${i}`} ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>)}
                         {
                             // typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
@@ -172,6 +192,14 @@ const SinglePost = () => {
                 }
             </div>
             <NavBar page = "Home" />
+                <ConfirmDialog
+                    title="Delete Post?"
+                    open={confirmOpen}
+                    onClose={() => setConfirmOpen(false)}
+                    onConfirm={deleteAfterConfimation}
+                >
+                    Are you sure you want to delete this post?
+                </ConfirmDialog>
         </div>
         );
     }

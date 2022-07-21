@@ -78,29 +78,29 @@ const SinglePostCard = (props) => {
         props.isSameUserPost ? deletePost() : reportPost()
     }
 
-    let deleteAPI = async() => {
-        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${props.postid}/`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': 'Bearer '+props.accessToken,
-            },
-        });
-    }
+    // let deleteAPI = async() => {
+    //     let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${props.postid}/`, {
+    //         method: "DELETE",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             'Authorization': 'Bearer '+props.accessToken,
+    //         },
+    //     });
+    // }
 
 
-    let deleteAfterConfimation = async () => {
-        console.log("deleting post")
-        deleteAPI().then(() => {
-          router.back()
-        })
-
-    }
+    // let deleteAfterConfimation = async () => {
+    //     console.log("deleting post")
+    //     deleteAPI().then(() => {
+    //       router.back()
+    //     })
+    //
+    // }
 
     let deletePost =  () => {
 
         console.log(props.postid)
-        setConfirmOpen(true)
+        props.setConfirmOpen(true)
 
 
     }
@@ -189,14 +189,14 @@ const SinglePostCard = (props) => {
             </div>
 
         </div>
-    <ConfirmDialog
-        title="Delete Post?"
-        open={confirmOpen}
-        onClose={() => setConfirmOpen(false)}
-        onConfirm={deleteAfterConfimation}
-    >
-        Are you sure you want to delete this post?
-    </ConfirmDialog>
+    {/*<ConfirmDialog*/}
+    {/*    title="Delete Post?"*/}
+    {/*    open={confirmOpen}*/}
+    {/*    onClose={() => setConfirmOpen(false)}*/}
+    {/*    onConfirm={deleteAfterConfimation}*/}
+    {/*>*/}
+    {/*    Are you sure you want to delete this post?*/}
+    {/*</ConfirmDialog>*/}
         </>
 
     );
