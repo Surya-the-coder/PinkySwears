@@ -136,7 +136,7 @@ const SinglePostCard = (props) => {
     }
 
     return (
-        <>
+
         <div className="flex flex-col bg-white rounded-2xl mx-5 px-3 py-5 post-content relative">
             <div className="flex justify-between mx-1">
                 <div className='flex w-full'>
@@ -189,16 +189,6 @@ const SinglePostCard = (props) => {
             </div>
 
         </div>
-    {/*<ConfirmDialog*/}
-    {/*    title="Delete Post?"*/}
-    {/*    open={confirmOpen}*/}
-    {/*    onClose={() => setConfirmOpen(false)}*/}
-    {/*    onConfirm={deleteAfterConfimation}*/}
-    {/*>*/}
-    {/*    Are you sure you want to delete this post?*/}
-    {/*</ConfirmDialog>*/}
-        </>
-
     );
 }
 
