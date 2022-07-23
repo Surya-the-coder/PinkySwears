@@ -81,12 +81,20 @@ const SinglePostCard = (props) => {
 
     let deletePost =  () => {
         console.log(props.postid)
-        props.setDeletePostOpen(true)
+        // props.setDeletePostOpen(true)
+        props.setConfirmDialogTitle("Delete Post?")
+        props.setConfirmDialogContent("Are you sure you want to delete this post?")
+        props.setConfirmDialogAction('deletePost')
+        props.setConfirmDialogOpen(true)
     }
 
     let reportPost =  () => {
         console.log(props.postid)
-        props.setReportPostOpen(true)
+        // props.setReportPostOpen(true)
+        props.setConfirmDialogTitle("Report Post?")
+        props.setConfirmDialogContent("Are you sure you want to report this post?")
+        props.setConfirmDialogAction('reportPost')
+        props.setConfirmDialogOpen(true)
     }
 
 

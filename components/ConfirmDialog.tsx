@@ -2,13 +2,13 @@ import Dialog from './Dialog';
 import Button from '../components/Button/Button';
 interface Props {
     title: string;
-    children: React.ReactNode;
+    content: string;
     open: boolean;
     onClose: Function;
     onConfirm: Function;
 }
 const Confirm = (props: Props) =>{
-    const { open, onClose, title, children, onConfirm } = props;
+    const { open, onClose, title, content, onConfirm } = props;
     if (!open) {
         return <></>;
     }
@@ -16,7 +16,7 @@ const Confirm = (props: Props) =>{
     return (
             <Dialog open={open} onClose={onClose}>
             <h2 className="text-xl">{title}</h2>
-            <div className="py-5">{children}</div>
+            <div className="py-5">{content}</div>
             <div className="flex justify-end">
                 <div className="p-1">
                     <Button

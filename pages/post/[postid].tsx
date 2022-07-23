@@ -44,15 +44,22 @@ const SinglePost = () => {
     const [refreshToken, setRefreshToken] = useState<any>()
     const [userData, setUserData] = useState<any>()
     const [newComment, setNewComment] = useState<any>(null)
-    const [deletePostOpen, setDeletePostOpen] = useState(false)
-    const [deleteCommentOpen, setDeleteCommentOpen] = useState(false)
-    const [commentForDelete, setCommentForDelete] = useState<any>(null)
-    const [reportPostOpen, setReportPostOpen] = useState(false)
-    const [reportCommentOpen, setReportCommentOpen] = useState(false)
-    const [commentForReport, setCommentForReport] = useState<any>(null)
+    // const [deletePostOpen, setDeletePostOpen] = useState(false)
+    // const [deleteCommentOpen, setDeleteCommentOpen] = useState(false)
+    // const [commentForDelete, setCommentForDelete] = useState<any>(null)
+    // const [reportPostOpen, setReportPostOpen] = useState(false)
+    // const [reportCommentOpen, setReportCommentOpen] = useState(false)
+    // const [commentForReport, setCommentForReport] = useState<any>(null)
+    const [commentForAction, setCommentForAction] = useState<any>(null)
+
     const [informDialogOpen, setInformDialogOpen] = useState(false)
     const [informDialogTitle, setInformDialogTitle] = useState('')
     const [informDialogContent, setInformDialogContent] = useState('')
+
+    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
+    const [confirmDialogTitle, setConfirmDialogTitle] = useState('')
+    const [confirmDialogContent, setConfirmDialogContent] = useState('')
+    const [confirmDialogAction, setConfirmDialogAction] = useState('')
 
     // let user = JSON.parse(localStorage.getItem('UserDetails'))
     
@@ -171,7 +178,7 @@ const SinglePost = () => {
     }
 
     let deleteCommentAPI = async() => {
-        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/delete/${commentForDelete}/`, {
+        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/delete/${commentForAction}/`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -181,7 +188,7 @@ const SinglePost = () => {
     }
 
     let reportCommentAPI = async() => {
-        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/report/comment/${commentForReport}/`, {
+        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/report/comment/${commentForAction}/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -190,45 +197,84 @@ const SinglePost = () => {
         });
     }
 
-    let deletePostAfterConfimation = async () => {
-        console.log("deleting post")
-        deletePostAPI().then(() => {
-            router.back()
-        })
-
+    let DeleteReportAction = async() => {
+        switch (confirmDialogAction) {
+            case 'deletePost':
+                console.log("deleting post")
+                deletePostAPI().then(() => {
+                    router.back()
+                })
+                break;
+            case 'deleteComment':
+                console.log("deleting comment")
+                deleteCommentAPI().then(() => {
+                    getSinglePostData()
+                })
+                break;
+            case 'reportPost':
+                console.log("reporting post")
+                reportPostAPI().then(() => {
+                    console.log("reported post")
+                    setInformDialogTitle("Done.!")
+                    setInformDialogContent("Your report has been sent to the admin. We will review it and take appropriate action.")
+                    setInformDialogOpen(true)
+                })
+                break;
+            case 'reportComment':
+                console.log("reporting comment")
+                reportCommentAPI().then(() => {
+                    console.log("reported comment")
+                    setInformDialogTitle("Done.!")
+                    setInformDialogContent("Your report has been sent to the admin. We will review it and take appropriate action.")
+                    setInformDialogOpen(true)
+                })
+                break;
+            default:
+                break;
+        }
     }
 
-    let reportPostAfterConfimation = async () => {
-        console.log("reporting post")
-        reportPostAPI().then(() => {
-            console.log("reported post")
-            setInformDialogTitle("Done.!")
-            setInformDialogContent("Your report has been sent to the admin. We will review it and take appropriate action.")
-            setInformDialogOpen(true)
-        })
-
-    }
-
-    let deleteCommentAfterConfirmation = async () => {
-        console.log("deleting comment")
-        deleteCommentAPI().then(() => {
-            getSinglePostData()
-        })
-
-    }
 
 
-
-    let reportCommentAfterConfirmation = async () => {
-        console.log("reporting comment")
-        reportCommentAPI().then(() => {
-            console.log("reported comment")
-            setInformDialogTitle("Done.!")
-            setInformDialogContent("Your report has been sent to the admin. We will review it and take appropriate action.")
-            setInformDialogOpen(true)
-        })
-
-    }
+    // let deletePostAfterConfimation = async () => {
+    //     console.log("deleting post")
+    //     deletePostAPI().then(() => {
+    //         router.back()
+    //     })
+    //
+    // }
+    //
+    // let reportPostAfterConfimation = async () => {
+    //     console.log("reporting post")
+    //     reportPostAPI().then(() => {
+    //         console.log("reported post")
+    //         setInformDialogTitle("Done.!")
+    //         setInformDialogContent("Your report has been sent to the admin. We will review it and take appropriate action.")
+    //         setInformDialogOpen(true)
+    //     })
+    //
+    // }
+    //
+    // let deleteCommentAfterConfirmation = async () => {
+    //     console.log("deleting comment")
+    //     deleteCommentAPI().then(() => {
+    //         getSinglePostData()
+    //     })
+    //
+    // }
+    //
+    //
+    //
+    // let reportCommentAfterConfirmation = async () => {
+    //     console.log("reporting comment")
+    //     reportCommentAPI().then(() => {
+    //         console.log("reported comment")
+    //         setInformDialogTitle("Done.!")
+    //         setInformDialogContent("Your report has been sent to the admin. We will review it and take appropriate action.")
+    //         setInformDialogOpen(true)
+    //     })
+    //
+    // }
 
     if (accessToken!=null) {
         return (
@@ -250,8 +296,52 @@ const SinglePost = () => {
                 </div>
                 {isDataFetched?
                     <div className="single-card">
-                        <SinglePostCard userid = {PostUserInfo.id} setReportPostOpen = {setReportPostOpen} setDeletePostOpen = {setDeletePostOpen} postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} isSameUserPost = {PostUserInfo.id == userData.id}/>
-                        {singlePostData.comments.map( (comment,i) => <CommentCard setCommentForDelete={setCommentForDelete} setDeleteCommentOpen={setDeleteCommentOpen} setCommentForReport={setCommentForReport} setReportCommentOpen={setReportCommentOpen} id={`commentCard${i}`} ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked} isSameUserComment = {comment.user.id == userData.id} />)}
+                        <SinglePostCard
+                            userid = {PostUserInfo.id}
+                            // setReportPostOpen = {setReportPostOpen}
+                            // setDeletePostOpen = {setDeletePostOpen}
+                            setConfirmDialogOpen = {setConfirmDialogOpen}
+                            setConfirmDialogAction = {setConfirmDialogAction}
+                            setConfirmDialogTitle = {setConfirmDialogTitle}
+                            setConfirmDialogContent = {setConfirmDialogContent}
+                            postid = {router.query.postid}
+                            accessToken = {accessToken}
+                            postUserImage = {PostUserInfo.profileImg}
+                            currentUserImage = {userData.profileImg}
+                            postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name}
+                            postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")}
+                            postContent = {singlePostData.content}
+                            setNewComment = {setNewComment}
+                            likes = {singlePostData.likes}
+                            isLiked = {singlePostData.is_liked}
+                            comments = {singlePostData.comments_count}
+                            isReported = {singlePostData.is_reported}
+                            hashTags={singlePostData.hashtags}
+                            isSameUserPost = {PostUserInfo.id == userData.id}
+                        />
+                        {singlePostData.comments.map( (comment,i) => <CommentCard
+                            setCommentForAction = {setCommentForAction}
+                            setConfirmDialogOpen = {setConfirmDialogOpen}
+                            setConfirmDialogAction = {setConfirmDialogAction}
+                            setConfirmDialogTitle = {setConfirmDialogTitle}
+                            setConfirmDialogContent = {setConfirmDialogContent}
+                            // setCommentForDelete={setCommentForDelete}
+                            // setDeleteCommentOpen={setDeleteCommentOpen}
+                            // setCommentForReport={setCommentForReport}
+                            // setReportCommentOpen={setReportCommentOpen}
+                            id={`commentCard${i}`}
+                            ref={el => commentCardRef.current[i] = el}
+                            accessToken = {accessToken}
+                            key={comment.id}
+                            commentID = {comment.id}
+                            commentLikes = {comment.likes}
+                            commentUserProfilePic = {comment.user.profileImg}
+                            commentUsername = {comment.user.first_name + " " + comment.user.last_name}
+                            commentContent = {comment.content}
+                            isLiked = {comment.is_liked}
+                            isSameUserComment = {comment.user.id == userData.id}
+                        />
+                        )}
                         {
                             // typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
                         }
@@ -264,37 +354,44 @@ const SinglePost = () => {
             </div>
             <NavBar page = "Home" />
                 <ConfirmDialog
-                    title="Delete Post?"
-                    open={deletePostOpen}
-                    onClose={() => setDeletePostOpen(false)}
-                    onConfirm={deletePostAfterConfimation}
-                >
-                    Are you sure you want to delete this post?
-                </ConfirmDialog>
-                <ConfirmDialog
-                    title="Report Post?"
-                    open={reportPostOpen}
-                    onClose={() => setReportPostOpen(false)}
-                    onConfirm={reportPostAfterConfimation}
-                >
-                    Are you sure you want to report this post?
-                </ConfirmDialog>
-                <ConfirmDialog
-                    title="Delete Comment?"
-                    open={deleteCommentOpen}
-                    onClose={() => setDeleteCommentOpen(false)}
-                    onConfirm={deleteCommentAfterConfirmation}
-                >
-                    Are you sure you want to delete this Comment?
-                </ConfirmDialog>
-                <ConfirmDialog
-                    title="Report Comment?"
-                    open={reportCommentOpen}
-                    onClose={() => setReportCommentOpen(false)}
-                    onConfirm={reportCommentAfterConfirmation}
-                >
-                    Are you sure you want to report this Comment?
-                </ConfirmDialog>
+                    title={confirmDialogTitle}
+                    content={confirmDialogContent}
+                    open={confirmDialogOpen}
+                    onClose={() => setConfirmDialogOpen(false)}
+                    onConfirm={DeleteReportAction}
+                />
+                {/*<ConfirmDialog*/}
+                {/*    title="Delete Post?"*/}
+                {/*    open={deletePostOpen}*/}
+                {/*    onClose={() => setDeletePostOpen(false)}*/}
+                {/*    onConfirm={deletePostAfterConfimation}*/}
+                {/*>*/}
+                {/*    Are you sure you want to delete this post?*/}
+                {/*</ConfirmDialog>*/}
+                {/*<ConfirmDialog*/}
+                {/*    title="Report Post?"*/}
+                {/*    open={reportPostOpen}*/}
+                {/*    onClose={() => setReportPostOpen(false)}*/}
+                {/*    onConfirm={reportPostAfterConfimation}*/}
+                {/*>*/}
+                {/*    Are you sure you want to report this post?*/}
+                {/*</ConfirmDialog>*/}
+                {/*<ConfirmDialog*/}
+                {/*    title="Delete Comment?"*/}
+                {/*    open={deleteCommentOpen}*/}
+                {/*    onClose={() => setDeleteCommentOpen(false)}*/}
+                {/*    onConfirm={deleteCommentAfterConfirmation}*/}
+                {/*>*/}
+                {/*    Are you sure you want to delete this Comment?*/}
+                {/*</ConfirmDialog>*/}
+                {/*<ConfirmDialog*/}
+                {/*    title="Report Comment?"*/}
+                {/*    open={reportCommentOpen}*/}
+                {/*    onClose={() => setReportCommentOpen(false)}*/}
+                {/*    onConfirm={reportCommentAfterConfirmation}*/}
+                {/*>*/}
+                {/*    Are you sure you want to report this Comment?*/}
+                {/*</ConfirmDialog>*/}
                 <InformDialog
                     title={informDialogTitle}
                     content={informDialogContent}
