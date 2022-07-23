@@ -39,15 +39,13 @@ const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
         props.setCommentForDelete(props.commentID)
     }
 
-    let reportComment = async () => {
-        // let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/report/post/${props.postid}/`, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         'Authorization': 'Bearer '+props.accessToken,
-        //     },
-        // });
+    let reportComment =  () => {
+        // console.log(props.postid)
+        props.setReportCommentOpen(true)
+        props.setCommentForReport(props.commentID)
     }
+
+
 
     let reportDeleteCommentHandler = () => {
         props.isSameUserComment ? deleteComment() : reportComment()

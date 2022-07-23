@@ -84,15 +84,11 @@ const SinglePostCard = (props) => {
         props.setDeletePostOpen(true)
     }
 
-    let reportPost = async () => {
-        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/report/post/${props.postid}/`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				'Authorization': 'Bearer '+props.accessToken,
-			},
-		});
+    let reportPost =  () => {
+        console.log(props.postid)
+        props.setReportPostOpen(true)
     }
+
 
     let sendCommentToParent = () => {
         console.log('setting new comment')

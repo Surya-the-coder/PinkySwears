@@ -12,6 +12,7 @@ import CommentCard from '../../components/CommentCard';
 import { isAccessTokenValid } from '../../components/CommonFunctions'
 import { gsap } from "gsap";
 import ConfirmDialog from "../../components/ConfirmDialog";
+import InformDialog from "../../components/InformDialog";
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
@@ -46,6 +47,12 @@ const SinglePost = () => {
     const [deletePostOpen, setDeletePostOpen] = useState(false)
     const [deleteCommentOpen, setDeleteCommentOpen] = useState(false)
     const [commentForDelete, setCommentForDelete] = useState<any>(null)
+    const [reportPostOpen, setReportPostOpen] = useState(false)
+    const [reportCommentOpen, setReportCommentOpen] = useState(false)
+    const [commentForReport, setCommentForReport] = useState<any>(null)
+    const [informDialogOpen, setInformDialogOpen] = useState(false)
+    const [informDialogTitle, setInformDialogTitle] = useState('')
+    const [informDialogContent, setInformDialogContent] = useState('')
 
     // let user = JSON.parse(localStorage.getItem('UserDetails'))
     
@@ -153,9 +160,29 @@ const SinglePost = () => {
         });
     }
 
+    let reportPostAPI = async() => {
+        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/report/post/${router.query.postid}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer '+ accessToken,
+            },
+        });
+    }
+
     let deleteCommentAPI = async() => {
         let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/delete/${commentForDelete}/`, {
             method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer '+ accessToken,
+            },
+        });
+    }
+
+    let reportCommentAPI = async() => {
+        let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/report/comment/${commentForReport}/`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer '+ accessToken,
@@ -171,10 +198,34 @@ const SinglePost = () => {
 
     }
 
+    let reportPostAfterConfimation = async () => {
+        console.log("reporting post")
+        reportPostAPI().then(() => {
+            console.log("reported post")
+            setInformDialogTitle("Done.!")
+            setInformDialogContent("Your report has been sent to the admin. We will review it and take appropriate action.")
+            setInformDialogOpen(true)
+        })
+
+    }
+
     let deleteCommentAfterConfirmation = async () => {
         console.log("deleting comment")
         deleteCommentAPI().then(() => {
             getSinglePostData()
+        })
+
+    }
+
+
+
+    let reportCommentAfterConfirmation = async () => {
+        console.log("reporting comment")
+        reportCommentAPI().then(() => {
+            console.log("reported comment")
+            setInformDialogTitle("Done.!")
+            setInformDialogContent("Your report has been sent to the admin. We will review it and take appropriate action.")
+            setInformDialogOpen(true)
         })
 
     }
@@ -199,8 +250,8 @@ const SinglePost = () => {
                 </div>
                 {isDataFetched?
                     <div className="single-card">
-                        <SinglePostCard userid = {PostUserInfo.id} setDeletePostOpen = {setDeletePostOpen} postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} isSameUserPost = {PostUserInfo.id == userData.id}/>
-                        {singlePostData.comments.map( (comment,i) => <CommentCard setCommentForDelete={setCommentForDelete} setDeleteCommentOpen={setDeleteCommentOpen} id={`commentCard${i}`} ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked} isSameUserComment = {comment.user.id == userData.id} />)}
+                        <SinglePostCard userid = {PostUserInfo.id} setReportPostOpen = {setReportPostOpen} setDeletePostOpen = {setDeletePostOpen} postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} isSameUserPost = {PostUserInfo.id == userData.id}/>
+                        {singlePostData.comments.map( (comment,i) => <CommentCard setCommentForDelete={setCommentForDelete} setDeleteCommentOpen={setDeleteCommentOpen} setCommentForReport={setCommentForReport} setReportCommentOpen={setReportCommentOpen} id={`commentCard${i}`} ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked} isSameUserComment = {comment.user.id == userData.id} />)}
                         {
                             // typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
                         }
@@ -221,6 +272,14 @@ const SinglePost = () => {
                     Are you sure you want to delete this post?
                 </ConfirmDialog>
                 <ConfirmDialog
+                    title="Report Post?"
+                    open={reportPostOpen}
+                    onClose={() => setReportPostOpen(false)}
+                    onConfirm={reportPostAfterConfimation}
+                >
+                    Are you sure you want to report this post?
+                </ConfirmDialog>
+                <ConfirmDialog
                     title="Delete Comment?"
                     open={deleteCommentOpen}
                     onClose={() => setDeleteCommentOpen(false)}
@@ -228,6 +287,20 @@ const SinglePost = () => {
                 >
                     Are you sure you want to delete this Comment?
                 </ConfirmDialog>
+                <ConfirmDialog
+                    title="Report Comment?"
+                    open={reportCommentOpen}
+                    onClose={() => setReportCommentOpen(false)}
+                    onConfirm={reportCommentAfterConfirmation}
+                >
+                    Are you sure you want to report this Comment?
+                </ConfirmDialog>
+                <InformDialog
+                    title={informDialogTitle}
+                    content={informDialogContent}
+                    open={informDialogOpen}
+                    onClose={() => setInformDialogOpen(false)}
+                />
         </div>
         );
     }
