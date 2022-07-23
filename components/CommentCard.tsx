@@ -35,7 +35,7 @@ const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
 
     let deleteComment =  () => {
         // console.log(props.postid)
-        props.setConfirmCommentOpen(true)
+        props.setDeleteCommentOpen(true)
         props.setCommentForDelete(props.commentID)
     }
 

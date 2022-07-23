@@ -43,8 +43,8 @@ const SinglePost = () => {
     const [refreshToken, setRefreshToken] = useState<any>()
     const [userData, setUserData] = useState<any>()
     const [newComment, setNewComment] = useState<any>(null)
-    const [confirmOpen, setConfirmOpen] = useState(false)
-    const [confirmCommentOpen, setConfirmCommentOpen] = useState(false)
+    const [deletePostOpen, setDeletePostOpen] = useState(false)
+    const [deleteCommentOpen, setDeleteCommentOpen] = useState(false)
     const [commentForDelete, setCommentForDelete] = useState<any>(null)
 
     // let user = JSON.parse(localStorage.getItem('UserDetails'))
@@ -143,7 +143,7 @@ const SinglePost = () => {
 
     }
 
-    let deleteAPI = async() => {
+    let deletePostAPI = async() => {
         let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`, {
             method: "DELETE",
             headers: {
@@ -163,9 +163,9 @@ const SinglePost = () => {
         });
     }
 
-    let deleteAfterConfimation = async () => {
+    let deletePostAfterConfimation = async () => {
         console.log("deleting post")
-        deleteAPI().then(() => {
+        deletePostAPI().then(() => {
             router.back()
         })
 
@@ -199,8 +199,8 @@ const SinglePost = () => {
                 </div>
                 {isDataFetched?
                     <div className="single-card">
-                        <SinglePostCard userid = {PostUserInfo.id} setConfirmOpen = {setConfirmOpen} postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} isSameUserPost = {PostUserInfo.id == userData.id}/>
-                        {singlePostData.comments.map( (comment,i) => <CommentCard setCommentForDelete={setCommentForDelete} setConfirmCommentOpen={setConfirmCommentOpen} id={`commentCard${i}`} ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked} isSameUserComment = {comment.user.id == userData.id} />)}
+                        <SinglePostCard userid = {PostUserInfo.id} setDeletePostOpen = {setDeletePostOpen} postid = {router.query.postid} accessToken = {accessToken} postUserImage = {PostUserInfo.profileImg} currentUserImage = {userData.profileImg} postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name} postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")} postContent = {singlePostData.content} setNewComment = {setNewComment} likes = {singlePostData.likes} isLiked = {singlePostData.is_liked} comments = {singlePostData.comments_count} isReported = {singlePostData.is_reported} hashTags={singlePostData.hashtags} isSameUserPost = {PostUserInfo.id == userData.id}/>
+                        {singlePostData.comments.map( (comment,i) => <CommentCard setCommentForDelete={setCommentForDelete} setDeleteCommentOpen={setDeleteCommentOpen} id={`commentCard${i}`} ref={el => commentCardRef.current[i] = el} accessToken = {accessToken} key={comment.id} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked} isSameUserComment = {comment.user.id == userData.id} />)}
                         {
                             // typeof singlePostData.comments[0].id === 'undefined' ? null : singlePostData.comments.map((comment) => {<CommentCard accessToken = {accessToken} commentID = {comment.id} commentLikes = {comment.likes} commentUserProfilePic = {comment.user.profileImg} commentUsername = {comment.user.first_name + " " + comment.user.last_name} commentContent = {comment.content}  isLiked = {comment.is_liked}/>})
                         }
@@ -214,16 +214,16 @@ const SinglePost = () => {
             <NavBar page = "Home" />
                 <ConfirmDialog
                     title="Delete Post?"
-                    open={confirmOpen}
-                    onClose={() => setConfirmOpen(false)}
-                    onConfirm={deleteAfterConfimation}
+                    open={deletePostOpen}
+                    onClose={() => setDeletePostOpen(false)}
+                    onConfirm={deletePostAfterConfimation}
                 >
                     Are you sure you want to delete this post?
                 </ConfirmDialog>
                 <ConfirmDialog
                     title="Delete Comment?"
-                    open={confirmCommentOpen}
-                    onClose={() => setConfirmCommentOpen(false)}
+                    open={deleteCommentOpen}
+                    onClose={() => setDeleteCommentOpen(false)}
                     onConfirm={deleteCommentAfterConfirmation}
                 >
                     Are you sure you want to delete this Comment?

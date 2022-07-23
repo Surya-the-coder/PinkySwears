@@ -81,7 +81,7 @@ const SinglePostCard = (props) => {
 
     let deletePost =  () => {
         console.log(props.postid)
-        props.setConfirmOpen(true)
+        props.setDeletePostOpen(true)
     }
 
     let reportPost = async () => {
