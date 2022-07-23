@@ -44,12 +44,7 @@ const SinglePost = () => {
     const [refreshToken, setRefreshToken] = useState<any>()
     const [userData, setUserData] = useState<any>()
     const [newComment, setNewComment] = useState<any>(null)
-    // const [deletePostOpen, setDeletePostOpen] = useState(false)
-    // const [deleteCommentOpen, setDeleteCommentOpen] = useState(false)
-    // const [commentForDelete, setCommentForDelete] = useState<any>(null)
-    // const [reportPostOpen, setReportPostOpen] = useState(false)
-    // const [reportCommentOpen, setReportCommentOpen] = useState(false)
-    // const [commentForReport, setCommentForReport] = useState<any>(null)
+
     const [commentForAction, setCommentForAction] = useState<any>(null)
 
     const [informDialogOpen, setInformDialogOpen] = useState(false)
@@ -234,48 +229,6 @@ const SinglePost = () => {
         }
     }
 
-
-
-    // let deletePostAfterConfimation = async () => {
-    //     console.log("deleting post")
-    //     deletePostAPI().then(() => {
-    //         router.back()
-    //     })
-    //
-    // }
-    //
-    // let reportPostAfterConfimation = async () => {
-    //     console.log("reporting post")
-    //     reportPostAPI().then(() => {
-    //         console.log("reported post")
-    //         setInformDialogTitle("Done.!")
-    //         setInformDialogContent("Your report has been sent to the admin. We will review it and take appropriate action.")
-    //         setInformDialogOpen(true)
-    //     })
-    //
-    // }
-    //
-    // let deleteCommentAfterConfirmation = async () => {
-    //     console.log("deleting comment")
-    //     deleteCommentAPI().then(() => {
-    //         getSinglePostData()
-    //     })
-    //
-    // }
-    //
-    //
-    //
-    // let reportCommentAfterConfirmation = async () => {
-    //     console.log("reporting comment")
-    //     reportCommentAPI().then(() => {
-    //         console.log("reported comment")
-    //         setInformDialogTitle("Done.!")
-    //         setInformDialogContent("Your report has been sent to the admin. We will review it and take appropriate action.")
-    //         setInformDialogOpen(true)
-    //     })
-    //
-    // }
-
     if (accessToken!=null) {
         return (
             <div className="full-page flex justify-center bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
@@ -298,8 +251,6 @@ const SinglePost = () => {
                     <div className="single-card">
                         <SinglePostCard
                             userid = {PostUserInfo.id}
-                            // setReportPostOpen = {setReportPostOpen}
-                            // setDeletePostOpen = {setDeletePostOpen}
                             setConfirmDialogOpen = {setConfirmDialogOpen}
                             setConfirmDialogAction = {setConfirmDialogAction}
                             setConfirmDialogTitle = {setConfirmDialogTitle}
@@ -325,10 +276,6 @@ const SinglePost = () => {
                             setConfirmDialogAction = {setConfirmDialogAction}
                             setConfirmDialogTitle = {setConfirmDialogTitle}
                             setConfirmDialogContent = {setConfirmDialogContent}
-                            // setCommentForDelete={setCommentForDelete}
-                            // setDeleteCommentOpen={setDeleteCommentOpen}
-                            // setCommentForReport={setCommentForReport}
-                            // setReportCommentOpen={setReportCommentOpen}
                             id={`commentCard${i}`}
                             ref={el => commentCardRef.current[i] = el}
                             accessToken = {accessToken}
@@ -360,38 +307,6 @@ const SinglePost = () => {
                     onClose={() => setConfirmDialogOpen(false)}
                     onConfirm={DeleteReportAction}
                 />
-                {/*<ConfirmDialog*/}
-                {/*    title="Delete Post?"*/}
-                {/*    open={deletePostOpen}*/}
-                {/*    onClose={() => setDeletePostOpen(false)}*/}
-                {/*    onConfirm={deletePostAfterConfimation}*/}
-                {/*>*/}
-                {/*    Are you sure you want to delete this post?*/}
-                {/*</ConfirmDialog>*/}
-                {/*<ConfirmDialog*/}
-                {/*    title="Report Post?"*/}
-                {/*    open={reportPostOpen}*/}
-                {/*    onClose={() => setReportPostOpen(false)}*/}
-                {/*    onConfirm={reportPostAfterConfimation}*/}
-                {/*>*/}
-                {/*    Are you sure you want to report this post?*/}
-                {/*</ConfirmDialog>*/}
-                {/*<ConfirmDialog*/}
-                {/*    title="Delete Comment?"*/}
-                {/*    open={deleteCommentOpen}*/}
-                {/*    onClose={() => setDeleteCommentOpen(false)}*/}
-                {/*    onConfirm={deleteCommentAfterConfirmation}*/}
-                {/*>*/}
-                {/*    Are you sure you want to delete this Comment?*/}
-                {/*</ConfirmDialog>*/}
-                {/*<ConfirmDialog*/}
-                {/*    title="Report Comment?"*/}
-                {/*    open={reportCommentOpen}*/}
-                {/*    onClose={() => setReportCommentOpen(false)}*/}
-                {/*    onConfirm={reportCommentAfterConfirmation}*/}
-                {/*>*/}
-                {/*    Are you sure you want to report this Comment?*/}
-                {/*</ConfirmDialog>*/}
                 <InformDialog
                     title={informDialogTitle}
                     content={informDialogContent}

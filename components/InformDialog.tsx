@@ -5,7 +5,6 @@ interface Props {
     content: string;
     open: boolean;
     onClose: Function;
-    // onConfirm: Function;
 }
 const Confirm = (props: Props) =>{
     const { open, onClose, title, content } = props;
@@ -22,7 +21,6 @@ const Confirm = (props: Props) =>{
                     <Button className="bg-red-500"
                             onClick={() => {
                                 onClose();
-                                // onConfirm();
                             }}
                     >
                         Ok

@@ -34,9 +34,6 @@ const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
     }
 
     let deleteComment =  () => {
-        // console.log(props.postid)
-        // props.setDeleteCommentOpen(true)
-        // props.setCommentForDelete(props.commentID)
         props.setConfirmDialogTitle("Delete Comment?")
         props.setConfirmDialogContent("Are you sure you want to delete this comment?")
         props.setConfirmDialogAction('deleteComment')
@@ -45,9 +42,6 @@ const CommentCard = forwardRef((props:PropsWithChildren<any>,ref:any) => {
     }
 
     let reportComment =  () => {
-        // console.log(props.postid)
-        // props.setReportCommentOpen(true)
-        // props.setCommentForReport(props.commentID)
         props.setConfirmDialogTitle("Report Comment?")
         props.setConfirmDialogContent("Are you sure you want to report this comment?")
         props.setConfirmDialogAction('reportComment')
