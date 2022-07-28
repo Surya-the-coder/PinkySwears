@@ -150,6 +150,9 @@ const SinglePostCard = (props) => {
                                 <Share/>
                                 {/* <p className='mx-2 text-xs text-gray-400'> share </p> */}
                             </div>
+                            {/*<div className='flex items-center text-xs'>*/}
+                            {/*    <button className='text-xs rounded-2xl border border-[#FF848E] px-3 bg-white text-[#FF848E]' onClick={likePost}>Follow</button>*/}
+                            {/*</div>*/}
                         </div>
                     </div>
                 </div>

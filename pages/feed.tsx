@@ -2,6 +2,7 @@ import TopBar from "../components/TopBar";
 import { useState, useEffect, useRef } from 'react';
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
+import NotificationCard from "../components/NotificationCard";
 import Ellipse from '../assets/images/Ellipse.svg'
 import dateFormat from 'dateformat';
 import Router, { useRouter } from 'next/router'
@@ -68,7 +69,22 @@ const feed = ({session}) => {
                     </div>
                     {isDataFetched?
                         <div className="">
-                            {posts.map( (post) => <Card key={post.id} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
+                            {posts.map( (post) =>
+                                    post.user?
+                                    <NotificationCard
+                                        key={post.id}
+                                        postid={post.id}
+                                        userid={post.user.id}
+                                        username={post.user.first_name + ' ' + post.user.last_name}
+                                        profileImage={post.user.profileImg}
+                                        content={post.content}
+                                        createdData={dateFormat(post.created_at, "dS mmmm yyyy")}
+                                        numberOfLikes={12}
+                                    />:null
+
+
+
+                            )}
                         </div>
                     :
                     <div className="">

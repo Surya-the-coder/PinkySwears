@@ -46,7 +46,7 @@ const feed = ({session}) => {
 
     let getAllPosts = async () => {
         console.log('========================INSIDE GETALL POST===========================')
-        let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/`;
+        let postUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/feed/`;
         let response = await fetch(postUrl);
         let data = await response.json();
         setPosts(data);
@@ -67,8 +67,20 @@ const feed = ({session}) => {
                         </button>
                     </div>
                     {isDataFetched?
-                        <div className="">
-                            {posts.map( (post) => <Card key={post.id} postid = {post.id} userid={post.user.id} username = {post.user.first_name + ' ' + post.user.last_name} profileImage = {post.user.profileImg} content={post.content} createdData = {dateFormat(post.created_at, "dS mmmm yyyy")} numberOfLikes = {post.numberOfLikes} /> )}
+                        <div className="zz">
+                            {posts.map( (post) => { post.source_user?
+                                    <Card
+                                        key={post.id}
+                                        postid={post.id}
+                                        userid={post.user.id}
+                                        username={post.user.first_name + ' ' + post.user.last_name}
+                                        profileImage={post.user.profileImg}
+                                        content={post.content}
+                                        createdData={dateFormat(post.created_at, "dS mmmm yyyy")}
+                                        numberOfLikes={1}
+                                    />:null
+                                }
+                            )}
                         </div>
                         :
                         <div className="">
