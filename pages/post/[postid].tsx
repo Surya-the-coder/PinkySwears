@@ -131,24 +131,26 @@ const SinglePost = () => {
     let getSinglePostData = async () => {
         let accessTokenLS = localStorage.getItem('access_token')
         // console.log('========================= IN GET SINGLE POST DATA =========================')
-        while(router.query.postid)
-            break
-        let fetchSinglePostApiUrl = await `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
-        // console.log(fetchSinglePostApiUrl)
-        let response = await fetch(fetchSinglePostApiUrl, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				'Authorization': 'Bearer '+ accessTokenLS,
-			},
-		});
-        // console.log(response)
-        let postData = await response.json()
-        // console.log(postData)
-        setSinglePostData(postData);
-        setPostUserInfo(postData.user);
-        // console.log('Setting is Data Fetched to true in getSinglePostData')
-        setIsDataFetched(true);
+        console.log(router.query.postid + ' is ready')
+        // while(router.query.postid)
+        //     break
+        if (router.query.postid!== undefined) {
+            let fetchSinglePostApiUrl = await `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
+            console.log(fetchSinglePostApiUrl)
+            let response = await fetch(fetchSinglePostApiUrl, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': 'Bearer ' + accessTokenLS,
+                },
+            });
+            // console.log('Response is' + response)
+            let postData = await response.json()
+            console.log(JSON. stringify(postData) + ' is post data')
+            setSinglePostData(postData);
+            setPostUserInfo(postData.user);
+            setIsDataFetched(true);
+        }
 
     }
 
