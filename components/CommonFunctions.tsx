@@ -95,7 +95,9 @@ export const paginate = (url,query=null,searchType="all") =>{
 
 // Profile Pic Loader for Image Tag
 export const profilePicLoader = ({ src, width, quality }) => {
-    if (src == 'null') {
+	// console.log("SRC : ", src);
+    if (src === null) {
+		// console.log("Src" + src);
       src = "/media/userDefault.jpg"
     }
     return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`

@@ -131,9 +131,9 @@ const SinglePost = () => {
     let getSinglePostData = async () => {
         let accessTokenLS = localStorage.getItem('access_token')
         // console.log('========================= IN GET SINGLE POST DATA =========================')
-        console.log(router.query.postid + ' is ready')
-        // while(router.query.postid)
-        //     break
+        // console.log(router.query.postid + ' is ready')
+        while(router.query.postid)
+            break
         if (router.query.postid!== undefined) {
             let fetchSinglePostApiUrl = await `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/${router.query.postid}/`;
             console.log(fetchSinglePostApiUrl)
@@ -146,10 +146,11 @@ const SinglePost = () => {
             });
             // console.log('Response is' + response)
             let postData = await response.json()
-            console.log(JSON. stringify(postData) + ' is post data')
+            // console.log(JSON. stringify(postData) + ' is post data')
             setSinglePostData(postData);
             setPostUserInfo(postData.user);
             setIsDataFetched(true);
+
         }
 
     }
@@ -238,7 +239,7 @@ const SinglePost = () => {
             {/*<div className="pb-8 overflow-y-visible overflow-visible h-[92vh] z-50  w-full max-w-md">*/}
             <div className="pb-28 overflow-y-visible overflow-x-hidden z-50  w-full max-w-md">
                 <meta name='theme-color' content='#FFBCD1' />
-                <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {userData.profileImg}/>
+                <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {userData.profileImg!==null?userData.profileImg:'/media/userDefault.jpg'}/>
                 {/* <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
                     <div className="pl-4 pr-2 py-1">
                         <SearchGray/>
@@ -259,8 +260,8 @@ const SinglePost = () => {
                             setConfirmDialogContent = {setConfirmDialogContent}
                             postid = {router.query.postid}
                             accessToken = {accessToken}
-                            postUserImage = {PostUserInfo.profileImg}
-                            currentUserImage = {userData.profileImg}
+                            postUserImage = {PostUserInfo.profileImg !==null ?PostUserInfo.profileImg:'/media/userDefault.jpg'}
+                            currentUserImage = {userData.profileImg!==null?userData.profileImg:'/media/userDefault.jpg'}
                             postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name}
                             postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")}
                             postContent = {singlePostData.content}
@@ -284,7 +285,7 @@ const SinglePost = () => {
                             key={comment.id}
                             commentID = {comment.id}
                             commentLikes = {comment.likes}
-                            commentUserProfilePic = {comment.user.profileImg}
+                            commentUserProfilePic = {comment.user.profileImg!==null?comment.user.profileImg:'/media/userDefault.jpg'}
                             commentUsername = {comment.user.first_name + " " + comment.user.last_name}
                             commentContent = {comment.content}
                             isLiked = {comment.is_liked}

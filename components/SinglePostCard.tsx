@@ -34,7 +34,7 @@ const SinglePostCard = (props) => {
         // .then(response => response.json())
         // .then((postData) => {console.log(postData); setSinglePostData(postData); setPostUserInfo(postData.user);setIsDataFetched(true)})
         // getSinglePostData()
-        console.log(props);
+        // console.log(props);
         
     }, [])
 
@@ -163,7 +163,7 @@ const SinglePostCard = (props) => {
                 </div>
             </div>
             <div className="flex mt-3 items-center">
-                <Image loading='lazy' loader={profilePicLoader} src={props.currentUserImage} width={24} height={24} className="rounded-full w-6 h-6" alt="UI"/>
+                {/*<Image layout='intrinsic' loading='lazy' loader={profilePicLoader} src={props.currentUserImage} width={24} height={24} className="rounded-full w-6 h-6" alt="UI"/>*/}
                 <div className="flex rounded-full bg-gray-100 mx-2 w-96">
                     <input type="text" name="Comment" ref={inputRef} id="comment" placeholder="Write a comment..." className="pl-4 outline-none font-thin text-xs px-2 bg-transparent w-full" onChange={(e)=> setNewCommentContent(e.target.value)} onKeyUp={keyHandler}/>
                     <button onClick={postComment}> <Send className="w-10 h-10 mr-2"/> </button>
