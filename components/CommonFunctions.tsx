@@ -97,7 +97,7 @@ export const paginate = (url,query=null,searchType="all") =>{
 export const profilePicLoader = ({ src, width, quality }) => {
 	// console.log("SRC : ", src);
     if (src === null) {
-		// console.log("Src" + src);
+		console.log("Src is null" + src);
       src = "/media/userDefault.jpg"
     }
     return `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${src}?w=${width}&q=${quality || 75}`
@@ -108,16 +108,30 @@ export const getFollowing = async (userLS) => {
 	// console.log(userLS)
 	let fetchFollowingApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followings/${userLS}/`;
 	let response = await fetch(fetchFollowingApiUrl);
-	let followinginfo = await response.json() 
-	// console.log(followinginfo)
-	return followinginfo
+	if (response.ok) {
+		let followinginfo = await response.json()
+		// console.log(followinginfo)
+		return followinginfo
+	}
+	else {
+		return null
+	}
 }
 
 // To get current user's followers
 export const getFollowers = async (userLS) => {
 	let fetchFollowerApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/followers/${userLS}/`;
 	let response = await fetch(fetchFollowerApiUrl);
-	let followerinfo = await response.json()    
-	// console.log(followerinfo)
-	return followerinfo		
+	if (response.ok) {
+		let followerinfo = await response.json()
+		// console.log(followerinfo)
+		return followerinfo
+	}
+	else {
+		return null
+	}
+}
+
+export const isEmptyObject = (obj) => {
+	return !Object.keys(obj).length;
 }

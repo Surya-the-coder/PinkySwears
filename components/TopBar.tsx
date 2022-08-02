@@ -15,12 +15,12 @@ const TopBar = (props) => {
       <div className="flex justify-center items-center">
           {props.backButton?<Link href={`/home`}><BackButton className="mx-3"></BackButton></Link>:null}
           {props.displayPic?
-            <Link href={`/userinfo/${props.userid}`}>
-              <Image loader={profilePicLoader} src={`${props.loggedInUserProfilePic}`} width={64} height={64} className = "rounded-full w-16 h-16"/>
+            <Link href={`/userinfo/${props.userId}`}>
+              <Image loader={profilePicLoader} src={`${props.loggedInUserProfilePic!==null?props.loggedInUserProfilePic:'/media/userDefault.jpg'}`} width={64} height={64} className = "rounded-full w-16 h-16"/>
             </Link>
           :null}
           {props.displayName?
-            <Link href={`/userinfo/${props.userid}`}>
+            <Link href={`/userinfo/${props.userId}`}>
               <h4 className='mx-2 text-[#A268AC] font-Sarabun-SemiBold cursor-pointer'>{props.loggedInUserName}</h4>
             </Link>
           :null}

@@ -123,7 +123,7 @@ const SinglePostCard = (props) => {
                 <div className='flex w-full'>
                     <Link href={`/userinfo/${props.userid}`}>
                         <div className="mr-2 w-14">
-                            <Image loading='lazy' loader={profilePicLoader} src={props.postUserImage} width={48} height={48} className="rounded-full w-12 h-12" alt="PI" />
+                            <Image loading='lazy' loader={profilePicLoader} src={props.postUserImage!==null?props.postUserImage:'/media/userDefault.jpg'} width={48} height={48} className="rounded-full w-12 h-12" alt="PI" />
                         </div>
                     </Link>
                     <div className="flex flex-col w-full">

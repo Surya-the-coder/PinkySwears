@@ -239,7 +239,14 @@ const SinglePost = () => {
             {/*<div className="pb-8 overflow-y-visible overflow-visible h-[92vh] z-50  w-full max-w-md">*/}
             <div className="pb-28 overflow-y-visible overflow-x-hidden z-50  w-full max-w-md">
                 <meta name='theme-color' content='#FFBCD1' />
-                <TopBar displayPic = {true} displayName = {true} backButton = {true} loggedInUserName = {userData.first_name + ' ' + userData.last_name} loggedInUserProfilePic = {userData.profileImg!==null?userData.profileImg:'/media/userDefault.jpg'}/>
+                <TopBar
+                    displayPic = {true}
+                    displayName = {true}
+                    backButton = {true}
+                    loggedInUserName = {userData.first_name + ' ' + userData.last_name}
+                    loggedInUserProfilePic = {userData.profileImg!==null?userData.profileImg:'/media/userDefault.jpg'}
+                    userId = {userData.id}
+                />
                 {/* <div className="mx-5 my-3 py-1 flex bg-white rounded-full items-center">
                     <div className="pl-4 pr-2 py-1">
                         <SearchGray/>
@@ -260,8 +267,8 @@ const SinglePost = () => {
                             setConfirmDialogContent = {setConfirmDialogContent}
                             postid = {router.query.postid}
                             accessToken = {accessToken}
-                            postUserImage = {PostUserInfo.profileImg !==null ?PostUserInfo.profileImg:'/media/userDefault.jpg'}
-                            currentUserImage = {userData.profileImg!==null?userData.profileImg:'/media/userDefault.jpg'}
+                            postUserImage = {PostUserInfo.profileImg}
+                            currentUserImage = {userData.profileImg}
                             postUserName = {PostUserInfo.first_name + ' ' + PostUserInfo.last_name}
                             postCreatedDate = {dateFormat(singlePostData.created_at, "dS mmmm yyyy")}
                             postContent = {singlePostData.content}
