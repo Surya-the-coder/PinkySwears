@@ -10,7 +10,7 @@ import {getFollowing,getFollowers,isEmptyObject} from '../../components/CommonFu
 
 
 let postUserInfo
-let postsOfUser
+// let postsOfUser
 let postsData
 let followerCount
 let followingCount
@@ -20,28 +20,13 @@ let selfView
 
 const userdet = () => {
 
-	// const [postsOfUser, setPostsOfUser] = useState<any>();
-	// let postsOfUser
-    // const [PostsData, setPostsData] = useState<any>([]);
-	// let postsData
-	// const [PostUserInfo, setPostUserInfo] = useState<any>();
-	// let postUserInfo
-	// const [FollowerCount, setFollowerCount] = useState<any>()
-	// let followerCount
-	// const [FollowingCount, setFollowingCount] = useState<any>()
-	// let followingCount
     const router = useRouter();
 	const [accessToken, setaccessToken] = useState<any>()
-	// let accessToken
-	// let refreshToken
-	// const [refreshToken, setRefreshToken] = useState<any>()
 	const [isDataFetched, setIsDataFetched] = useState(false)
-	// const [isFollowing,setFollow]=useState<any>()
-	// let isFollowing
-	// const [selfView, setSelfView] = useState(false)
-	// let selfView
 	const [clickedCard,setClickedCard] = useState<any>()
-	// const [userNotFound, setUserNotFound] = useState(false)
+	const [postsOfUser,setPostsOfUser] = useState<any>()
+	const [reRender,setReRender] = useState(false)
+
 
     useEffect(() => {
 		let accessTokenLS = localStorage.getItem('access_token')
@@ -56,51 +41,62 @@ const userdet = () => {
             refreshToken = refreshTokenLS
 			if (router.isReady) {
 				getUserInfo().then(() => {
-
 						getAllPostsOfUser();
 						callCommonFunctions()
 						if (userID == router.query.userdet) {
 							selfView = true
 						}
+					setIsDataFetched(true)
 				})
+				setReRender(!reRender)
+
 
 			}
         }
     }, [router.isReady]);
 
-	// useEffect(() => {
-	// 	let userID = JSON.parse(localStorage.getItem('UserDetails')).id
-	// 	if (userNotFound == false) {
-	// 		console.log(userNotFound)
-	// 		getAllPostsOfUser();
-	// 		callCommonFunctions()
-	// 		if (userID == router.query.userdet) {
-	// 			setSelfView(true)
-	// 		}
-	// 		setIsDataFetched(true)
-	// 	}
-	//
-	// }, [userNotFound]);
+	useEffect(() => {
+		let userID = JSON.parse(localStorage.getItem('UserDetails')).id
+
+		if (router.isReady) {
+			getUserInfo().then(() => {
+				getAllPostsOfUser();
+				callCommonFunctions()
+				if (userID == router.query.userdet) {
+					selfView = true
+				}
+				setIsDataFetched(true)
+			})
+
+
+		}
+	},[reRender])
 
     let getAllPostsOfUser = async () => {
         let fetchAllPostApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/user/${router.query.userdet}/`;
+		// console.log(router.query.userdet + " user id")
 			let response = await fetch(fetchAllPostApiUrl);
 			if (response.ok) {
 				let this_postData = await response.json()
+
 				if (this_postData.length > 0) {
 					postsData = this_postData
 					// setPostsData(postData)
 					// setPostsOfUser(Object.keys(postData).length);
-					postsOfUser = Object.keys(this_postData).length
+					setPostsOfUser(Object.keys(this_postData).length)
+					console.log(postsOfUser)
+
 				} else {
-					// setPostsOfUser(0);
-					postsOfUser = 0
+
+					setPostsOfUser(0)
 				}
+				// setReRender(!reRender)
 			}
     }
 
 	let getUserInfo = async () => {
 		let fetchUserInfoApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/info/${router.query.userdet}/`;
+		console.log(router.query.userdet + " user id")
 		let response = await fetch(fetchUserInfoApiUrl, {
 			method: "GET",
 			headers: {
@@ -114,7 +110,7 @@ const userdet = () => {
 			console.log(postUserInfo)
 			// console.log(postUserInfo.last_name)
 			// setPostUserInfo(userData)
-			setIsDataFetched(true)
+
 		}
 		else
 		{
@@ -198,7 +194,7 @@ const userdet = () => {
 	if(accessToken!=null)
 	{
 		console.log('Rendering ')
-		console.log(isDataFetched)
+		console.log(isDataFetched + "isDataFetched")
 
 		return (
 			<div className="flex flex-col bg-pink-200 min-h-screen bg-gradient-to-t from-[#FDEBF7] to-[#FFBCD1] w-full">
@@ -209,6 +205,7 @@ const userdet = () => {
 				{/*{console.log(postUserInfo.profileImg)}*/}
 				{isDataFetched ? <div>
 						{console.log(postUserInfo)}
+					{console.log(postsOfUser + " posts of user")}
 						<div className="flex items-center justify-center">
 									<div className=" h-[84px] w-[84px]">
 										<img
@@ -257,7 +254,6 @@ const userdet = () => {
 									):null}
 								</div>
 							</div>
-
 					:
 					<LoadingSpinner/>
 
