@@ -19,7 +19,7 @@ gsap.registerPlugin(ScrollToPlugin);
 let postsData
 // let followerCount
 // let followingCount
-let refreshToken
+// let refreshToken
 // let isFollowing
 // let selfView
 
@@ -32,12 +32,14 @@ const scrollToCard = () => {
 			sessionStorage.setItem('clickedCard', '')
 		})
 
+
 }
 
 const userdet = () => {
 
     const router = useRouter();
 	const [accessToken, setaccessToken] = useState<any>()
+	const [refreshToken,setRefreshToken] = useState<any>()
 	const [isDataFetched, setIsDataFetched] = useState(false)
 	const [clickedCard,setClickedCard] = useState<any>()
 	const [postsOfUser,setPostsOfUser] = useState<any>()
@@ -59,8 +61,9 @@ const userdet = () => {
         }
         else {
 			if (isAccessTokenValid(accessTokenLS, refreshTokenLS)) {
+				console.log(accessTokenLS)
 				setaccessToken(accessTokenLS)
-				refreshToken = refreshTokenLS
+				setRefreshToken(refreshTokenLS)
 				if (router.isReady) {
 					getUserInfo().then(() => {
 						getAllPostsOfUser().then(() => {
@@ -82,6 +85,26 @@ const userdet = () => {
 		}
     }, [router.isReady]);
 
+	useEffect(() => {
+		let userID = JSON.parse(localStorage.getItem('UserDetails')).id
+		if (router.isReady) {
+			if (accessToken != null) {
+				getUserInfo().then(() => {
+					getAllPostsOfUser().then(() => {
+						callCommonFunctions().then(() => {
+							if (userID == router.query.userdet) {
+								setSelfView(true)
+							}
+							setIsDataFetched(true)
+							scrollToCard()
+						})
+					})
+				})
+			}
+		}
+	},[accessToken])
+
+
     let getAllPostsOfUser = async () => {
         let fetchAllPostApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/post/user/${router.query.userdet}/`;
 		let response = await fetch(fetchAllPostApiUrl);
@@ -102,7 +125,7 @@ const userdet = () => {
 
 	let getUserInfo = async () => {
 		let fetchUserInfoApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/info/${router.query.userdet}/`;
-		console.log(router.query.userdet + " user id")
+		console.log(accessToken + " access token")
 		let response = await fetch(fetchUserInfoApiUrl, {
 			method: "GET",
 			headers: {
@@ -130,7 +153,7 @@ const userdet = () => {
 			if (result!==null) {
 				// setFollowerCount(Object.keys(result).length);
 				setFollowerCount(Object.keys(result).length)
-				console.log(followerCount)
+				// console.log(followerCount)
 				var newA = result.filter(function (item) {
 					return item.id == userId;
 				});
