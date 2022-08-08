@@ -28,7 +28,7 @@ const scrollToCard = () => {
 		const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
 		console.log(scrollDiv)
 		gsap.to(window, {scrollTo: scrollDiv}).then(() => {
-			gsap.from(scrollDiv, {duration: 1, backgroundColor: "yellow"})
+			// gsap.from(scrollDiv, {duration: 1, backgroundColor: "yellow"})
 			sessionStorage.setItem('clickedCard', '')
 		})
 
@@ -237,7 +237,6 @@ const userdet = () => {
 							</div>
 						</div>
 						<div className="  ml-[40px] mt-[13px] flex flex-col  justify-center">
-							<p className=" font-[Sarabun-Medium] font-semibold text-[#939090] text-sm">@{postUserInfo.username}</p>
 							<h5 className="font-[Sarabun-Medium] font-semibold text-black text-sm  mt-[3px]">{postUserInfo.first_name} {postUserInfo.last_name}</h5>
 							{/* <h6 className=" font-[Sarabun-Medium] font-semibold text-black text-xs mt-[7px]">Programmer, developer, designer...</h6> */}
 						</div>
