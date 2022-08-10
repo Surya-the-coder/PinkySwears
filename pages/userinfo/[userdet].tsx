@@ -49,6 +49,8 @@ const userdet = () => {
 	const [selfView,setSelfView] = useState<boolean>(false)
 	const [postUserInfo,setPostUserInfo] = useState<any>()
 	const [reRender,setReRender] = useState(false)
+	const [shownContent,setShownContent] = useState<string>('Posts')
+
 
 
     useEffect(() => {
@@ -89,20 +91,54 @@ const userdet = () => {
 		let userID = JSON.parse(localStorage.getItem('UserDetails')).id
 		if (router.isReady) {
 			if (accessToken != null) {
-				getUserInfo().then(() => {
-					getAllPostsOfUser().then(() => {
-						callCommonFunctions().then(() => {
-							if (userID == router.query.userdet) {
-								setSelfView(true)
-							}
-							setIsDataFetched(true)
-							scrollToCard()
+				switch (shownContent) {
+					case 'Posts':
+						getUserInfo().then(() => {
+							getAllPostsOfUser().then(() => {
+								callCommonFunctions().then(() => {
+									if (userID == router.query.userdet) {
+										setSelfView(true)
+									}
+									setIsDataFetched(true)
+									scrollToCard()
+								})
+							})
 						})
-					})
-				})
+						break;
+					case 'Followers':
+						getUserInfo().then(() => {
+							getFollowerDetails(router.query.userdet).then(() => {
+								callCommonFunctions().then(() => {
+									if (userID == router.query.userdet) {
+										setSelfView(true)
+									}
+									setIsDataFetched(true)
+
+								})
+							})
+						})
+						break;
+					case 'Following':
+						getUserInfo().then(() => {
+							getFollowingDetails(router.query.userdet).then(() => {
+								callCommonFunctions().then(() => {
+									if (userID == router.query.userdet) {
+										setSelfView(true)
+									}
+									setIsDataFetched(true)
+
+								})
+							})
+						})
+						break;
+					default:
+						break;
+
+				}
+
 			}
 		}
-	},[accessToken])
+	},[accessToken,shownContent])
 
 
     let getAllPostsOfUser = async () => {
@@ -183,6 +219,7 @@ const userdet = () => {
 		})
 
 	}
+
 	let followUnFollowUser =async () => {
 	let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/follow/${router.query.userdet}/`, {
 			method: "POST",
@@ -204,6 +241,9 @@ const userdet = () => {
 	setIsFollowing(!isFollowing)
 	}
 
+	let getFollowerDetails = async(userId) => {}
+	let getFollowingDetails = async(userId) => {}
+
 
 	if(accessToken!=null)
 	{
@@ -224,18 +264,22 @@ const userdet = () => {
 									className='w-full h-full rounded-full'/>
 							</div>
 							<div className=" ml-[40px] flex flex-col">
-								<button>
+								<button onClick={()=>setShownContent("Posts")}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Posts</p>
 								<p className=" text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000] ">{postsOfUser}</p>
 								</button>
 							</div>
 							<div className="ml-[16px] flex flex-col">
+								<button onClick={()=>setShownContent("Followers")}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Following</p>
 								<p className=" text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{followingCount}</p>
+								</button>
 							</div>
 							<div className=" ml-[16px] flex flex-col">
+								<button onClick={()=>setShownContent("Followings")}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Followers</p>
 								<p className="text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{followerCount}</p>
+								</button>
 							</div>
 						</div>
 						<div className="  ml-[40px] mt-[13px] flex flex-col  justify-center">
@@ -254,7 +298,8 @@ const userdet = () => {
 						}
 
 						<div className="">
-							{postsOfUser>0?
+							{shownContent == "Posts" ?
+							postsOfUser>0?
 								postsData.map((post) =>
 								<Card key={post.id} accessToken={accessToken} postid={post.id}
 									  userid={post.user.id}
@@ -265,7 +310,9 @@ const userdet = () => {
 									  numberOfLikes={post.likes} commentsCount={post.comments_count}
 								/>
 
-							):null}
+							):null:null}
+							{shownContent == "Followers" ?<div>Showing Followers</div>:null}
+							{shownContent == "Followings" ?<div>Showing Followings</div>:null}
 						</div>
 					</div>
 					:
