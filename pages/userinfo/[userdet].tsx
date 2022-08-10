@@ -224,8 +224,10 @@ const userdet = () => {
 									className='w-full h-full rounded-full'/>
 							</div>
 							<div className=" ml-[40px] flex flex-col">
+								<button>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Posts</p>
 								<p className=" text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000] ">{postsOfUser}</p>
+								</button>
 							</div>
 							<div className="ml-[16px] flex flex-col">
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Following</p>
