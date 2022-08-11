@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import TopBar from "../../components/TopBar";
 import AccountCard  from "../../components/AccountCard";
 import Card  from "../../components/Card";
+import UserCard from "../../components/UserCard";
 import dateFormat from 'dateformat';
 import LoadingSpinner from "../../components/LoadingSpinner";
 import {getFollowing, getFollowers, isEmptyObject, isAccessTokenValid} from '../../components/CommonFunctions'
@@ -50,6 +51,8 @@ const userdet = () => {
 	const [postUserInfo,setPostUserInfo] = useState<any>()
 	const [reRender,setReRender] = useState(false)
 	const [shownContent,setShownContent] = useState<string>('Posts')
+	const [followersInfo,setFollowersInfo] = useState<any>(null)
+	const [followingInfo,setFollowingInfo] = useState<any>(null)
 
 
 
@@ -107,28 +110,22 @@ const userdet = () => {
 						break;
 					case 'Followers':
 						getUserInfo().then(() => {
-							getFollowerDetails(router.query.userdet).then(() => {
 								callCommonFunctions().then(() => {
 									if (userID == router.query.userdet) {
 										setSelfView(true)
 									}
 									setIsDataFetched(true)
-
 								})
-							})
 						})
 						break;
 					case 'Following':
 						getUserInfo().then(() => {
-							getFollowingDetails(router.query.userdet).then(() => {
 								callCommonFunctions().then(() => {
 									if (userID == router.query.userdet) {
 										setSelfView(true)
 									}
 									setIsDataFetched(true)
-
 								})
-							})
 						})
 						break;
 					default:
@@ -189,6 +186,7 @@ const userdet = () => {
 			if (result!==null) {
 				// setFollowerCount(Object.keys(result).length);
 				setFollowerCount(Object.keys(result).length)
+				setFollowersInfo(result)
 				// console.log(followerCount)
 				var newA = result.filter(function (item) {
 					return item.id == userId;
@@ -211,6 +209,7 @@ const userdet = () => {
 		followinginfojson.then(async function(result){
 			if (result!==null) {
 				setFollowingCount(await Object.keys(result).length);
+				setFollowingInfo(result)
 			}
 			else
 			{
@@ -270,13 +269,13 @@ const userdet = () => {
 								</button>
 							</div>
 							<div className="ml-[16px] flex flex-col">
-								<button onClick={()=>setShownContent("Followers")}>
+								<button onClick={()=>setShownContent("Followings")}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Following</p>
 								<p className=" text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{followingCount}</p>
 								</button>
 							</div>
 							<div className=" ml-[16px] flex flex-col">
-								<button onClick={()=>setShownContent("Followings")}>
+								<button onClick={()=>setShownContent("Followers")}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Followers</p>
 								<p className="text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{followerCount}</p>
 								</button>
@@ -311,8 +310,41 @@ const userdet = () => {
 								/>
 
 							):null:null}
-							{shownContent == "Followers" ?<div>Showing Followers</div>:null}
-							{shownContent == "Followings" ?<div>Showing Followings</div>:null}
+							{shownContent == "Followers" ?
+								<div>{followersInfo.map((follower)=> {
+									console.log('follower id is '+ follower.id)
+										return <UserCard
+											key={follower.id}
+											userId={follower.id}
+											firstName={follower.first_name}
+											lastName={follower.last_name}
+											profileImg={follower.profileImg}
+											gender={follower.gender}
+											numberOfFollowers={follower.number_of_followers}
+											numberOfFollowing={follower.number_of_followings}
+										/>
+									}
+								)}
+								</div>
+								:
+								null}
+							{shownContent == "Followings" ?
+								<div>
+								{followingInfo.map((follower)=>
+									<UserCard
+										key={follower.id}
+										userId={follower.id}
+										firstName={follower.first_name}
+										lastName={follower.last_name}
+										profileImg={follower.profileImg}
+										gender={follower.gender}
+										numberOfFollowers={follower.number_of_followers}
+										numberOfFollowing={follower.number_of_followings}
+									/>
+								)}
+							</div>
+								:null
+							}
 						</div>
 					</div>
 					:
