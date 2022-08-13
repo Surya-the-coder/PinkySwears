@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import TopBar from "../../components/TopBar";
 import AccountCard  from "../../components/AccountCard";
 import Card  from "../../components/Card";
@@ -39,6 +39,7 @@ const scrollToCard = () => {
 const userdet = () => {
 
     const router = useRouter();
+	const cardRef = useRef([]);
 	const [accessToken, setaccessToken] = useState<any>()
 	const [refreshToken,setRefreshToken] = useState<any>()
 	const [isDataFetched, setIsDataFetched] = useState(false)
@@ -53,6 +54,7 @@ const userdet = () => {
 	const [shownContent,setShownContent] = useState<string>('Posts')
 	const [followersInfo,setFollowersInfo] = useState<any>(null)
 	const [followingInfo,setFollowingInfo] = useState<any>(null)
+	const [userClickedCard,setUserClickedCard] = useState<any>()
 
 
 
@@ -220,7 +222,8 @@ const userdet = () => {
 	}
 
 	let followUnFollowUser =async () => {
-	let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/follow/${router.query.userdet}/`, {
+
+		let response= await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/follow/${router.query.userdet}/`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -243,6 +246,9 @@ const userdet = () => {
 	let getFollowerDetails = async(userId) => {}
 	let getFollowingDetails = async(userId) => {}
 
+	useEffect(() => {
+		setShownContent('Posts')
+	},[userClickedCard])
 
 	if(accessToken!=null)
 	{
@@ -255,7 +261,7 @@ const userdet = () => {
 
 				{isDataFetched ?
 
-					<div>{console.log(followerCount)}
+					<div>
 						<div className="flex items-center justify-center">
 							<div className=" h-[84px] w-[84px]">
 								<img
@@ -322,6 +328,7 @@ const userdet = () => {
 											gender={follower.gender}
 											numberOfFollowers={follower.number_of_followers}
 											numberOfFollowing={follower.number_of_followings}
+											setUserClickedCard={setUserClickedCard}
 										/>
 									}
 								)}
@@ -340,6 +347,7 @@ const userdet = () => {
 										gender={follower.gender}
 										numberOfFollowers={follower.number_of_followers}
 										numberOfFollowing={follower.number_of_followings}
+										setUserClickedCard={setUserClickedCard}
 									/>
 								)}
 							</div>
