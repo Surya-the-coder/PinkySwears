@@ -37,3 +37,10 @@
 	-ms-user-select: none;
 	user-select: none;
 }
+
+.rectangle
+{
+	border-radius: 5px;
+	border: black 1px solid;
+
+}

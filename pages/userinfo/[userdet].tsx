@@ -238,13 +238,9 @@ const userdet = () => {
 			if(procesinfo.processdone=="followed")
 			console.log("User Followed Successfully")
 	}
-	// console.log("State Change")
-	// console.log(isFollowing)
-	setIsFollowing(!isFollowing)
+		callCommonFunctions()
+	// setIsFollowing(!isFollowing)   // called in CallCommonFunctions
 	}
-
-	let getFollowerDetails = async(userId) => {}
-	let getFollowingDetails = async(userId) => {}
 
 	useEffect(() => {
 		setShownContent('Posts')
@@ -268,19 +264,19 @@ const userdet = () => {
 									src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/` + `${postUserInfo.profileImg !== null ? postUserInfo.profileImg : '/media/userDefault.jpg'}`}
 									className='w-full h-full rounded-full'/>
 							</div>
-							<div className=" ml-[40px] flex flex-col">
+							<div className={ `ml-[40px] flex flex-col p-1 no-highlights border-2 rounded ${shownContent=='Posts'?'border-[#b3588d]':'border-[#ffbcd100]'}`}>
 								<button onClick={()=>setShownContent("Posts")}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Posts</p>
 								<p className=" text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000] ">{postsOfUser}</p>
 								</button>
 							</div>
-							<div className="ml-[16px] flex flex-col">
+							<div className={`ml-[16px] flex flex-col p-1 no-highlights border-2 rounded ${shownContent=='Followings'?'border-[#b3588d]':'border-[#ffbcd100]'}`}>
 								<button onClick={()=>setShownContent("Followings")}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Following</p>
 								<p className=" text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{followingCount}</p>
 								</button>
 							</div>
-							<div className=" ml-[16px] flex flex-col">
+							<div className={` ml-[16px] flex flex-col p-1 no-highlights border-2 rounded ${shownContent=='Followers'?'border-[#b3588d]':'border-[#ffbcd100]'}`}>
 								<button onClick={()=>setShownContent("Followers")}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Followers</p>
 								<p className="text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{followerCount}</p>
