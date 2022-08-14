@@ -243,6 +243,7 @@ const userdet = () => {
 	}
 
 	useEffect(() => {
+		setIsDataFetched(false)
 		setShownContent('Posts')
 	},[userClickedCard])
 
