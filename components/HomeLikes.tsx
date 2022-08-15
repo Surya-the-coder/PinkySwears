@@ -244,7 +244,7 @@ const homelikes = (props:PropsWithChildren<any>) => {
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
                 <div className="pb-5 overflow-y-auto overflow-hidden z-50 mb-[10vh] w-full max-w-md ">
                     <meta name='theme-color' content='#FFBCD1' />
-                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
+                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userId = {user.id} loggedInUserProfilePic = {user.profileImg}/>
                     <div className={`flex justify-around mx-5 top-24 ${showSearch?'':null}`}>
                         <button onClick={showSearchFn} className={`bg-white rounded-full px-4 no-highlights ${showSearch?'hidden':null}`}> <Search className=""/> </button>
                         <input type="text" name="Search" ref={searchRef} id="Search" placeholder="Search here..." className={`outline-none font-Sarabun text-sm px-2 bg-white rounded-2xl w-full text-[#FF848E] ${showSearch ? '':'hidden'}`} onChange={(e)=>searchStringOnChange(e.target.value) } onKeyUp={searchKeyHandler} />

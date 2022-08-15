@@ -150,7 +150,7 @@ const userinterest = ({session}) => {
                 {/*<div className="mb-6 overflow-y-auto overflow-hidden h-[95vh] z-50  w-full max-w-md">*/}
                     <div id="temp" className="mb-6 overflow-y-auto overflow-hidden z-50  w-full max-w-md">
                     <meta name='theme-color' content='#FFBCD1' />
-                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
+                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userId = {user.id} loggedInUserProfilePic = {user.profileImg}/>
                     <div className="flex justify-around mx-5 top-24">
                         <button className={followings?"bg-[#F67A95] text-white no-highlights px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Followings")}>Followings</button>
                         <button className={followers?"bg-[#F67A95] text-white no-highlights px-5 py-1 rounded-2xl" : " bg-white text-[#FF848E] px-5 py-1 rounded-2xl focus:bg-[#F67A95] focus:text-white"} onClick={() => pageSelected("Followers")}>Followers</button>

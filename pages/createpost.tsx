@@ -65,7 +65,7 @@ const createpost = () => {
 					<meta name='theme-color' content='#FFBCD1' />
 				</Head>
 				<div className="flex flex-col w-full max-w-md">
-				<TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
+				<TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userId = {user.id} loggedInUserProfilePic = {user.profileImg}/>
 					{loading?<LoadingSpinner/>:
 						<>
 							<div className='flex mx-6'>

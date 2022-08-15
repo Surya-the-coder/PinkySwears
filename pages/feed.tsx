@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import NotificationCard from "../components/NotificationCard";
 import NotificationFollow from "../components/NotificationFollow";
+import NotificationComment from "../components/NotificationComment";
 import Ellipse from '../assets/images/Ellipse.svg'
 import dateFormat from 'dateformat';
 import Router, { useRouter } from 'next/router'
@@ -89,7 +90,7 @@ const feed = () => {
                 <Ellipse className="fixed top-0 left-0 z-0 md:hidden"/>
                 <div className="pb-5 overflow-y-auto overflow-hidden z-50 mb-[10vh] w-full max-w-md ">
                     <meta name='theme-color' content='#FFBCD1' />
-                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userid = {user.id} loggedInUserProfilePic = {user.profileImg}/>
+                    <TopBar displayPic = {true} displayName = {true} backButton = {false} loggedInUserName = {user.first_name + ' ' + user.last_name} userId = {user.id} loggedInUserProfilePic = {user.profileImg}/>
                     <div className="flex justify-around mx-6 top-24 ">
                         <button className="flex w-full bg-white rounded-lg justify-between items-center h-[32px] px-3">
 							<p className="items-center">Feed</p>
@@ -119,7 +120,16 @@ const feed = () => {
                                                 createdData={dateFormat(post.created_at, "dS mmmm yyyy")}
                                                 setClickedFeed={setClickedFeed}
                                             />:
-                                            post.target_type=='comment'?<div>zz_rrrrrrrrrrrrrrcomment</div>:null
+                                            post.target_type=='comment'?
+                                                <NotificationComment
+                                                    key={post.id}
+                                                    targetpost={post.target_post}
+                                                    targetcomment = {post.target_comment}
+                                                    message={post.message}
+                                                    createdData={dateFormat(post.created_at, "dS mmmm yyyy")}
+                                                    setClickedFeed={setClickedFeed}
+                                                />
+                                                :null
 
 
 

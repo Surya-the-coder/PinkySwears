@@ -257,7 +257,7 @@ const userdet = () => {
 				<TopBar backButton = {true}/>
 
 				{isDataFetched ?
-
+					postUserInfo !== undefined ?
 					<div>
 						<div className="flex items-center justify-center">
 							<div className=" h-[84px] w-[84px]">
@@ -352,6 +352,10 @@ const userdet = () => {
 							}
 						</div>
 					</div>
+						:<div className='flex flex-col justify-center border-pink-600 border-2 p-6 font-bold w-fit mx-auto rounded-2xl'>
+							<div>There is no such user.</div>
+							<div>Are you searching for someone.?</div>
+						</div>
 					:
 					<LoadingSpinner/>
 
