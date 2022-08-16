@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import TopBar from "../../components/TopBar";
 import AccountCard  from "../../components/AccountCard";
 import Card  from "../../components/Card";
@@ -9,6 +9,7 @@ import dateFormat from 'dateformat';
 import LoadingSpinner from "../../components/LoadingSpinner";
 import {getFollowing, getFollowers, isEmptyObject, isAccessTokenValid} from '../../components/CommonFunctions'
 import {gsap} from "gsap";
+import NavBar from "../../components/NavBar";
 const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
 const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
 
@@ -360,7 +361,7 @@ const userdet = () => {
 					<LoadingSpinner/>
 
 				}
-
+				<NavBar />
 
 
 			</div>

@@ -83,32 +83,57 @@ const preference = () => {
         fd.append('gender', formUserDetails.gender)
         fd.append('culture', formUserDetails.culture)
         fd.append('years_in_relationShip', formUserDetails.years_in_relationShip)
-        if (profilePicUpdated) {
-            fd.append('profileImg', profilePic)
-        }
-        else{
-            console.log('Profile pic not updated')
-            // fd.append('profileImg',localStorage.getItem('profileImage'))
+        let loadProfileImg = async() => {
+            if (profilePicUpdated) {
+                fd.append('profileImg', profilePic)
+            } else {
+                console.log('Profile pic not updated')
+                let currrentProfilePic = JSON.parse(localStorage.getItem('UserDetails')).profileImg
+                if (currrentProfilePic != null) {
+                    let img_url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${currrentProfilePic}`
+                    await fetch(img_url).then(res => res.blob()).then(blob => {
+                        let file = new File([blob], 'profile_pic.png', {type: 'image/*'});
+                        fd.append('profileImg', file)
+                    })
+
+                    // fd.append('profileImg', currrentProfilePic)
+                } else {
+                    let img_url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/media/userDefault.jpg`
+                    console.log(img_url + '=====================')
+                    await fetch(img_url).then(
+                        res => res.blob()).then(
+                        blob => {
+                            let file = new File([blob], 'profile_pic.png', {type: 'image/*'});
+                            fd.append('profileImg', file)
+                        })
+                    // fd.append('profileImg', '/media/userDefault.jpg')
+                }
+                // fd.append('profileImg',localStorage.getItem('profileImage'))
+            }
         }
 
-		let editUserDetailsUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/edit/`
-		let response = await fetch(editUserDetailsUrl, {
-			method: 'POST',
-			headers: {
-				'Authorization': 'Bearer '+accessToken,
-			},
-			body: fd,
-		})
-        console.log(accessToken)
-		console.log(response)
-        if(response.status==200)
-		{
-            setShowUpdateMsg(true)
-			await timeout(2000);
-            // router.reload()
-		}
-        console.log(await response.json())
-        getUserInfo(accessToken)
+        loadProfileImg().then(async () => {
+
+            let editUserDetailsUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/edit/`
+            let response = await fetch(editUserDetailsUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                body: fd,
+            })
+            console.log(accessToken)
+            console.log(response)
+            if(response.status==200)
+            {
+                setShowUpdateMsg(true)
+                await timeout(2000);
+                // router.reload()
+            }
+            console.log(await response.json())
+            getUserInfo(accessToken)
+        })
+
 	}
     function timeout(delay: number) {
 		return new Promise( res => setTimeout(res, delay) );
@@ -137,13 +162,13 @@ const preference = () => {
 			    <Head>
 			    	<meta name='theme-color' content='#FFBCD1' />
 			    </Head>
-                {console.log(process.env.NEXT_PUBLIC_BACKEND_BASE_URL+user.profileImg)}
+                {/*{console.log(process.env.NEXT_PUBLIC_BACKEND_BASE_URL+user.profileImg)}*/}
 			    <div className="flex flex-col w-full max-w-md z-50">
                     <div className='flex flex-col items-center w-full max-w-md pb-5 h-[91vh] overflow-y-auto px-2 '>
                         <div className='pt-2 flex justify-center items-center'>
                             <input type="file" name="profilePic" id="profilePic" className="hidden" ref={inputFileRef} onChange={(e) => {updateProfilePic(e)}}/>
                             <button className="rounded-full w-16 h-16" onClick={() => inputFileRef.current.click()}>
-                                <Image loader={profilePicLoader} src={`${user.profileImg}`} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
+                                <Image loader={profilePicLoader} src={`${user.profileImg!==null?user.profileImg:'/media/userDefault.jpg'}`} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
                             </button>
                             <div className="flex flex-col">
                                 <h4 className='mx-4 text-[#A268AC] font-[Sarabun-SemiBold] font-semibold mt-2'>Username</h4>
@@ -196,7 +221,12 @@ const preference = () => {
                                 <div className="flex justify-center">
                                     <GoogleLogout clientId={process.env.NEXT_PUBLIC_GOOGLE_ID} onLogoutSuccess={logout} render={ renderProps => (<button type="button" className="h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#C1C1C1] rounded-3xl cursor-pointer" onClick={renderProps.onClick} disabled = {renderProps.disabled}> Sign Out </button>)}/>
                                 </div>
-			            		<button type="button" className='ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl' onClick={() => editUserDetails(user)}>Save</button>  								
+			            		<button
+                                    type="button"
+                                    className='ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl'
+                                    onClick={() => editUserDetails(user)}>
+                                    Save
+                                </button>
 			            	</div>
                             <Popup open={showUpdateMsg}>
 								<div className='flex w-full h-[50px] rounded-3xl text-[#FF848E] text-center font-[Sarabun-SemiBold] font-semibold' >User Details Updated Successfully!</div>
