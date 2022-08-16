@@ -91,7 +91,7 @@ const preference = () => {
                 let currrentProfilePic = JSON.parse(localStorage.getItem('UserDetails')).profileImg
                 if (currrentProfilePic != null) {
                     let img_url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${currrentProfilePic}`
-                    await fetch(img_url).then(res => res.blob()).then(blob => {
+                    await fetch(img_url,{mode:'cors'}).then(res => res.blob()).then(blob => {
                         let file = new File([blob], 'profile_pic.png', {type: 'image/*'});
                         fd.append('profileImg', file)
                     })
@@ -100,7 +100,7 @@ const preference = () => {
                 } else {
                     let img_url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/media/userDefault.jpg`
                     console.log(img_url + '=====================')
-                    await fetch(img_url).then(
+                    await fetch(img_url,{mode:'cors'}).then(
                         res => res.blob()).then(
                         blob => {
                             let file = new File([blob], 'profile_pic.png', {type: 'image/*'});
