@@ -8,8 +8,9 @@ import Link from "next/link";
 import Image from 'next/image'
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { profilePicLoader } from '../components/CommonFunctions'
+import {isAccessTokenValid, profilePicLoader} from '../components/CommonFunctions'
 import Compressor from 'compressorjs';
+import ConfirmDialog from "../components/ConfirmDialog";
 
 let signOut = (router) => {
     console.log("================Inside SignOut================")
@@ -21,10 +22,11 @@ let signOut = (router) => {
 const preference = () => {
     const router = useRouter()
 
-    const [accessToken, setaccessToken] = useState<any>()
+    const [accessToken, setAccessToken] = useState<any>()
     const [refreshToken, setRefreshToken] = useState<any>()
     const [profilePic, setProfilePic] = useState<any>()
     const [profilePicUpdated, setProfilePicUpdated] = useState(false)
+    const [profilePicDeleted, setProfilePicDeleted] = useState(false)
 
     const inputFileRef = useRef( null );
     const[showUpdateMsg,setShowUpdateMsg]=useState(false)
@@ -34,6 +36,7 @@ const preference = () => {
         console.log('=========================PREF LOG================================')
         let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
+        let accessTokenValid = false
         
         if (accessTokenLS == null) {
             console.log('No Access Token')
@@ -41,10 +44,20 @@ const preference = () => {
         }
         else{
             let userLS = JSON.parse(localStorage.getItem('UserDetails'))
-            
-            setaccessToken(accessTokenLS)
+            setAccessToken(accessTokenLS)
             setRefreshToken(refreshTokenLS)
-            getUserInfo(accessTokenLS)
+            if(isAccessTokenValid(accessTokenLS, refreshTokenLS)){
+                accessTokenValid = true
+                setAccessToken(localStorage.getItem('access_token'))
+                accessTokenLS = localStorage.getItem('access_token')
+            }
+            if (accessTokenValid) {
+                getUserInfo(accessTokenLS)
+            }
+            else{
+                router.push('/')
+            }
+
             
             console.log(userLS)
         }
@@ -87,28 +100,33 @@ const preference = () => {
             if (profilePicUpdated) {
                 fd.append('profileImg', profilePic)
             } else {
-                console.log('Profile pic not updated')
-                let currrentProfilePic = JSON.parse(localStorage.getItem('UserDetails')).profileImg
-                if (currrentProfilePic != null) {
-                    let img_url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${currrentProfilePic}`
-                    await fetch(img_url,{mode:'cors'}).then(res => res.blob()).then(blob => {
-                        let file = new File([blob], 'profile_pic.png', {type: 'image/*'});
-                        fd.append('profileImg', file)
-                    })
+                if (profilePicDeleted)
+                    fd.append('profileImg', 'deleted')
 
-                    // fd.append('profileImg', currrentProfilePic)
-                } else {
-                    let img_url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/media/userDefault.jpg`
-                    console.log(img_url + '=====================')
-                    await fetch(img_url,{mode:'cors'}).then(
-                        res => res.blob()).then(
-                        blob => {
-                            let file = new File([blob], 'profile_pic.png', {type: 'image/*'});
-                            fd.append('profileImg', file)
-                        })
-                    // fd.append('profileImg', '/media/userDefault.jpg')
-                }
-                // fd.append('profileImg',localStorage.getItem('profileImage'))
+                //-------------------old code
+                // console.log('Profile pic not updated')
+                // let currrentProfilePic = JSON.parse(localStorage.getItem('UserDetails')).profileImg
+                // if (currrentProfilePic != null) {
+                //     let img_url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${currrentProfilePic}`
+                //     await fetch(img_url,{mode:'cors'}).then(res => res.blob()).then(blob => {
+                //         let file = new File([blob], 'profile_pic.png', {type: 'image/*'});
+                //         fd.append('profileImg', file)
+                //     })
+                //
+                //     // fd.append('profileImg', currrentProfilePic)
+                // } else {
+                //     let img_url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/media/userDefault.jpg`
+                //     console.log(img_url + '=====================')
+                //     await fetch(img_url,{mode:'cors'}).then(
+                //         res => res.blob()).then(
+                //         blob => {
+                //             let file = new File([blob], 'profile_pic.png', {type: 'image/*'});
+                //             fd.append('profileImg', file)
+                //         })
+                //     // fd.append('profileImg', '/media/userDefault.jpg')
+                // }
+                // // fd.append('profileImg',localStorage.getItem('profileImage'))
+                //-------------------end of old code
             }
         }
 
@@ -167,9 +185,14 @@ const preference = () => {
                     <div className='flex flex-col items-center w-full max-w-md pb-5 h-[91vh] overflow-y-auto px-2 '>
                         <div className='pt-2 flex justify-center items-center'>
                             <input type="file" name="profilePic" id="profilePic" className="hidden" ref={inputFileRef} onChange={(e) => {updateProfilePic(e)}}/>
+                            <div className={'flex flex-col'}>
                             <button className="rounded-full w-16 h-16" onClick={() => inputFileRef.current.click()}>
                                 <Image loader={profilePicLoader} src={`${user.profileImg!==null?user.profileImg:'/media/userDefault.jpg'}`} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
                             </button>
+                                <button onClick={()=>setProfilePicDeleted(true)}>Remove</button>
+                            </div>
+
+
                             <div className="flex flex-col">
                                 <h4 className='mx-4 text-[#A268AC] font-[Sarabun-SemiBold] font-semibold mt-2'>Username</h4>
                                 <h4 className='mx-4 text-[#6E6E6E] font-[Sarabun-SemiBold] font-semibold '>{user.username}</h4>
@@ -234,6 +257,7 @@ const preference = () => {
 			            </form>
 			        </div>
 			        <NavBar page = "Preference"/>
+
 			    </div>
 		    </div>
         );
