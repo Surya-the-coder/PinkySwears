@@ -28,6 +28,8 @@ const preference = () => {
     const [profilePicUpdated, setProfilePicUpdated] = useState(false)
     const [profilePicDeleted, setProfilePicDeleted] = useState(false)
 
+    const [userProfileImage, setUserProfileImage] = useState<any>('/media/userDefault.jpg')
+
     const inputFileRef = useRef( null );
     const[showUpdateMsg,setShowUpdateMsg]=useState(false)
     const [compressedFile, setCompressedFile] = useState<any>()
@@ -79,6 +81,9 @@ const preference = () => {
         let updatedUserData = await response.json();
         console.log(updatedUserData)
         localStorage.setItem('UserDetails', JSON.stringify(updatedUserData))
+        const user = JSON.parse(localStorage.getItem('UserDetails'))
+        setUserProfileImage(user.profileImg!==null?user.profileImg:'/media/userDefault.jpg')
+
     }
 
 	let editUserDetails = async (formUserDetails) => {
@@ -131,7 +136,7 @@ const preference = () => {
         }
 
         loadProfileImg().then(async () => {
-
+            console.log(fd)
             let editUserDetailsUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/edit/`
             let response = await fetch(editUserDetailsUrl, {
                 method: 'POST',
@@ -153,6 +158,7 @@ const preference = () => {
         })
 
 	}
+
     function timeout(delay: number) {
 		return new Promise( res => setTimeout(res, delay) );
 	}
@@ -163,9 +169,18 @@ const preference = () => {
             success: (compressedResult) => {
                 let compressedResultFile = new File([compressedResult], e.target.files[0].name);
               setProfilePic(compressedResultFile)
+                setProfilePicUpdated(true);
+                const user = JSON.parse(localStorage.getItem('UserDetails'))
+                console.log('calling from picture')
+                editUserDetails(user)
+
             },
         });
-        setProfilePicUpdated(true);
+        // setProfilePicUpdated(true);
+        // const user = JSON.parse(localStorage.getItem('UserDetails'))
+        // console.log('calling from picture')
+        // editUserDetails(user)
+
     }
 
     let logout = () => {
@@ -187,12 +202,14 @@ const preference = () => {
                             <input type="file" name="profilePic" id="profilePic" className="hidden" ref={inputFileRef} onChange={(e) => {updateProfilePic(e)}}/>
                             <div className={'flex flex-col'}>
                             <button className="rounded-full w-16 h-16" onClick={() => inputFileRef.current.click()}>
-                                <Image loader={profilePicLoader} src={`${user.profileImg!==null?user.profileImg:'/media/userDefault.jpg'}`} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
+                                <Image loader={profilePicLoader} src={userProfileImage} width={64} height={64} className = "rounded-full w-16 h-16"></Image>
                             </button>
-                                <button onClick={()=>setProfilePicDeleted(true)}>Remove</button>
+                                <button
+                                    onClick={()=>{setProfilePicDeleted(true);setUserProfileImage('/media/userDefault.jpg')}}
+                                >
+                                    Remove
+                                </button>
                             </div>
-
-
                             <div className="flex flex-col">
                                 <h4 className='mx-4 text-[#A268AC] font-[Sarabun-SemiBold] font-semibold mt-2'>Username</h4>
                                 <h4 className='mx-4 text-[#6E6E6E] font-[Sarabun-SemiBold] font-semibold '>{user.username}</h4>
@@ -201,21 +218,51 @@ const preference = () => {
                         {/* <AccountDetailsTopBar profileImg = {`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/`+user.profileImg} username = {user.username}/> */}
 			            <form autoComplete='on' className='flex flex-col justify-center w-full' action='' method="POST">
                             <label className="mt-3 mx-7 text-[#6e6e6e] text-sm font-semibold">First Name</label>
-			            	<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-1  rounded-2xl border h-[56px] mx-3 font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:text-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="firstname" id="firstname" defaultValue={user.first_name} placeholder="First Name" autoComplete='on' onChange={(e) => {user.first_name = e.target.value}}/>
+			            	<input
+                                className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-1  rounded-2xl border h-[56px] mx-3 font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:text-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]"
+                                type="text"
+                                name="firstname"
+                                id="firstname"
+                                defaultValue={user.first_name}
+                                placeholder="First Name"
+                                autoComplete='on'
+                                onChange={(e) => {user.first_name=e.target.value}}
+                            />
                             <label className="mt-3 mx-7 text-[#6e6e6e] text-sm font-semibold">Last Name</label>
-			            	<input className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-1  rounded-2xl border h-[56px] mx-3 font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:text-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]" type="text" name="lastname" id="lastname" defaultValue={user.last_name} placeholder="Last Name" autoComplete='on' onChange={(e) => {user.last_name = e.target.value}}/>
+			            	<input
+                                className=" text-[#B9B9B9] focus-welcome-field-shadowfocus pl-6 mt-1  rounded-2xl border h-[56px] mx-3 font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 focus:border-[#FFBCD1] focus:text-[#FFBCD1] focus:outline-none focus:placeholder:text-[#FFBCD1]"
+                                type="text"
+                                name="lastname"
+                                id="lastname"
+                                defaultValue={user.last_name}
+                                placeholder="Last Name"
+                                autoComplete='on'
+                                onChange={(e) => {user.last_name=e.target.value}}
+                            />
 			            	
                             <div className='mx-2 mt-3 flex justify-between'>
                                 <div className="mx-1">
                                     <label className="mt-3 mx-5 text-[#6e6e6e] text-sm font-semibold">Gender</label>
-			            		    <select className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]' name="gender" id="gender" defaultValue={user.gender} onChange={(e) => {user.gender = e.target.value}} >
+			            		    <select
+                                        className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]'
+                                        name="gender"
+                                        id="gender"
+                                        defaultValue={user.gender}
+                                        onChange={(e) => {user.gender=e.target.value}}
+                                    >
                           		    	<option value="Female">Female</option>
                           		    	<option value="Male">Male</option>
           	            		    </select>
                                 </div>
                                 <div className="mx-1">
                                     <label className="mt-3 mx-5 text-[#6e6e6e] text-sm font-semibold">Culture</label>
-			            		    <select className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]'  name="culture" id="culture" defaultValue={user.culture} onChange={(e) => {user.culture = e.target.value}}>
+			            		    <select
+                                        className='mt-1 pl-6 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] w-full h-[56px]'
+                                        name="culture"
+                                        id="culture"
+                                        defaultValue={user.culture}
+                                        onChange={(e) => {user.culture=e.target.value}}
+                                    >
                           		    	{/* <option value={user.culture} disabled hidden>{user.culture}</option> */}
                           		    	<option value="South Indian">South Indian</option>
                           		    	<option value="North Indian">North Indian</option>
@@ -226,7 +273,14 @@ const preference = () => {
 			            	</div>
 			            	
                             <label className="mt-3 mx-7 text-[#6e6e6e] text-sm font-semibold">Years in Relationship</label>
-                            <select className='pl-6 mx-3 mt-1 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] h-[56px] '  name="rel" id="rel" placeholder='rel' defaultValue={user.years_in_relationShip} onChange={(e) => {user.years_in_relationShip = e.target.value}}>
+                            <select
+                                className='pl-6 mx-3 mt-1 text-[#FF848E] bg-white rounded-2xl border font-[Sarabun-SemiBold] text-base font-semibold shadow-welcome-field-shadowbefore focus:border-2 border-[#FFBCD1] focus:outline-none select-text:font-[Sarabun-SemiBold] h-[56px] '
+                                name="rel"
+                                id="rel"
+                                placeholder='rel'
+                                defaultValue={user.years_in_relationShip}
+                                onChange={(e) => {user.years_in_relationShip=e.target.value}}
+                            >
 			            		{/* <option value={user.years_in_relationShip} disabled hidden>{user.years_in_relationShip}</option> */}
                           		<option value="1">1</option>
                           		<option value="2">2</option>
@@ -236,7 +290,11 @@ const preference = () => {
 			            	
                             <div className=' w-full flex justify-center'>
 			            		<Link href="/changepassword">
-			            			<button className='mx-3 mt-3 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-full h-[53px] cursor-pointer'>Click here to change password</button>  
+			            			<button
+                                        className='mx-3 mt-3 text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-full w-full h-[53px] cursor-pointer'
+                                    >
+                                        Click here to change password
+                                    </button>
 			            		</Link>
 			            	</div>
 			            	
