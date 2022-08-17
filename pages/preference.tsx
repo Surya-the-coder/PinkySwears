@@ -32,7 +32,9 @@ const preference = () => {
 
     const inputFileRef = useRef( null );
     const[showUpdateMsg,setShowUpdateMsg]=useState(false)
+    const [showProfilePicMsg, setShowProfilePicMsg] = useState(false)
     const [compressedFile, setCompressedFile] = useState<any>()
+    const [avoidLoop, setAvoidLoop] = useState(true)
 
     useEffect(() => {
         console.log('=========================PREF LOG================================')
@@ -83,10 +85,9 @@ const preference = () => {
         localStorage.setItem('UserDetails', JSON.stringify(updatedUserData))
         const user = JSON.parse(localStorage.getItem('UserDetails'))
         setUserProfileImage(user.profileImg!==null?user.profileImg:'/media/userDefault.jpg')
-
     }
 
-	let editUserDetails = async (formUserDetails) => {
+	let editUserDetails = async (formUserDetails,from_pic) => {
 
         console.log('=============================SAVE=============================')
         console.log(formUserDetails.first_name)
@@ -101,41 +102,12 @@ const preference = () => {
         fd.append('gender', formUserDetails.gender)
         fd.append('culture', formUserDetails.culture)
         fd.append('years_in_relationShip', formUserDetails.years_in_relationShip)
-        let loadProfileImg = async() => {
             if (profilePicUpdated) {
                 fd.append('profileImg', profilePic)
             } else {
                 if (profilePicDeleted)
                     fd.append('profileImg', 'deleted')
-
-                //-------------------old code
-                // console.log('Profile pic not updated')
-                // let currrentProfilePic = JSON.parse(localStorage.getItem('UserDetails')).profileImg
-                // if (currrentProfilePic != null) {
-                //     let img_url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${currrentProfilePic}`
-                //     await fetch(img_url,{mode:'cors'}).then(res => res.blob()).then(blob => {
-                //         let file = new File([blob], 'profile_pic.png', {type: 'image/*'});
-                //         fd.append('profileImg', file)
-                //     })
-                //
-                //     // fd.append('profileImg', currrentProfilePic)
-                // } else {
-                //     let img_url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/media/userDefault.jpg`
-                //     console.log(img_url + '=====================')
-                //     await fetch(img_url,{mode:'cors'}).then(
-                //         res => res.blob()).then(
-                //         blob => {
-                //             let file = new File([blob], 'profile_pic.png', {type: 'image/*'});
-                //             fd.append('profileImg', file)
-                //         })
-                //     // fd.append('profileImg', '/media/userDefault.jpg')
-                // }
-                // // fd.append('profileImg',localStorage.getItem('profileImage'))
-                //-------------------end of old code
             }
-        }
-
-        loadProfileImg().then(async () => {
             console.log(fd)
             let editUserDetailsUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/edit/`
             let response = await fetch(editUserDetailsUrl, {
@@ -149,14 +121,21 @@ const preference = () => {
             console.log(response)
             if(response.status==200)
             {
-                setShowUpdateMsg(true)
-                await timeout(2000);
-                // router.reload()
+                if (from_pic) {
+                    setShowProfilePicMsg(true)
+                    await timeout(2000);
+
+                    // router.reload()
+                }
+                else {
+                    setShowUpdateMsg(true)
+                    await timeout(2000);
+                }
+
             }
             console.log(await response.json())
-            getUserInfo(accessToken)
-        })
 
+            getUserInfo(accessToken)
 	}
 
     function timeout(delay: number) {
@@ -169,19 +148,23 @@ const preference = () => {
             success: (compressedResult) => {
                 let compressedResultFile = new File([compressedResult], e.target.files[0].name);
               setProfilePic(compressedResultFile)
-                setProfilePicUpdated(true);
-                const user = JSON.parse(localStorage.getItem('UserDetails'))
-                console.log('calling from picture')
-                editUserDetails(user)
-
+                setProfilePicUpdated(true)
             },
         });
-        // setProfilePicUpdated(true);
-        // const user = JSON.parse(localStorage.getItem('UserDetails'))
-        // console.log('calling from picture')
-        // editUserDetails(user)
-
     }
+
+    useEffect(() => {
+        if(profilePicUpdated || profilePicDeleted) {
+            console.log('Profile Pic event-----------------------')
+            const user = JSON.parse(localStorage.getItem('UserDetails'))
+            editUserDetails(user,true).then(() => {
+                setProfilePicUpdated(false)
+                setProfilePicDeleted(false)
+                setShowProfilePicMsg(false)
+                setShowUpdateMsg(false)
+            })
+        }
+    } , [profilePicUpdated,profilePicDeleted])
 
     let logout = () => {
         signOut(router)
@@ -305,13 +288,16 @@ const preference = () => {
 			            		<button
                                     type="button"
                                     className='ml-2 h-[53px] w-[160px] text-white shadow-button-shadow font-[Sarabun-Regular] font-normal -tracking-tighter bg-[#F67A95] rounded-3xl'
-                                    onClick={() => editUserDetails(user)}>
+                                    onClick={() => editUserDetails(user,false)}>
                                     Save
                                 </button>
 			            	</div>
                             <Popup open={showUpdateMsg}>
 								<div className='flex w-full h-[50px] rounded-3xl text-[#FF848E] text-center font-[Sarabun-SemiBold] font-semibold' >User Details Updated Successfully!</div>
 							</Popup>
+                            <Popup open={showProfilePicMsg}>
+                                <div className='flex w-full h-[50px] rounded-3xl text-[#FF848E] text-center font-[Sarabun-SemiBold] font-semibold' >Profile Picture Updated!</div>
+                            </Popup>
 			            </form>
 			        </div>
 			        <NavBar page = "Preference"/>
