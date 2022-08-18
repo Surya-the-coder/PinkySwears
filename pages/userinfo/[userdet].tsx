@@ -263,7 +263,7 @@ const userdet = () => {
 						<div className="flex items-center justify-center">
 							<div className=" h-[84px] w-[84px]">
 								<img
-									src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/` + `${postUserInfo.profileImg !== null ? postUserInfo.profileImg : '/media/userDefault.jpg'}`}
+									src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}` + `${postUserInfo.profileImg !== null ? postUserInfo.profileImg : '/media/userDefault.jpg'}`}
 									className='w-full h-full rounded-full'/>
 							</div>
 							<div className={ `ml-[40px] flex flex-col p-1 no-highlights border-2 rounded ${shownContent=='Posts'?'border-[#b3588d]':'border-[#ffbcd100]'}`}>

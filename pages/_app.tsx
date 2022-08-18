@@ -3,8 +3,9 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { SessionProvider } from 'next-auth/react'
 // import Layout from "../components/layout";
+// import useScrollRestoration from "../components/useScrollRestoration";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps,router }: AppProps) {
 
   return (
 
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Head>
               <link rel="stylesheet" href="../assets/fonts/segoepr.ttf" />
             </Head>
+              {/*{useScrollRestoration(router)}*/}
             <Component {...pageProps} />
           </>
         </SessionProvider>

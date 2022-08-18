@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 import Router, { NextRouter } from 'next/router'
 
 function saveScrollPos(asPath: string) {
+    console.log('saveScrollPos', asPath)
     sessionStorage.setItem(
         `scrollPos:${asPath}`,
         JSON.stringify({ x: window.scrollX, y: window.scrollY })
@@ -14,6 +15,7 @@ function saveScrollPos(asPath: string) {
 }
 
 function restoreScrollPos(asPath: string) {
+    console.log('restoreScrollPos', asPath)
     const json = sessionStorage.getItem(`scrollPos:${asPath}`)
     const scrollPos = json ? JSON.parse(json) : undefined
     if (scrollPos) {
@@ -26,7 +28,7 @@ export default function useScrollRestoration(router: NextRouter) {
         if (!('scrollRestoration' in window.history)) return
         let shouldScrollRestore = false
         window.history.scrollRestoration = 'manual'
-        restoreScrollPos(router.asPath)
+        // restoreScrollPos(router.asPath)
 
         const onBeforeUnload = (event: BeforeUnloadEvent) => {
             saveScrollPos(router.asPath)

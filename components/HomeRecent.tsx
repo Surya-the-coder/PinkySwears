@@ -32,7 +32,7 @@ const scrollToCard = () => {
 
         sessionStorage.setItem('clickedCard', '')
     }
-    // sessionStorage.setItem('clickedCard', '')
+
 }
 
 
