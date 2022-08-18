@@ -26,15 +26,15 @@ let postsData
 // let selfView
 
 const scrollToCard = () => {
-		console.log('Scrolling to card')
-		const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
-		console.log(scrollDiv)
-		gsap.to(window, {scrollTo: scrollDiv}).then(() => {
-			// gsap.from(scrollDiv, {duration: 1, backgroundColor: "yellow"})
-			sessionStorage.setItem('clickedCard', '')
-		})
-
-
+		if (sessionStorage.getItem('clickedCard')!='') {
+			console.log('Scrolling to card')
+			const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
+			console.log(scrollDiv)
+			gsap.to(window, {scrollTo: scrollDiv}).then(() => {
+				// gsap.from(scrollDiv, {duration: 1, backgroundColor: "yellow"})
+				sessionStorage.setItem('clickedCard', '')
+			})
+		}
 }
 
 const userdet = () => {
