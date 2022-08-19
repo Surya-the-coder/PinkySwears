@@ -27,14 +27,23 @@ let postsData
 
 const scrollToCard = () => {
 		if (sessionStorage.getItem('clickedCard')!='') {
-			console.log('Scrolling to card')
+			// console.log('Scrolling to card')
 			const scrollDiv = `#card-${sessionStorage.getItem('clickedCard')}`
-			console.log(scrollDiv)
+			// console.log(scrollDiv)
 			gsap.to(window, {scrollTo: scrollDiv}).then(() => {
 				// gsap.from(scrollDiv, {duration: 1, backgroundColor: "yellow"})
 				sessionStorage.setItem('clickedCard', '')
 			})
 		}
+	if (sessionStorage.getItem('userClickedCard')!='') {
+		// console.log('Scrolling to card')
+		const scrollDiv = `#card-${sessionStorage.getItem('userClickedCard')}`
+		// console.log(scrollDiv)
+		gsap.to(window, {scrollTo: scrollDiv}).then(() => {
+			// gsap.from(scrollDiv, {duration: 1, backgroundColor: "yellow"})
+			sessionStorage.setItem('userClickedCard', '')
+		})
+	}
 }
 
 const userdet = () => {
@@ -52,12 +61,16 @@ const userdet = () => {
 	const [selfView,setSelfView] = useState<boolean>(false)
 	const [postUserInfo,setPostUserInfo] = useState<any>()
 	const [reRender,setReRender] = useState(false)
-	const [shownContent,setShownContent] = useState<string>('Posts')
+	const [shownContent,setShownContent] = useState<string>()
 	const [followersInfo,setFollowersInfo] = useState<any>(null)
 	const [followingInfo,setFollowingInfo] = useState<any>(null)
 	const [userClickedCard,setUserClickedCard] = useState<any>()
 
 
+	useEffect(() => {
+		// sessionStorage.setItem(`${router.query.userdet}clickedUserProfileTab`, shownContent)
+		// console.log('setting session data-' + shownContent)
+	} ,[shownContent])
 
     useEffect(() => {
 		let accessTokenLS = localStorage.getItem('access_token')
@@ -69,25 +82,42 @@ const userdet = () => {
         }
         else {
 			if (isAccessTokenValid(accessTokenLS, refreshTokenLS)) {
-				console.log(accessTokenLS)
-				setaccessToken(accessTokenLS)
+				// console.log('Access Token Valid')
+				setaccessToken(localStorage.getItem('access_token'))
 				setRefreshToken(refreshTokenLS)
 				if (router.isReady) {
+					console.log('Calling User info')
 					getUserInfo().then(() => {
+						let savedUserProfileTab = sessionStorage.getItem(`${router.query.userdet}clickedUserProfileTab`)
+						// console.log(savedUserProfileTab + '-savedUserProfileTab')
 						getAllPostsOfUser().then(() => {
 							callCommonFunctions().then(() => {
 								if (userID == router.query.userdet) {
 									setSelfView(true)
 								}
-								setIsDataFetched(true)
-								scrollToCard()
+								switch (savedUserProfileTab) {
+									case 'Posts':
+										setShownContent('Posts')
+										break;
+									case 'Followers':
+										setShownContent('Followers')
+										break;
+									case 'Following':
+										setShownContent('Following')
+										break;
+									default:
+										setShownContent('Posts')
+										break;
+								}
+								// setIsDataFetched(true)
+								// scrollToCard()
 							})
 						})
 					})
 				}
 			}
 			else {
-				console.log('No Access Token')
+				// console.log('No Access Token')
 				router.push('/')
 			}
 		}
@@ -96,7 +126,9 @@ const userdet = () => {
 	useEffect(() => {
 		let userID = JSON.parse(localStorage.getItem('UserDetails')).id
 		if (router.isReady) {
+			// console.log(accessToken + '-accessToken')
 			if (accessToken != null) {
+				console.log(accessToken + '-accessToken')
 				switch (shownContent) {
 					case 'Posts':
 						getUserInfo().then(() => {
@@ -160,27 +192,28 @@ const userdet = () => {
     }
 
 	let getUserInfo = async () => {
-		let fetchUserInfoApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/info/${router.query.userdet}/`;
-		console.log(accessToken + " access token")
-		let response = await fetch(fetchUserInfoApiUrl, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				'Authorization': 'Bearer ' + accessToken,
+
+			let fetchUserInfoApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/info/${router.query.userdet}/`;
+			console.log(accessToken + " access token")
+			let response = await fetch(fetchUserInfoApiUrl, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					'Authorization': 'Bearer ' + accessToken,
+				}
+			});
+			if (response.ok) {
+				let this_userData = await response.json()
+				setPostUserInfo(this_userData)
+				// console.log(this_userData)
+			} else {
+				console.log(response)
+				// setUserNotFound(true)
+				// setIsDataFetched(true)
 			}
-		});
-		if (response.ok) {
-			let this_userData = await response.json()
-			setPostUserInfo(this_userData)
-			console.log(this_userData)
-		}
-		else
-		{
-			console.log(response)
-			// setUserNotFound(true)
-			// setIsDataFetched(true)
-		}
+
 	}
+
 
 	let callCommonFunctions =async () => {
 		let followerinfojson = getFollowers(router.query.userdet)
@@ -245,7 +278,8 @@ const userdet = () => {
 
 	useEffect(() => {
 		setIsDataFetched(false)
-		setShownContent('Posts')
+		// setShownContent('Posts')
+		sessionStorage.setItem('userClickedCard', userClickedCard)
 	},[userClickedCard])
 
 	if(accessToken!=null)
@@ -267,19 +301,19 @@ const userdet = () => {
 									className='w-full h-full rounded-full'/>
 							</div>
 							<div className={ `ml-[40px] flex flex-col p-1 no-highlights border-2 rounded ${shownContent=='Posts'?'border-[#b3588d]':'border-[#ffbcd100]'}`}>
-								<button onClick={()=>setShownContent("Posts")}>
+								<button onClick={()=>{setShownContent("Posts");sessionStorage.setItem(`${router.query.userdet}clickedUserProfileTab`, 'Posts')}}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Posts</p>
 								<p className=" text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000] ">{postsOfUser}</p>
 								</button>
 							</div>
-							<div className={`ml-[16px] flex flex-col p-1 no-highlights border-2 rounded ${shownContent=='Followings'?'border-[#b3588d]':'border-[#ffbcd100]'}`}>
-								<button onClick={()=>setShownContent("Followings")}>
+							<div className={`ml-[16px] flex flex-col p-1 no-highlights border-2 rounded ${shownContent=='Following'?'border-[#b3588d]':'border-[#ffbcd100]'}`}>
+								<button onClick={()=>{setShownContent("Following");sessionStorage.setItem(`${router.query.userdet}clickedUserProfileTab`, 'Following')}}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Following</p>
 								<p className=" text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{followingCount}</p>
 								</button>
 							</div>
 							<div className={` ml-[16px] flex flex-col p-1 no-highlights border-2 rounded ${shownContent=='Followers'?'border-[#b3588d]':'border-[#ffbcd100]'}`}>
-								<button onClick={()=>setShownContent("Followers")}>
+								<button onClick={()=>{setShownContent("Followers");sessionStorage.setItem(`${router.query.userdet}clickedUserProfileTab`, 'Followers')}}>
 								<p className=" font-[Sarabun-Medium] font-semibold text-xs text-[#A268AC]">Followers</p>
 								<p className="text-center mt-[8px] font-[Sarabun] font-bold text-xs text-[#000000]">{followerCount}</p>
 								</button>
@@ -316,7 +350,7 @@ const userdet = () => {
 							):null:null}
 							{shownContent == "Followers" ?
 								<div>{followersInfo.map((follower)=> {
-									console.log('follower id is '+ follower.id)
+									// console.log('follower id is '+ follower.id)
 										return <UserCard
 											key={follower.id}
 											userId={follower.id}
@@ -333,7 +367,7 @@ const userdet = () => {
 								</div>
 								:
 								null}
-							{shownContent == "Followings" ?
+							{shownContent == "Following" ?
 								<div>
 								{followingInfo.map((follower)=>
 									<UserCard

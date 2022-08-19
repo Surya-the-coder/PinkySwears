@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps,router }: AppProps) {
               <link rel="stylesheet" href="../assets/fonts/segoepr.ttf" />
             </Head>
               {/*{useScrollRestoration(router)}*/}
-            <Component {...pageProps} />
+            <Component key={router.asPath} {...pageProps} />
           </>
         </SessionProvider>
 
