@@ -7,13 +7,14 @@ import Link from 'next/link';
 import { useSession, signIn, signOut, SessionProvider } from "next-auth/react"
 import { redirect } from 'next/dist/server/api-utils';
 import { profilePicLoader } from './CommonFunctions'
+import {forwardRef, PropsWithChildren} from "react";
 
-const TopBar = (props) => {
+const TopBar = forwardRef((props:PropsWithChildren<any>,ref:any) => {
   // let backPage = sessionStorage.getItem('previosPage')
   return (
     <div className="flex pt-5 pb-4 justify-between items-center z-[100] px-5">
       <div className="flex justify-center items-center">
-          {props.backButton?<Link href={`/home`}><BackButton className="mx-3"></BackButton></Link>:null}
+          {props.backButton?<Link ref={ref} href={`/home`}><BackButton className="mx-3"></BackButton></Link>:null}
           {props.displayPic?
             <Link href={`/userinfo/${props.userId}`}>
               <Image loader={profilePicLoader} src={`${props.loggedInUserProfilePic!==null?props.loggedInUserProfilePic:'/media/userDefault.jpg'}`} width={64} height={64} className = "rounded-full w-16 h-16"/>
@@ -31,6 +32,6 @@ const TopBar = (props) => {
       </div>
     </div>
   )
-}
+})
 
 export default TopBar

@@ -62,17 +62,19 @@ const userdet = () => {
 	const [postUserInfo,setPostUserInfo] = useState<any>()
 	const [reRender,setReRender] = useState(false)
 	const [shownContent,setShownContent] = useState<string>()
-	const [followersInfo,setFollowersInfo] = useState<any>(null)
-	const [followingInfo,setFollowingInfo] = useState<any>(null)
+	const [followersInfo,setFollowersInfo] = useState<any>()
+	const [followingInfo,setFollowingInfo] = useState<any>()
 	const [userClickedCard,setUserClickedCard] = useState<any>()
 
 
 	useEffect(() => {
-		// sessionStorage.setItem(`${router.query.userdet}clickedUserProfileTab`, shownContent)
-		// console.log('setting session data-' + shownContent)
-	} ,[shownContent])
+		console.log('useEffect - FollowersInfo')
+		console.log(followersInfo)
+	},[followersInfo])
+
 
     useEffect(() => {
+		// console.log('useEffect - router is ready')
 		let accessTokenLS = localStorage.getItem('access_token')
         let refreshTokenLS = localStorage.getItem('refresh_token')
 		let userID = JSON.parse(localStorage.getItem('UserDetails')).id
@@ -86,7 +88,7 @@ const userdet = () => {
 				setaccessToken(localStorage.getItem('access_token'))
 				setRefreshToken(refreshTokenLS)
 				if (router.isReady) {
-					console.log('Calling User info')
+					// console.log('Calling User info')
 					getUserInfo().then(() => {
 						let savedUserProfileTab = sessionStorage.getItem(`${router.query.userdet}clickedUserProfileTab`)
 						// console.log(savedUserProfileTab + '-savedUserProfileTab')
@@ -124,11 +126,12 @@ const userdet = () => {
     }, [router.isReady]);
 
 	useEffect(() => {
+		// console.log('useEffect - access token')
 		let userID = JSON.parse(localStorage.getItem('UserDetails')).id
 		if (router.isReady) {
 			// console.log(accessToken + '-accessToken')
 			if (accessToken != null) {
-				console.log(accessToken + '-accessToken')
+				// console.log(accessToken + '-accessToken')
 				switch (shownContent) {
 					case 'Posts':
 						getUserInfo().then(() => {
@@ -170,7 +173,62 @@ const userdet = () => {
 
 			}
 		}
-	},[accessToken,shownContent])
+	},[accessToken])
+
+	useEffect(() => {
+		console.log('useEffect - shown content')
+		console.log(shownContent)
+		let userID = JSON.parse(localStorage.getItem('UserDetails')).id
+		if (router.isReady) {
+			// console.log(accessToken + '-accessToken')
+			if (accessToken != null) {
+				// console.log(accessToken + '-accessToken')
+				switch (shownContent) {
+					case 'Posts':
+						getUserInfo().then(() => {
+							getAllPostsOfUser().then(() => {
+								callCommonFunctions().then(() => {
+									if (userID == router.query.userdet) {
+										setSelfView(true)
+									}
+									setIsDataFetched(true)
+									scrollToCard()
+								})
+							})
+						})
+						break;
+					case 'Followers':
+						getUserInfo().then(() => {
+							getAllPostsOfUser().then(() => {
+								callCommonFunctions().then(() => {
+									if (userID == router.query.userdet) {
+										setSelfView(true)
+									}
+									setIsDataFetched(true)
+								})
+							})
+						})
+						break;
+					case 'Following':
+						getUserInfo().then(() => {
+							getAllPostsOfUser().then(() => {
+								callCommonFunctions().then(() => {
+									if (userID == router.query.userdet) {
+										setSelfView(true)
+									}
+									setIsDataFetched(true)
+								})
+							})
+						})
+						break;
+					default:
+						break;
+
+				}
+
+			}
+		}
+	},[shownContent])
 
 
     let getAllPostsOfUser = async () => {
@@ -194,7 +252,7 @@ const userdet = () => {
 	let getUserInfo = async () => {
 
 			let fetchUserInfoApiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/info/${router.query.userdet}/`;
-			console.log(accessToken + " access token")
+			// console.log(accessToken + " access token")
 			let response = await fetch(fetchUserInfoApiUrl, {
 				method: "GET",
 				headers: {
@@ -202,12 +260,14 @@ const userdet = () => {
 					'Authorization': 'Bearer ' + accessToken,
 				}
 			});
+
 			if (response.ok) {
 				let this_userData = await response.json()
+				// console.log(this_userData)
 				setPostUserInfo(this_userData)
 				// console.log(this_userData)
 			} else {
-				console.log(response)
+				// console.log(response)
 				// setUserNotFound(true)
 				// setIsDataFetched(true)
 			}
@@ -216,13 +276,17 @@ const userdet = () => {
 
 
 	let callCommonFunctions =async () => {
+		// console.log(router.query.userdet + '-router.query.userdet')
 		let followerinfojson = getFollowers(router.query.userdet)
 		let userId = JSON.parse(localStorage.getItem('UserDetails')).id
 		followerinfojson.then(async function (result) {
+			// console.log(result + '-followerinfojson')
 			if (result!==null) {
 				// setFollowerCount(Object.keys(result).length);
 				setFollowerCount(Object.keys(result).length)
 				setFollowersInfo(result)
+				// console.log(result)
+				// console.log(JSON.stringify(result)  + 'Followersinfo')
 				// console.log(followerCount)
 				var newA = result.filter(function (item) {
 					return item.id == userId;
@@ -242,10 +306,12 @@ const userdet = () => {
 		})
 
 		let followinginfojson = getFollowing(router.query.userdet)
+
 		followinginfojson.then(async function(result){
 			if (result!==null) {
 				setFollowingCount(await Object.keys(result).length);
 				setFollowingInfo(result)
+				// console.log(result)
 			}
 			else
 			{
@@ -277,6 +343,7 @@ const userdet = () => {
 	}
 
 	useEffect(() => {
+		// console.log("useEffect - userClickedCard")
 		setIsDataFetched(false)
 		// setShownContent('Posts')
 		sessionStorage.setItem('userClickedCard', userClickedCard)
@@ -349,7 +416,8 @@ const userdet = () => {
 
 							):null:null}
 							{shownContent == "Followers" ?
-								<div>{followersInfo.map((follower)=> {
+								<div>{
+									followersInfo.map((follower)=> {
 									// console.log('follower id is '+ follower.id)
 										return <UserCard
 											key={follower.id}
